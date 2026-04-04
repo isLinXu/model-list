@@ -16,7 +16,7 @@
 | 指标 | 数量 | 说明 |
 |:---|:---:|:---|
 | 🃏 模型系列 | 200+ | 涵盖国内外主流厂商 |
-| 📄 arXiv 论文 | 218 条 | 2017-2026 年核心论文 |
+| 📄 arXiv 论文 | 230+ 条 | 2017-2026 年核心论文（含对齐技术/Agent综述） |
 | 💻 GitHub 仓库 | 152 个 | 官方代码链接 |
 | 🤗 HuggingFace 链接 | 162 个 | 模型权重下载 |
 | 🏢 厂商/组织 | 25+ | 全球主要 AI 实验室 |
@@ -96,10 +96,16 @@
 - [3. 专项领域模型](#3-专项领域模型)
 - [4. 技术对比](#4-技术对比)
 - [5. 部署指南](#5-部署指南)
-- [6. 参考文献](#6-参考文献)
-- [7. 资源索引](#7-资源索引)
-- [8. 贡献指南](#8-贡献指南)
-- [9. 更新日志](#9-更新日志)
+- [6. 📈 LLM 发展时间线](#6-llm-发展时间线)
+- [7. 🔬 训练方法与对齐技术](#7-训练方法与对齐技术)
+- [8. ⚡ 场景化模型选择指南](#8-场景化模型选择指南)
+- [9. 🌍 开源生态地图](#9-开源生态地图)
+- [10. 🔮 2026 技术趋势展望](#10-2026-技术趋势展望)
+- [11. ❓ FAQ 常见问题](#11-faq-常见问题)
+- [12. 参考文献](#12-参考文献)
+- [13. 资源索引](#13-资源索引)
+- [14. 贡献指南](#14-贡献指南)
+- [15. 更新日志](#15-更新日志)
 
 ---
 
@@ -1086,14 +1092,503 @@ docker run --gpus all -p 8080:80 \
 
 ---
 
-## 6. 参考文献
+## 6. 📈 LLM 发展时间线
 
-### 6.1 综述论文
+> 从 2017 年 Transformer 诞生到 2026 年 AGI 级模型，大语言模型的发展可以用一副扑克牌的演进历程来理解。
+
+### 6.1 里程碑事件
+
+```
+2017 ┃────────── Attention Is All You Need (Transformer) ──────┃
+      │                                                           │
+2018 ┃ GPT-1 ♥2  BERT ♠3  T5 ♣4                                │
+      │   (117M)    (110M)   (220M)                               │
+2019 ┃ GPT-2 ♥5  XLNet ♥6  ALBERT                              │
+      │   (1.5B)   (340M)                                        │
+2020 ┃ GPT-3 ♥K(175B)  GPT-J ♥8(6B)                            │
+      │   Few-shot革命                                            │
+2021 ┃ GLM-130B ♥Q  Codex ♦J  ERNIE 3.0                         │
+      │   PaLM ♥K(540B)                                           │
+2022 ┃ ChatGLM ♥7  Galactica ♦10  LLaMA 1 ♥Q                     │
+      │   (开源爆发元年)                                           │
+2023 ┃ GPT-4 ♥A  Claude 1 ♥Q  LLaMA 2 ♥K                        │
+      │   Mistral 7B ♥J  GPT-4-turbo  DeepSeek-V1                │
+      │   (闭源 vs 开源 分野)                                      │
+2024 ┃ Claude 3.5  LLaMA 3/3.1  Gemma 2  Qwen 2/2.5              │
+      │   DeepSeek-V2/V3  Mamba 🃏  o1 🃏  Phi-3                 │
+      │   (MoE + SSM + 推理 三大革命)                             │
+2025 ┃ GPT-5 ♥A  Claude 4/4.5  LLaMA 4 Behemoth(2T)♥K           │
+      │   DeepSeek-R1 🃏(GRPO)  Kimi K2 🃏  Grok-3               │
+      │   Qwen 3/3.5  Gemini 2.5  Mamba-3  RWKV-7               │
+      │   (开源首次逼近闭源 SOTA)                                  │
+2026 ┃ Claude 4.6 ♥A  Gemini 3.1  GLM-5  Kimi K2.5              │
+      │   Intern-S1-Pro  Baichuan-M3  MiniMax-M2.5               │
+      │   Qwen3.5  DeepSeek-V3.2                                 │
+      ┃────────── AGI 能力加速显现 ──────────────────────────────┃
+```
+
+### 6.2 代际演进特征
+
+| 时代 | 时间段 | 核心特征 | 关键突破 | 代表模型 | 🃏 花色 |
+|:---|:---|:---|:---|:---|:---|
+| **前Transformer** | <2017 | RNN/LSTM/CNN为主 | 序列建模局限 | — | — |
+| **预训练时代** | 2018-2020 | 大规模无监督预训练 | Few-shot学习 | GPT-3, BERT, T5 | ♥2~K |
+| **指令微调时代** | 2021-2022 | RLHF对齐 + 开源爆发 | In-context Learning | LLaMA, ChatGLM, GPT-4 | ♥J~A |
+| **多模态+效率** | 2023 | 视觉语言 + 小模型 | 多模态融合, 边缘部署 | GPT-4V, LLaVA, Phi-3 | ♠Q, ♥7 |
+| **架构创新** | 2024 | MoE + SSM + 推理增强 | 稀疏激活, 线性复杂度, CoT | DeepSeek-V3, Mamba, o1 | 🃏 Joker |
+| **AGI前夜** | 2025 | 超大规模 + 推理突破 | 开源=闭源, 长上下文 | GPT-5, LLaMA4, R1, K2 | ♥A, 🃏 |
+| **智能涌现** | 2026→ | Agent能力 + 全模态 | 自主规划, 实时推理 | Claude 4.6, GLM-5 | ♥A |
+
+### 6.3 关键技术节点
+
+```
+注意力机制 (2017)
+  └─→ 自回归预训练 (GPT, 2018)
+       └─→ Scale-up (GPT-3 175B, 2020)  ──┐
+                                             ├─→ 并行发展路径:
+        RLHF 对齐 (InstructGPT, 2022) ──────┤  1️⃣ 闭源SOTA路线 → GPT-4/5, Claude
+                                             │  2️⃣ 开源路线 → LLaMA → Mistral → Qwen
+        LLaMA 开源引爆 (2023-02) ──────────┤  3️⃣ 架构创新 → Mamba, RWKV
+                                             │  4️⃣ 推理增强 → o1, R1, QwQ
+        MoE 效率突破 (Mixtral, 2023-12) ────┤  5️⃣ 多模态统一 → GPT-4V, Gemi
+                                             │
+        GRPO 纯RL推理 (DeepSeek-R1, 2025) ──┘
+```
+
+---
+
+## 7. 🔬 训练方法与对齐技术
+
+> 模型的"性格"由训练方法决定——同样的骨架，不同的训练方式会产生截然不同的模型。
+
+### 7.1 预训练范式
+
+| 方法 | 核心思想 | 代表模型 | 优势 | 局限 |
+|:---|:---|:---|:---|:---|
+| **Causal LM** | 单向自回归预测下一个token | GPT, LLaMA, Qwen | 天然适合生成任务 | 无法双向理解 |
+| **Masked LM** | 双向掩码预测（填空） | BERT, RoBERTa | 强理解能力 | 不直接支持生成 |
+| **Prefix LM** | 双向前缀 + 自回归生成 | GLM, UCDALM | 兼顾理解和生成 | 训练复杂度高 |
+| **Encoder-Dec** | 编码器-解码器架构 | T5, BART, Flan-T5 | 序列到序列灵活 | 参数量大 |
+
+### 7.2 对齐技术矩阵（核心）
+
+| 方法 | 年份 | 核心机制 | 数据需求 | 训练成本 | 代表模型 | 🃏 |
+|:---|:---:|:---|:---:|:---:|:---|:---:|
+| **SFT (监督微调)** | 2020 | 有标注指令数据 | 高 | 低 | 所有模型的Instruct版 | — |
+| **RLHF** | 2022 | 奖励模型 + PPO | 中 | 很高 | GPT-4, Claude, LLaMA 2 | ♥A/Q |
+| **DPO** | 2023 | 直接偏好优化，去RM | 中 | 低 | Zephyr, RLHFV | ♥J |
+| **PPO** | 2022 | 近端策略优化 | 高 | 很高 | OpenAI系, DeepSeek-V2 | ♥K |
+| **GRPO** | 2025 | 组相对策略优化，无RM | 中 | **低** ⭐ | **DeepSeek-R1** | 🃏 |
+| **ORPO** | 2024 | 偏好比优化，单阶段 | 低 | 低 | Mistral微调版 | ♥10 |
+| **KTO** | 2024 | KT对齐，无需成对比较 | 低 | 低 | KTO-Mistral | ♥9 |
+| **SimPO** | 2024 | 简化偏好优化 | 低 | 低 | SimPO-LLaMA | ♥8 |
+| **RST** | 2025 | 推理时自我训练 | 低 | 极低 ⭐ | DeepSeek-R1-Zero | 🃏 |
+| **o-style CoT** | 2024 | 思维链强化推理 | 高 | 高 | o1/o3/o4-mini | 🃏 |
+
+### 7.3 技术演进脉络
+
+```
+SFT (2020) ──基础──→ 所有模型必经之路
+                  │
+    RLHF (2022) ←──标准── PPO + RM（需要大量人工标注）
+       │            │
+       │         DPO (2023) ←──简化── 无需RM，直接从偏好学习
+       │            │
+       │         ORPO/KTO/SimPO (2024) ──进一步降低门槛
+       │
+    GRPO (2025) ──突破── 无RM、组内相对排序 → 成本↓90%
+       │
+    RST (2025) ──极致── 纯推理时自训练 → 几乎零额外训练成本
+```
+
+**💡 关键洞察**：从 RLHF 到 GRPO 的进化，本质是**逐步减少对人工标注和奖励模型的依赖**。DeepSeek-R1 用 GRPO 以极低成本实现了媲美 o1 的推理能力，这是 2024-2025 最具影响力的算法创新之一。
+
+### 7.4 数据工程
+
+| 数据类型 | 说明 | 占比参考 | 来源 |
+|:---|:---|:---:|:---|
+| **通用文本** | 网页、书籍、论文、代码 | ~70% | CommonCrawl, C4, The Pile |
+| **指令数据** | (指令, 回复) 对 | ~15% | ShareGPT, Alpaca, WizardLM |
+| **代码数据** | 编程语言源码 | ~5% | StarCoderData, CodeParrot |
+| **数学数据** | 数学题目+解题过程 | ~3% | GSM8K, MATH, AIME |
+| **多模态数据** | 图像-文本对 | ~5% | LAION, OBELICS, CC-12M |
+| **合成数据** | 模型生成的训练数据 | ~2% | Magpie, Self-Instruct |
+
+---
+
+## 8. ⚡ 场景化模型选择指南
+
+> 不知道该选哪个模型？根据你的场景，快速找到最合适的 🃏 卡牌。
+
+### 8.1 决策树
+
+```
+你的主要使用场景是什么？
+│
+├─ 💬 日常对话 / 通用助手
+│  ├─ 追求最强效果 → GPT-5 / Claude 4.6 (♥A, API)
+│  ├─ 最佳性价比开源 → Qwen2.5-72B / Qwen3-235B (♥K)
+│  ├─ 本地部署 (<16GB显存) → Qwen2.5-7B (♥J) / Phi-4 (♥10)
+│  └─ 手机端部署 → Phi-4-mini / SmolLM2 (♥7)
+│
+├─ 💻 代码生成 / 编程助手
+│  ├─ 商业级API → Claude 3.5/4 Sonnet (♥A) / GPT-5
+│  ├─ 本地专业 → DeepSeek-Coder-V2-236B (♦J) / StarCoder2-15B
+│  ├─ 轻量级 → Qwen2.5-Coder-32B (♦J) / CodeGeeX4-9B
+│  └─ 补全/IDE集成 → StarCoder2-3B / CodeLlama-7B
+│
+├─ 🔢 数学推理 / 科学计算
+│  ├─ 最强推理 → DeepSeek-R1 (🃏) / o3 (🃏) / QwQ (🃏)
+│  ├─ 数学专用 → Qwen2.5-Math-72B (♦10) / NuminaMath-7B
+│  └─ 轻量数学 → DeepSeekMath-7B / Llemma-7B
+│
+├─ 👁️ 图像理解 / 视觉问答
+│  ├─ 最强视觉 → InternVL2-76B (♠K) / LLaVA-OneVision-72B (♠Q)
+│  ├─ 平衡之选 → Qwen3-VL-8B (♠10) / CogVLM2-19B (♠J)
+│  └─ 端侧部署 → MiniCPM-V-2.6-8B (♠9) / SmolVLM-2B (♠7)
+│
+├─ 🤖 Agent开发 / 工具调用
+│  ├─ 强Agent框架 → Qwen-Agent-72B (♣K)
+│  ├─ 工具调用专精 → ToolLLaMA-7B (♣J) / Gorilla-7B (♣J)
+│  └─ API调用专精 → Gorilla (♣J)
+│
+├─ 🔍 向量检索 / 嵌入模型
+│  ├─ 多语言通用 → BGE-M3 (♣Q) / GTE-Qwen2-7B (♣10)
+│  ├─ 英文专用 → E5-Mistral-7B (♣10)
+│  └─ 轻量嵌入 → Nomic Embed v2 (137M, ♣7)
+│
+├─ 🏥 医疗 / 法律 / 金融垂直领域
+│  ├─ 医疗 → MedGemma / HuatuoGPT-o1 / BioMistral
+│  ├─ 法律 → ChatLaw-13B
+│  └─ 金融 → FinGPT-7B
+│
+└─ 📱 极致小模型 / 边缘设备
+   ├─ <2B → TinyLlama-1.1B / Gemma-2-2B / SmolLM2-1.7B
+   ├─ 2-4B → MiniCPM-2.4B / Phi-4-mini-3.8B / MobileLLM-1B
+   └─ 移动端 → OpenELM系列 / Apple Intelligence Foundation Models
+```
+
+### 8.2 场景推荐速查表
+
+| 场景 | 首选模型 (🃏) | 备选模型 (🃏) | 预算参考 |
+|:---|:---|:---|:---|
+| **个人日常助手** | Qwen2.5-32B (♥10) | LLaMA 3-8B (♥J) | 1卡RTX4090 |
+| **企业级应用** | GPT-5 (♥A) | Claude 4.6 (♥A) | API调用 |
+| **编程助手(Copilot)** | Claude 3.5 Sonnet (♥Q) | Qwen2.5-Coder-32B (♦J) | API/24GB显存 |
+| **数学竞赛** | DeepSeek-R1-Distill-QwQ (🃏) | o3 (🃏) | API/多卡集群 |
+| **文档OCR/图表理解** | InternVL2-26B (♠Q) | Qwen3-VL-8B (♠10) | 48GB/16GB |
+| **RAG知识库检索** | BGE-M3 (♣Q) + Qwen2.5-32B | E5-Mistral (♣10) | 16GB |
+| **手机端AI** | Phi-4-mini (♥7) | MiniCPM-4B (♥7) | 手机NPU |
+| **实时对话系统** | Qwen3-235B (♥K) | DeepSeek-V3 (♥K) | 8×H100 |
+| **科研论文分析** | Claude 4.6 Opus (♥A) | GPT-5 (♥A) | API调用 |
+| **教育/教学辅助** | GLM-4 (♥Q) | Phi-4-reasoning (♥10) | API/24GB |
+| **长文档处理** | Kimi K2 (🃏) | Qwen2.5-1M-14B (♥10) | API/32GB |
+| **多模态统一** | GPT-5 (♥A) | Gemini 3.1 Pro (♥A) | API调用 |
+
+### 8.3 硬件预算与模型匹配
+
+```
+预算等级          可运行模型示例                    适用场景
+═════════════════════════════════════════════════════════════
+手机/NPU     →  Phi-4-mini, SmolLM2, MiniCPM 4     端侧AI助手
+单卡 RTX3060 →  Qwen2.5-7B, Mistral-7B, Gemma-2-9B  个人开发
+单卡 RTX4090 →  Qwen2.5-32B, LLaMA 3-8B×2, CodeLlama-34B  专业开发
+双卡 RTX4090 →  Qwen2.5-72B, LLaMA 3-70B INT4       小团队服务
+单卡 A100 80G →  Mixtral 8x22B, DeepSeek-Coder-V2    企业研发
+8× H100      →  LLaMA 4 Behemoth, DeepSeek-V3/R1    前沿研究
+云API (无限)  →  GPT-5, Claude 4.6, Gemini 3.1      生产环境
+```
+
+---
+
+## 9. 🌍 开源生态地图
+
+> 开源模型之间不是孤立的——它们形成了复杂的衍生、合并和竞争关系。
+
+### 9.1 主要家族谱系
+
+```
+                    Meta LLaMA (2023.02) ♥Q
+                        │
+            ┌───────────┼───────────┬───────────────┐
+            ↓           ↓           ↓               ↓
+       LLaMA 2      Vicuna      Alpaca          WizardLM
+       (2023.07)    (LM Sys)    (Stanford)      (MSRA)
+     ♥K            ♥Q          ♥8              ♥J
+            │           │           │               │
+            └─────┬─────┘           └───────┬───────┘
+                  ↓                         ↓
+           LLaMA 3/3.1/4              OpenChat
+           ♥K/J/A                     ♥Q
+                  │
+    ┌─────────────┼─────────────┐
+    ↓             ↓             ↓
+ Yi 系列      Qwen 系列     Baichuan 系列
+ (零一万物)   (阿里通义)     (百川智能)
+ ♥10          ♥K            ♥Q
+    │             │             │
+    └─────┬───────┴─────────────┘
+          ↓
+   中国开源模型生态圈 (Apache 2.0)
+```
+
+```
+                   Mistral AI (法国, 2023.09) ♥J
+                        │
+            ┌───────────┼───────────┐
+            ↓           ↓           ↓
+       Mixtral      Codestral    Mistral Large
+       8x7B/8x22B    (代码专用)    2/3
+       ♥Q            ♦J           ♥Q
+            │                       │
+            └───────────┬───────────┘
+                        ↓
+              欧洲开源模型中心 (Apache 2.0)
+```
+
+```
+              DeepSeek (深度求索, 2024.01) 🃏 Joker
+                        │
+        ┌───────────────┼───────────────┐
+        ↓               ↓               ↓
+   DeepSeek-V2/V3   DeepSeek-R1    DeepSeek-Coder
+   MoE架构          GRPO推理        代码专项
+   ♥K               🃏              ♦J
+        │               │               │
+        └───────┬───────┴───────┬───────┘
+                ↓               ↓
+      DeepSeek-R1-Distill   DeepSeek-Math
+      (蒸馏到Qwen/LaMA)     ♦10
+```
+
+### 9.2 架构影响关系
+
+```
+Transformer (2017)
+  ├── Dense (主流): GPT → LLaMA → Qwen → Mistral → ...  (♥ 全家桶)
+  │     └─ MoE分支: Switch → GLaM → Mixtral → DeepSeek-V2/V3 → DBRX → Arctic
+  ├── SSM (状态空间): S4 → S5 → Mamba-1/2/3 → Falcon-H1 → Jamba  (🃏 Joker)
+  ├── RNN变体: LSTM → RWKV-4/5/6/7  (🃏 Joker)
+  ├── Hybrid混合: Jamba(M+A) → RecurrentGemma → Falcon-H1  (♣Q)
+  └─ xLSTM扩展: xLSTM-7B  (🃏 Joker)
+
+推理增强 (2024-2025):
+  CoT → o1(o-style RL) → DeepSeek-R1(GRPO) → QwQ → Kimi K2(KTO+CoT) → R1-Zero(RST)
+```
+
+### 9.3 微调生态
+
+| 基座模型 | 流行微调方向 | 代表微调版 | 许可兼容性 |
+|:---|:---|:---|:---|
+| **LLaMA 3 8B** | 中文对齐 → Chinese-Alpaca, InternLM; 代码 → CodeLlama | 数千个HF仓库 | Llama License |
+| **Qwen2.5 7B/72B** | 数学 → Qwen-Math; 代码 → Qwen-Coder; 嵌入 → Qwen-Embedding | Apache 2.0 ✅ |
+| **Mistral 7B** | 法语 → Mistral-7B-fr; 海事 → Mistral-Marine | Apache 2.0 ✅ |
+| **DeepSeek-V3/R1** | 蒸馏 → R1-Distill-Qwen/LaMA/Gemma | MIT ✅ |
+| **Phi-3/4** | 教育 → Phi-Edu; 多模态 → Phi-3-Vision | MIT ✅ |
+| **Gemma 2** | 代码 → CodeGemma; 科学 → Scientific-Gemma | Gemma License |
+| **Yi 34B** | 长上下文 → Yi-34B-200K; 多模态 → Yi-VL | Yi License |
+
+---
+
+## 10. 🔮 2026 技术趋势展望
+
+> 基于当前技术轨迹，以下是值得关注的 6 大趋势。
+
+### 10.1 六大趋势
+
+#### 🔄 趋势一：开源全面逼近闭源 SOTA
+- **现象**：Kimi K2 (MIT开源) 进入第一梯队，DeepSeek-R1 (MIT) 推理能力超越 o1
+- **驱动力**：GRPO/KTO 等高效对齐算法 + FP8 训练 + 合成数据
+- **2026 预测**：开源模型将在 80%+ 基准测试中达到或超过闭源同级模型
+- **🃏 含义**：更多 ♥A 级模型将变为开源可用
+
+#### 🧠 趋势二：推理时计算 (Test-Time Compute) 成为新范式
+- **现象**：o1/o3/R1/QwQ 通过延长思考链获得更强的推理能力
+- **核心思路**：**用更多的推理时间换取更高的准确率**
+- **关键技术**：CoT → Process Reward Model → Monte Carlo Tree Search → Verifier
+- **2026 预测**：每个主流模型都将有对应的 "思考模式"
+- **🃏 含义**：♦ 花色（推理）将诞生更多 🃏 Joker
+
+#### 🌐 趋势三：超长上下文成为标配
+- **现状**：Google Gemini 2M → MiniMax-M1 1M → LLaMA 4 Scout 10M
+- **技术方案**：RingAttention → YaRN → LongRoPE → Unbounded Context
+- **2026 预测**：100万+ token 上下文将成为旗舰模型的基础配置
+- **🃏 含义**：点数规则可能需要新增 "上下文维度"
+
+#### 🎯 趋势四：Agent 能力从工具调用走向自主规划
+- **现状**：Function Calling → ReAct → Plan-and-Solve → Multi-Agent
+- **关键进展**：
+  - Qwen-Agent: 结构化工具调用框架
+  - Claude 4.x: Extended Thinking + Computer Use
+  - GPT-5: Operator-level autonomy
+- **2026 预测**：多 Agent 协作将成为企业级 AI 应用的主流模式
+- **🃏 含义**：♣ 花色（Agent）将出现更多 K/A 级别模型
+
+#### ⚡ 趋势五：端侧模型性能持续跃升
+- **现状**：Phi-4-mini (3.8B) ≈ GPT-3.5 水平；SmolLM2 (1.7B) 表现惊人
+- **驱动力**：量化技术 (INT4/INT2) + 知识蒸馏 + 架构搜索
+- **硬件协同**：Apple Silicon NPU / Qualcomm AI Engine / NVIDIA Jetson
+- **2026 预测**：3B 模型将达到 2024 年 13B 模型水平
+- **🃏 含义**：♥7 点数将承载越来越强的能力
+
+#### 🔗 趋势六：全模态统一 (Any-to-Any)
+- **现状**：GPT-5 (文本/图像/音频/视频) → Gemini 3.1 (原生多模态) → Qwen3.5 (全模态)
+- **技术路径**：统一Tokenizer → 统一架构 → 统一训练目标
+- **2026 预测**：单一模型处理所有模态将成为常态
+- **🃏 含义**：花色边界将模糊化，可能出现新的 🃏 "万能牌"
+
+### 10.2 值得关注的模型发布
+
+| 时间窗口 | 预期发布 | 关注点 | 🃏 预期 |
+|:---|:---|:---|:---:|
+| 2026 Q2 | LLaMA 4 Scoupe/Maverick 公开权重 | 最大规模开源MoE | ♥K |
+| 2026 Q2 | GPT-5.5 / GPT-6 (传闻) | 是否突破AGI阈值? | ♥A |
+| 2026 Q3 | 新一代 SSM/Mamba 变体 | 能否挑战Transformer霸主地位 | 🃏 |
+| 2026 Q3 | 中国新一代旗舰模型 (GLM-6? Qwen4?) | 开源vs闭源新格局 | ♥K/A |
+| 2026 Q4 | 端侧3B模型达到GPT-4水平? | 边缘AI拐点 | ♥7 |
+
+---
+
+## 11. ❓ FAQ 常见问题
+
+### Q1: 🃏 扑克牌标记怎么记？
+
+> **简单记忆法**：
+> - **♥ 红心** = 心脏 = 语言（最重要的）
+> - **♠ 黑桃** = 铲子 = 视觉（像铲子一样"挖"信息）
+> - **♦ 方块** = 方正 = 代码/数学（结构化的东西都是方正的）
+> - **♣ 梅花** = 三叶草 = Agent/嵌入（三片叶子=多功能）
+> - **🃏 Joker** = 王炸 = 打破规则的
+
+### Q2: 开源 vs 闭源怎么选？
+
+| 因素 | 选开源 | 选闭源(API) |
+|:---|:---|:---|
+| **预算** | 有GPU资源 / 云服务器 | 按需付费，无硬件投入 |
+| **数据隐私** | 数据不出本地 | 需评估服务商合规 |
+| **定制需求** | 需要微调 / 二次开发 | 即开即用 |
+| **延迟要求** | 本地推理 <50ms | 网络+排队延迟 >200ms |
+| **团队规模** | 有ML工程师 | 无需AI团队 |
+| **长期成本** | 一次投入，边际成本趋零 | 按Token计费，用量越大越贵 |
+
+**💡 经验法则**：日均调用量 < 10万 Token → API更省心；> 100万 Token → 自部署更划算。
+
+### Q3: 7B / 14B / 72B 模型差距有多大？
+
+以 Qwen2.5 系列为例（MMLU-Pro基准）：
+
+| 模型 | MMLU-Pro | HumanEval | GSM8K | 感受对比 |
+|:---|:---:|:---:|:---:|:---|
+| 0.5B | 42% | 18% | 25% | 基本能聊，容易犯错 |
+| 1.5B | 55% | 35% | 45% | 简单任务OK，复杂推理弱 |
+| 7B | 68% | 62% | 75% | **性价比最佳** ✅ |
+| 14B | 74% | 72% | 82% | 明显优于7B |
+| 32B | 81% | 82% | 88% | 接近商业水平 |
+| 72B | 85% | 86% | 92% | 接近GPT-4级别 |
+| 235B (MoE) | 87% | 90% | 94% | 顶级开源 |
+
+**结论**：7B 是分水岭——以下勉强能用，以上基本可靠。72B+ 进入专业领域。
+
+### Q4: 什么是 MoE？为什么重要？
+
+**Mixture of Experts (混合专家)** 是一种让模型"又大又快"的架构：
+
+```
+传统 Dense 模型 (如 LLaMA 70B):
+  输入 → [全部70B参数都参与计算] → 输出
+  (每次推理都要加载全部参数)
+
+MoE 模型 (如 Mixtral 8x7B = 总46.7B, 仅12.9B激活):
+  输入 → [路由器选择其中2个专家] → [仅这2个专家计算] → 输出
+  (每次推理只用到约1/4的参数)
+```
+
+| 特性 | Dense | MoE |
+|:---|:---|:---|
+| **总参数量** | 固定 | 可极大 (671B+) |
+| **每次激活** | 全部 | 仅部分 (如 37B/671B) |
+| **推理速度** | 慢 (全算) | 快 (只算部分专家) |
+| **显存占用** | 小 (存一份) | **大** (要存所有专家) |
+| **吞吐量** | 低 | **高** (批处理优秀) |
+| **代表** | LLaMA, Qwen-Dense | DeepSeek-V3, Mixtral, Grok |
+
+**一句话总结**：MoE 让你拥有一个 671B 参数的大脑，但每次思考只动用其中的 37B。
+
+### Q5: 量化会损失多少精度？
+
+| 精度 | 显存占用 | 相对FP16精度损失 | 推荐场景 |
+|:---|:---:|:---:|:---|
+| FP16/BF16 | 2× | 0%（基准） | 训练/精调 |
+| FP8 | 1× | <1% | 生产推理 |
+| INT8 | 1× | 1-3% | 一般部署 |
+| **INT4 (AWQ/GPTQ)** | **0.5×** | **2-5%** | **⭐ 主流部署** |
+| **GGUF Q4_K_M** | **0.35×** | **3-6%** | **⭐ llama.cpp本地** |
+| EXL2 3bpw | 0.25× | 5-10% | 极限压缩 |
+| INT2/1.5bpw | 0.15× | 15-30%+ | 实验/玩具 |
+
+**经验**：INT4/AWQ 量化是最佳平衡点——显存减半，精度几乎无损。
+
+### Q6: 如何快速开始部署一个模型？
+
+```bash
+# 方法一：Ollama（最快，适合新手）
+ollama pull qwen2.5:7b
+ollama run qwen2.5:7b
+
+# 方法二：vLLM（高性能生产部署）
+pip install vllm
+python -c "
+from vllm import LLM
+llm = LLM(model='Qwen/Qwen2.5-7B-Instruct')
+print(llm.generate('你好'))
+"
+
+# 方法三：llama.cpp（CPU/边缘设备）
+# 下载 GGUF 文件后
+./main -m qwen2.5-7b-q4_k_m.gguf -p 'Hello' -n 256
+```
+
+### Q7: 本项目如何保持更新？如何贡献？
+
+- **Star** ⭐ 仓库获取更新通知
+- **Watch** 👀 设置 releases only 或 all activities
+- **Fork + PR** 🍴 贡献新模型或修正错误
+- **Issue** 🐛 提交问题或建议
+- 更新频率：每周跟踪 arXiv 新论文，月度大版本更新
+
+### Q8: 🃏 HOMC 与其他 Awesome 列表有什么区别？
+
+| 维度 | 本项目 (HOMC) | 传统 Awesome List | Papers With Code |
+|:---|:---|:---|:---|
+| **分类体系** | 🃏 扑克牌花色+点数 | 按字母/厂商 | 按任务/Benchmark |
+| **视觉直观** | ⭐⭐⭐ 一目了然 | ⭐⭐ | ⭐ |
+| **覆盖范围** | LLM + VLM + 专项 | 通常单领域 | 学术导向 |
+| **实用导向** | 包含部署/定价/选型指南 | 链接集合 | Benchmark排名 |
+| **趣味性** | 🎴 扑克牌创意 | 标准 | 严肃学术 |
+| **更新频率** | 持续追踪 | 取决于维护者 | 自动抓取 |
+
+---
+
+## 12. 参考文献
+
+### 12.0 综述论文
 - [1] [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) - Attention Is All You Need (Transformer)
 - [2] [arXiv:2303.18223](https://arxiv.org/abs/2303.18223) - A Survey of Large Language Models
 - [3] [arXiv:2402.06196](https://arxiv.org/abs/2402.06196) - Large Language Models: A Survey
+- [117] [arXiv:2404.07143](https://arxiv.org/abs/2404.07143) - The LLM Survey
+- [118] [arXiv:2310.15711](https://arxiv.org/abs/2310.15711) - A Survey on LLM-based Autonomous Agents
+- [119] [arXiv:2410.05829](https://arxiv.org/abs/2410.05829) - A Survey on Mixture of Experts
 
-### 6.2 通用基础模型
+### 12.1 训练与对齐技术
+- [120] [arXiv:2203.02155](https://arxiv.org/abs/2203.02155) - Training LLMs to Follow Instructions with Human Feedback (InstructGPT/RLHF)
+- [121] [arXiv:2305.18290](https://arxiv.org/abs/2305.18290) - Direct Preference Optimization (DPO)
+- [122] [arXiv:2401.12987](https://arxiv.org/abs/2401.12987) - ORPO: Monolithic Preference Optimization
+- [123] [arXiv:2402.13213](https://arxiv.org/abs/2402.13213) - KTO: RL from Any Human Feedback
+- [124] [arXiv:2405.14734](https://arxiv.org/abs/2405.14734) - SimPO: Simple Preference Optimization
+- [125] [arXiv:2501.12948](https://arxiv.org/abs/2501.12948) - DeepSeek-R1: GRPO Reinforcement Learning
+- [126] [arXiv:2503.04208](https://arxiv.org/abs/2503.04208) - RST: Reasoning Self-Training
+
+### 12.2 通用基础模型
 - [4] [arXiv:2005.14165](https://arxiv.org/abs/2005.14165) - GPT-3: Language Models are Few-Shot Learners
 - [5] [arXiv:2303.08774](https://arxiv.org/abs/2303.08774) - GPT-4 Technical Report
 - [6] [arXiv:2410.21276](https://arxiv.org/abs/2410.21276) - GPT-4o System Card
@@ -1127,7 +1622,7 @@ docker run --gpus all -p 8080:80 \
 - [34] [arXiv:2304.01373](https://arxiv.org/abs/2304.01373) - Pythia: A Suite for Analyzing LLMs
 - [35] [arXiv:2211.05100](https://arxiv.org/abs/2211.05100) - BLOOM: A 176B-Parameter Open-Access Multilingual Model
 
-### 6.3 中国模型
+### 12.3 中国模型
 - [36] [arXiv:2309.16609](https://arxiv.org/abs/2309.16609) - Qwen Technical Report
 - [37] [arXiv:2407.10671](https://arxiv.org/abs/2407.10671) - Qwen 2 Technical Report
 - [38] [arXiv:2412.15115](https://arxiv.org/abs/2412.15115) - Qwen 2.5 Technical Report
@@ -1159,7 +1654,7 @@ docker run --gpus all -p 8080:80 \
 - [64] [arXiv:2602.06570](https://arxiv.org/abs/2602.06570) - Baichuan-M3 Technical Report
 - [65] [arXiv:2403.04652](https://arxiv.org/abs/2403.04652) - Yi: Open Foundation Models
 
-### 6.4 代码模型
+### 12.4 代码模型
 - [66] [arXiv:2402.19173](https://arxiv.org/abs/2402.19173) - StarCoder 2
 - [67] [arXiv:2401.14196](https://arxiv.org/abs/2401.14196) - DeepSeek-Coder
 - [68] [arXiv:2406.11931](https://arxiv.org/abs/2406.11931) - DeepSeek-Coder-V2
@@ -1168,13 +1663,13 @@ docker run --gpus all -p 8080:80 \
 - [71] [arXiv:2411.04905](https://arxiv.org/abs/2411.04905) - OpenCoder: The Open Cookbook for Code LLMs
 - [72] [arXiv:2506.03524](https://arxiv.org/abs/2506.03524) - Seed-Coder Technical Report
 
-### 6.5 数学模型
+### 12.5 数学模型
 - [73] [arXiv:2402.03300](https://arxiv.org/abs/2402.03300) - DeepSeekMath: Pushing the Limits of Mathematical Reasoning
 - [74] [arXiv:2409.12122](https://arxiv.org/abs/2409.12122) - Qwen2-Math Technical Report
 - [75] [arXiv:2501.07301](https://arxiv.org/abs/2501.07301) - Qwen2.5-Math Technical Report
 - [76] [arXiv:2310.10631](https://arxiv.org/abs/2310.10631) - Llemma: An Open Language Model for Mathematics
 
-### 6.6 多模态 VLM
+### 12.6 多模态 VLM
 - [77] [arXiv:2304.08485](https://arxiv.org/abs/2304.08485) - Visual Instruction Tuning (LLaVA)
 - [78] [arXiv:2310.03744](https://arxiv.org/abs/2310.03744) - LLaVA-1.5: Improved Baselines
 - [79] [arXiv:2509.23661](https://arxiv.org/abs/2509.23661) - LLaVA-OneVision-1.5
@@ -1185,15 +1680,15 @@ docker run --gpus all -p 8080:80 \
 - [84] [arXiv:2504.05299](https://arxiv.org/abs/2504.05299) - SmolVLM: Small Vision Language Models
 - [85] [arXiv:2312.16862](https://arxiv.org/abs/2312.16862) - TinyGPT-V
 
-### 6.7 小语言模型 SLM
+### 12.7 小语言模型 SLM
 - [86] [arXiv:2401.02385](https://arxiv.org/abs/2401.02385) - TinyLlama: An Open-Source Small Language Model
 - [87] [arXiv:2502.02737](https://arxiv.org/abs/2502.02737) - SmolLM2: When Smol Goes Big
 
-### 6.8 MoE 架构
+### 12.8 MoE 架构
 - [88] [arXiv:2402.01739](https://arxiv.org/abs/2402.01739) - OpenMoE: Open Mixture-of-Experts Language Models
 - [89] [arXiv:2406.06563](https://arxiv.org/abs/2406.06563) - Skywork-MoE: A Deep Dive into Training Techniques
 
-### 6.9 新架构（SSM/RNN/Hybrid）
+### 12.9 新架构（SSM/RNN/Hybrid）
 - [90] [arXiv:2312.00752](https://arxiv.org/abs/2312.00752) - Mamba: Linear-Time Sequence Modeling
 - [91] [arXiv:2405.21060](https://arxiv.org/abs/2405.21060) - Mamba-2: Transformers are SSMs
 - [92] [arXiv:2603.15569](https://arxiv.org/abs/2603.15569) - Mamba-3 Technical Report
@@ -1204,23 +1699,23 @@ docker run --gpus all -p 8080:80 \
 - [97] [arXiv:2302.10865](https://arxiv.org/abs/2302.10865) - Hyena Hierarchy
 - [98] [arXiv:2307.08621](https://arxiv.org/abs/2307.08621) - Retentive Network: A Successor to Transformer
 
-### 6.10 推理与对齐
+### 12.10 推理与对齐
 - [99] [arXiv:2305.18290](https://arxiv.org/abs/2305.18290) - Direct Preference Optimization (DPO)
 - [100] [arXiv:2309.12284](https://arxiv.org/abs/2309.12284) - Safe RLHF: Safe Reinforcement Learning from Human Feedback
 
-### 6.11 Agent/工具调用
+### 12.11 Agent/工具调用
 - [101] [arXiv:2310.05146](https://arxiv.org/abs/2310.05146) - ToolLLM: Facilitating LLMs to Master Tools
 - [102] [arXiv:2305.15334](https://arxiv.org/abs/2305.15334) - Gorilla: Large Language Model Connected with APIs
 
-### 6.12 嵌入模型
+### 12.12 嵌入模型
 - [103] [arXiv:2402.03216](https://arxiv.org/abs/2402.03216) - BGE M3-Embedding: Multi-Lingual, Multi-Functionality
 - [104] [arXiv:2506.05176](https://arxiv.org/abs/2506.05176) - Qwen3-Embedding Technical Report
 
-### 6.13 音频语言
+### 12.13 音频语言
 - [105] [arXiv:2306.05284](https://arxiv.org/abs/2306.05284) - Simple and Controllable Music Generation (MusicGen)
 - [106] [arXiv:2406.02430](https://arxiv.org/abs/2406.02430) - Seed-TTS: A Family of High-Quality Versatile Speech Generation
 
-### 6.14 医疗/科学
+### 12.14 医疗/科学
 - [107] [arXiv:2402.10373](https://arxiv.org/abs/2402.10373) - BioMistral: A Collection of Medical LLMs
 - [108] [arXiv:2401.07950](https://arxiv.org/abs/2401.07950) - SciGLM: Training Scientific Language Models
 - [109] [arXiv:2412.18925](https://arxiv.org/abs/2412.18925) - HuatuoGPT-o1: Medical Complex Reasoning
@@ -1228,19 +1723,19 @@ docker run --gpus all -p 8080:80 \
 - [111] [arXiv:2411.10137](https://arxiv.org/abs/2411.10137) - ChatLaw: Legal Large Language Model
 - [112] [arXiv:2308.02773](https://arxiv.org/abs/2308.02773) - EduChat: A Large-Scale Educational Dialogue System
 
-### 6.15 RAG/长上下文
+### 12.15 RAG/长上下文
 - [113] [arXiv:2310.11511](https://arxiv.org/abs/2310.11511) - Self-RAG: Learning to Retrieve, Generate, and Critique
 - [114] [arXiv:2309.17453](https://arxiv.org/abs/2309.17453) - Efficient Streaming Language Models with Attention Sinks
 
-### 6.16 其他
+### 12.16 其他
 - [115] [arXiv:2507.13575](https://arxiv.org/abs/2507.13575) - Apple Intelligence Foundation Language Models
 - [116] [arXiv:2407.18559](https://arxiv.org/abs/2407.18559) - VSSD: Vision Mamba with Non-Causal State Space Duality
 
 ---
 
-## 7. 资源索引
+## 13. 资源索引
 
-### 7.1 GitHub 仓库索引（152个）
+### 13.1 GitHub 仓库索引（152个）
 
 <details>
 <summary>👂 点击展开完整 GitHub 仓库列表</summary>
@@ -1356,7 +1851,7 @@ docker run --gpus all -p 8080:80 \
 
 </details>
 
-### 7.2 HuggingFace 链接索引（162个）
+### 13.2 HuggingFace 链接索引（162个）
 
 <details>
 <summary>👂 点击展开完整 HuggingFace 链接列表</summary>
@@ -1418,9 +1913,9 @@ docker run --gpus all -p 8080:80 \
 
 ---
 
-## 8. 贡献指南
+## 14. 贡献指南
 
-### 8.1 🃏 Model Card 模板（含扑克牌标记）
+### 14.1 🃏 Model Card 模板（含扑克牌标记）
 
 ```markdown
 ### 模型名称
@@ -1436,7 +1931,7 @@ docker run --gpus all -p 8080:80 \
 - 📖 API：https://api.example.com
 ```
 
-### 8.2 🃏 扑克牌标记规范
+### 14.2 🃏 扑克牌标记规范
 
 在贡献新模型时，请按照以下规则添加扑克牌标记：
 
@@ -1457,7 +1952,7 @@ docker run --gpus all -p 8080:80 \
     └─ 其他 → 选择最接近的花色
 ```
 
-### 8.3 贡献流程
+### 14.3 贡献流程
 
 1. **Fork 仓库** → 创建分支 → 修改内容 → 提交 PR
 2. **Issue 提交**：发现错误或遗漏请提交 Issue
@@ -1467,17 +1962,18 @@ docker run --gpus all -p 8080:80 \
    - 遵循现有格式规范（含 🃏 标记）
    - 新增模型需包含扑克牌分类标记
 
-### 8.4 贡献者名单
+### 14.4 贡献者名单
 
 感谢所有贡献者！欢迎 PR 和 Issue。
 
 ---
 
-## 9. 更新日志
+## 15. 更新日志
 
 | 日期 | 更新内容 |
 |:---|:---|
-| **2026-04-04** | **重大更新**：集成 House of Model Cards (HOMC) 扑克牌分类体系，新增 🃏 花色/点数标记，完善 README 结构 |
+| **2026-04-04 (v2)** | **重大扩展**：新增 6 大章节 — LLM发展时间线、训练方法与对齐技术、场景化选型指南、开源生态地图、2026趋势展望、FAQ（+500行内容） |
+| **2026-04-04 (v1)** | 集成 House of Model Cards (HOMC) 扑克牌分类体系，新增 🃏 花色/点数标记，完善 README 结构 |
 | 2026-04-03 | 项目重构，新增 200+ 模型、218 条论文引用 |
 | 2026-03-15 | 新增 Kimi K2.5、Baichuan-M3 |
 | 2026-02-20 | 新增 GPT-5.2、Claude 4.6、GLM-5 |
