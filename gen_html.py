@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Generate beautiful preview.html from README.md"""
+"""Generate beautiful preview.html from README.md — v2 (fixed tables, badges, images)"""
 
 import re, html as html_mod
 
 with open('README.md', 'r', encoding='utf-8') as f:
     md = f.read()
 
-# ========== HTML HEADER (Dark Theme) ==========
+# ========== HTML HEADER ==========
 HEADER = r'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -105,7 +105,7 @@ img{max-width:100%;border-radius:6px}
 .ft{text-align:center;padding:30px 0 24px;border-top:1px solid var(--bd);color:var(--tx3);font-size:13px;margin-top:50px}
 
 @media(max-width:1024px){.sd{display:none}.mc{padding:20px 18px 50px;max-width:100%}}
-@media(max-width:640px){body{font-size:14px}h2{font-size:20px}.sts{grid-template-columns:repeat(2,1px)}.fea{grid-template-columns:1px}}
+@media(max-width:640px){body{font-size:14px}h2{font-size:20px}.sts{grid-template-columns:repeat(2,1fr)}.fea{grid-template-columns:1fr}}
 </style>
 </head>
 <body><div class="prog"id="pg"></div>
@@ -173,21 +173,71 @@ document.querySelectorAll('.tol a').forEach(a=>{a.addEventListener('click',e=>{e
 </script></body></html>'''
 
 
+def process_inline(text):
+    """Process inline markdown elements: images, bold, italic, code, links, suit badges."""
+    # 1. Images / badges: ![alt](url)
+    def replace_img(m):
+        alt = m.group(1).strip()
+        url = m.group(2)
+        if not url:
+            return ''
+        # Badge-style images (shields.io etc.) get smaller sizing
+        is_badge = 'shields.io' in url or 'badge' in url.lower()
+        cls = 'class="bdg-img"' if is_badge else ''
+        return f'<img src="{html_mod.escape(url)}" alt="{html_mod.escape(alt)}" {cls}/>'
+    
+    text = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', replace_img, text)
+
+    # 2. Bold + Italic: ***text*** or **_text_**
+    text = re.sub(r'\*\*\*(.+?)\*\*\*', r'<strong><em>\1</em></strong>', text)
+    
+    # 3. Bold: **text**
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    
+    # 4. Italic: *text*
+    text = re.sub(r'(?<!\*)\*([^*]+)\*(?!\*)', r'<em>\1</em>', text)
+    
+    # 5. Inline code: `code`
+    text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    
+    # 6. Links: [text](url)
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank">\1</a>', text)
+    
+    # 7. Suit badges
+    text = re.sub(r'(♥[AQJK0-9]+)', r'<span class="sb s-h">\1</span>', text)
+    text = re.sub(r'(♠[AQJK0-9]+)', r'<span class="sb s-s">\1</span>', text)
+    text = re.sub(r'(♦[AQJK0-9]+)', r'<span class="sb s-d">\1</span>', text)
+    text = re.sub(r'(♣[AQJK0-9]+)', r'<span class="sb s-c">\1</span>', text)
+    text = re.sub(r'(🃏\s*Joker|🃏)', r'<span class="sb s-j">\1</span>', text)
+    
+    return text
+
+
+def is_table_separator(cells):
+    """Check if all cells look like a table separator line (e.g., :---:, ---, :--)"""
+    for c in cells:
+        stripped = c.strip()
+        if stripped and not re.match(r'^[\s\-:]+$', stripped):
+            return False
+    return True
+
+
 def md2html(md_text):
     lines = md_text.split('\n')
     out = []
     in_tbl = in_pre = in_bq = False
     i = 0
+
     while i < len(lines):
         line = lines[i]
-        
-        # Skip first few lines we render manually
+        stripped = line.strip()
+
+        # Skip the first few lines that we render manually in HEADER
         if i < 5:
             i += 1
             continue
-        
-        # Code blocks
-        stripped = line.strip()
+
+        # ===== Code blocks =====
         if stripped.startswith('```'):
             if not in_pre:
                 in_pre = True
@@ -198,111 +248,114 @@ def md2html(md_text):
                 out.append('</code></pre>')
             i += 1
             continue
+
         if in_pre:
             out.append(html_mod.escape(line))
             i += 1
             continue
-        
-        # Table handling
-        if '|' in line and stripped.startswith('|') and '--' not in stripped and len(stripped.split('|')) > 2:
+
+        # ===== Tables =====
+        # A table row starts with | and has at least 2 columns
+        if stripped.startswith('|') and len(stripped.split('|')) > 2:
+            cells_raw = [c for c in line.split('|')[1:-1]]
+            
+            if is_table_separator(cells_raw):
+                # This is a header separator row - skip it but close thead & open tbody
+                if in_tbl:
+                    out.append('</thead><tbody>')
+                else:
+                    # Edge case: separator before any data row (shouldn't happen in valid MD)
+                    pass
+                i += 1
+                continue
+            
+            # Data/header row
             if not in_tbl:
                 in_tbl = True
                 out.append('<div class="tw"><table><thead>')
-            cells = [html_mod.escape(c.strip()) for c in line.split('|')[1:-1]]
-            # Check for header separator
-            if all(re.match(r'^[\s\-:]+$', c) for c in cells):
-                out.append('</thead><tbody>')
-            else:
-                out.append('<tr>' + ''.join('<td>' + c + '</td>' for c in cells) + '</tr>')
+                
+            cells_html = []
+            for c in cells_raw:
+                cell_content = process_inline(c.strip())
+                cells_html.append(cell_content)
+            
+            out.append('<tr>' + ''.join('<td>' + c + '</td>' for c in cells_html) + '</tr>')
             i += 1
             continue
-        elif in_tbl and ('|' not in line or not stripped.startswith('|')):
+        
+        # End of table (current line doesn't start with |)
+        elif in_tbl:
             in_tbl = False
             out.append('</tbody></table></div>')
-        
-        # Headers
+
+        # ===== Headers =====
         m = re.match(r'^(#{1,4})\s+(.+)', line)
         if m:
             lvl = len(m.group(1))
             text_raw = m.group(2).strip().rstrip('* ')
-            # Remove markdown links from anchor text for cleaner IDs
             text_clean = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text_raw)
             anchor = text_clean.lower()[:80].replace(' ','-').replace('/','-').replace('?','').replace(':','').replace('(','').replace(')','').replace(',','').replace('.','').replace('[','').replace(']','')
             tag = ['h2','h3','h4','h4'][lvl-1]
-            out.append(f'<{tag} id="{anchor}">{text_raw}</{tag}>')
+            out.append(f'<{tag} id="{anchor}">{process_inline(text_raw)}</{tag}>')
             i += 1
             continue
-        
-        # HR
+
+        # ===== HR =====
         if stripped == '---':
             out.append('<hr/>')
             i += 1
             continue
-        
-        # Blockquote
+
+        # ===== Blockquote =====
         if stripped.startswith('> '):
             if not in_bq:
                 in_bq = True
                 out.append('<blockquote>\n<p>')
             else:
                 out.append('<br/>\n')
-            out.append(stripped[2:])
+            out.append(process_inline(stripped[2:]))
             i += 1
             continue
         elif in_bq and stripped:
-            out.append(stripped)
+            out.append(process_inline(stripped))
             i += 1
             continue
         elif in_bq:
             in_bq = False
             out.append('\n</p></blockquote>')
-        
-        # Empty
+
+        # ===== Empty line =====
         if stripped == '':
             out.append('')
             i += 1
             continue
-        
-        # List items
+
+        # ===== List items =====
         if stripped.startswith('- ') or stripped.startswith('* '):
-            text = stripped[2:]
-            # Process inline **bold** and `code`
-            text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-            text = re.sub(r'`(.+?)`', r'<code>\1</code>', text)
-            # Links
-            text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank">\1</a>', text)
+            text = process_inline(stripped[2:])
             out.append(f'<li>{text}</li>')
             i += 1
             continue
         if re.match(r'^\d+\.\s', stripped):
-            text = re.sub(r'^\d+\.\s+', '', stripped)
-            text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-            text = re.sub(r'`(.+?)`', r'<code>\1</code>', text)
-            text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank">\1</a>', text)
+            text = process_inline(re.sub(r'^\d+\.\s+', '', stripped))
             out.append(f'<li>{text}</li>')
             i += 1
             continue
-        
-        # Regular paragraph with inline formatting
-        text = html_mod.escape(stripped)
-        text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-        text = re.sub(r'`(.+?)`', r'<code>\1</code>', text)
-        text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank">\1</a>', text)
-        
-        # Suit badges
-        text = re.sub(r'(♥[AQJK0-9]+)', r'<span class="sb s-h">\1</span>', text)
-        text = re.sub(r'(♠[AQJK0-9]+)', r'<span class="sb s-s">\1</span>', text)
-        text = re.sub(r'(♦[AQJK0-9]+)', r'<span class="sb s-d">\1</span>', text)
-        text = re.sub(r'(♣[AQJK0-9]+)', r'<span class="sb s-c">\1</span>', text)
-        text = re.sub(r'(🃏\s*Joker|🃏)', r'<span class="sb s-j">\1</span>', text)
-        
-        out.append(text if text else '')
+
+        # ===== Regular paragraph =====
+        out.append(process_inline(stripped))
         i += 1
-    
+
+    # Close any remaining table
+    if in_tbl:
+        out.append('</tbody></table></div>')
+    if in_bq:
+        out.append('\n</p></blockquote>')
+
     return '\n'.join(out)
 
 
-# Generate file
+# ========== Generate ==========
 with open('preview.html', 'w', encoding='utf-8') as f:
     f.write(HEADER)
     body = md2html(md)
