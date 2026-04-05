@@ -269,9 +269,9 @@ img{max-width:100%;border-radius:6px}
 <li><a href="#--prompt-engineering-指南" target="_blank">16. 💡 Prompt Engineering 指南</a></li>
 <li><a href="#17-视频生成与世界模型" target="_blank">17. 🎬 视频生成与世界模型</a></li>
 <li><a href="#18-参考文献" target="_blank">18. 参考文献</a></li>
-<li><a href="#13-资源索引" target="_blank">13. 资源索引</a></li>
-<li><a href="#14-贡献指南" target="_blank">14. 贡献指南</a></li>
-<li><a href="#15-更新日志" target="_blank">15. 更新日志</a></li>
+<li><a href="#19-资源索引" target="_blank">19. 资源索引</a></li>
+<li><a href="#20-贡献指南" target="_blank">20. 贡献指南</a></li>
+<li><a href="#21-更新日志" target="_blank">21. 更新日志</a></li>
 
 <hr/>
 
@@ -478,7 +478,7 @@ img{max-width:100%;border-radius:6px}
 <tr><td><strong>Level 0 — 快速响应型</strong></td><td>⚡</td><td>单次前向传播，无显式推理链，延迟 <500ms</td><td>GPT-3.5-turbo, LLaMA-3-8B, Mistral-7B, Phi-3-mini</td><td><span class="sb s-h">♥J</span> ~ <span class="sb s-h">♥10</span></td></tr>
 <tr><td><strong>Level 1 — 轻量思维链</strong></td><td>🧠</td><td>内部 CoT，短思考过程，延迟 1-5s</td><td>GPT-4, Claude 3.5, Qwen2.5-72B, GLM-4</td><td><span class="sb s-h">♥Q</span> ~ <span class="sb s-h">♥K</span></td></tr>
 <tr><td><strong>Level 2 — 深度推理型</strong></td><td>🔬</td><td>显式长 CoT / 草稿本推理，延迟 10s-5min</td><td>o1, o3, DeepSeek-R1, QwQ, Kimi K1.5</td><td><span class="sb s-j">🃏 Joker</span></td></tr>
-<tr><td><strong>Level 3 — Agent 自主推理</strong></td><td>🤖</td><td>多步工具调用 + 规划 + 反思循环</td><td>o4-mini-pro, Claude 4.6, GPT-5 (Agent Mode)</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td><strong>Level 3 — Agent 自主推理</strong></td><td>🤖</td><td>多步工具调用 + 规划 + 反思循环</td><td>GPT-5.4, Claude 4.6, Qwen3.5 (Agent Mode)</td><td><span class="sb s-h">♥A</span></td></tr>
 </tbody></table></div>
 
 <strong>选型建议</strong>：
@@ -496,7 +496,7 @@ img{max-width:100%;border-radius:6px}
 <tr><td><strong>📱 手机端侧</strong></td><td><4GB RAM, NPU/DSP</td><td><2s</td><td>MiniCPM(2.4B), Phi-4-mini(3.8B), SmolLM2(1.7B), Gemma-2-2B, MobileLLM(1B)</td><td>2~7</td></tr>
 <tr><td><strong>💻 个人电脑</strong></td><td>8-24GB GPU (RTX 4060/4070)</td><td><5s</td><td>LLaMA-3-8B, Qwen2.5-7B, Mistral-7B, DeepSeek-7B, TinyLlama(1.1B)</td><td>8~10</td></tr>
 <tr><td><strong>🖥️ 工作站</strong></td><td>48-96GB GPU (RTX 4090/A6000)</td><td><10s</td><td>LLaMA-3-70B, Qwen2.5-72B, Mixtral-8x22B, DeepSeek-V3(INT8)</td><td>J ~ Q</td></tr>
-<tr><td><strong>☁️ 云端 API</strong></td><td>无硬件需求</td><td>取决于供应商</td><td>GPT-5, Claude 4.6, Gemini 3.1, DeepSeek-V3, Qwen-Plus</td><td>A ~ K</td></tr>
+<tr><td><strong>☁️ 云端 API</strong></td><td>无硬件需求</td><td>取决于供应商</td><td>GPT-5.4, Claude 4.6, Gemini 3.1, DeepSeek-V3, Qwen-Plus</td><td>A ~ K</td></tr>
 <tr><td><strong>🏭 企业私有化</strong></td><td>8×A100/H100 集群</td><td><3s (批处理)</td><td>LLaMA-4-Behemoth, Qwen3-235B, DeepSeek-V3(FP16), ERNIE 5.0 MoE</td><td>K</td></tr>
 <tr><td><strong>🔌 边缘/IoT</strong></td><td><2GB RAM, ARM/NPU</td><td><1s</td><td>SmolLM2(135M), TinyLlama(1.1B) INT4, OpenELM(270M)</td><td>2~4</td></tr>
 <tr><td><strong>🎮 游戏/实时</strong></td><td>消费级 GPU, <16GB</td><td><100ms</td><td>Phi-3-mini(3.8B), Gemma-2-2B, StableLM-2-1.6B</td><td>7~10</td></tr>
@@ -554,14 +554,14 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 <div class="tw"><table><thead>
 <tr><td>排名</td><td>模型</td><td>厂商</td><td>MMLU-Pro</td><td>GPQA</td><td>Code</td><td>Math</td><td><span class="sb s-j">🃏</span></td><td>亮点</td></tr>
 </thead><tbody>
-<tr><td>🥇</td><td><strong>GPT-5</strong></td><td>OpenAI</td><td>92.1%</td><td>78.3%</td><td>96.8%</td><td>98.5%</td><td><span class="sb s-h">♥A</span></td><td>AGI 能力跃升，1M 上下文</td></tr>
-<tr><td>🥈</td><td><strong>Claude 4.6</strong></td><td>Anthropic</td><td>91.8%</td><td>95.4%</td><td>95.2%</td><td>97.8%</td><td><span class="sb s-h">♥A</span></td><td>安全最强，2M 上下文</td></tr>
-<tr><td>🥉</td><td><strong>Gemini 3.1 Pro</strong></td><td>Google</td><td>90.5%</td><td>76.8%</td><td>94.1%</td><td>97.2%</td><td><span class="sb s-h">♥A</span></td><td>多模态原生，4M 上下文</td></tr>
-<tr><td>4</td><td><strong>o4-mini</strong></td><td>OpenAI</td><td>89.2%</td><td>74.2%</td><td>93.5%</td><td>96.8%</td><td><span class="sb s-h">♥A</span></td><td>高效推理，成本仅 o3 的 1/10</td></tr>
-<tr><td>5</td><td><strong>Grok-4.1</strong></td><td>xAI</td><td>88.8%</td><td>73.5%</td><td>92.8%</td><td>96.2%</td><td><span class="sb s-h">♥K</span></td><td>实时信息，4M 上下文</td></tr>
+<tr><td>🥇</td><td><strong>GPT-5.4</strong></td><td>OpenAI</td><td>93.5%</td><td>82.7%</td><td>97.5%</td><td>98.8%</td><td><span class="sb s-h">♥A</span></td><td>最新旗舰，75% Computer Use，1M 上下文</td></tr>
+<tr><td>🥈</td><td><strong>Claude 4.6</strong></td><td>Anthropic</td><td>91.8%</td><td>91.3%</td><td>95.2%</td><td>97.8%</td><td><span class="sb s-h">♥A</span></td><td>安全最强，GPQA 91.3%，2M 上下文</td></tr>
+<tr><td>🥉</td><td><strong>GPT-5</strong></td><td>OpenAI</td><td>92.1%</td><td>78.3%</td><td>96.8%</td><td>98.5%</td><td><span class="sb s-h">♥A</span></td><td>AGI 能力跃升，1M 上下文</td></tr>
+<tr><td>4</td><td><strong>Gemini 3.1 Pro</strong></td><td>Google</td><td>90.5%</td><td>76.8%</td><td>94.1%</td><td>97.2%</td><td><span class="sb s-h">♥A</span></td><td>多模态原生，4M 上下文</td></tr>
+<tr><td>5</td><td><strong>Grok-4.1</strong></td><td>xAI</td><td>88.8%</td><td>73.5%</td><td>92.8%</td><td>96.2%</td><td><span class="sb s-h">♥K</span></td><td>实时信息，思考/非思考双模式</td></tr>
 <tr><td>6</td><td><strong>Claude 4.5 Opus</strong></td><td>Anthropic</td><td>89.5%</td><td>94.2%</td><td>93.8%</td><td>97.0%</td><td><span class="sb s-h">♥A</span></td><td>编码增强版</td></tr>
 <tr><td>7</td><td><strong>Gemini 2.5 Pro</strong></td><td>Google</td><td>87.2%</td><td>72.1%</td><td>91.5%</td><td>95.5%</td><td><span class="sb s-h">♥Q</span></td><td>Agent 能力突出</td></tr>
-<tr><td>8</td><td><strong>GPT-4.5</strong></td><td>OpenAI</td><td>86.8%</td><td>71.2%</td><td>90.2%</td><td>94.8%</td><td><span class="sb s-h">♥A</span></td><td>创造力最强</td></tr>
+<tr><td>8</td><td><strong>GPT-4.5</strong></td><td>OpenAI</td><td>86.8%</td><td>71.2%</td><td>90.2%</td><td>94.8%</td><td><span class="sb s-h">♥A</span></td><td>创造力最强（即将退役）⚠️</td></tr>
 <tr><td>9</td><td><strong>MiniMax-M2.5</strong></td><td>MiniMax</td><td>85.5%</td><td>68.8%</td><td>88.5%</td><td>93.2%</td><td><span class="sb s-h">♥K</span></td><td>2M 上下文，高性价比</td></tr>
 <tr><td>10</td><td><strong>GLM-5</strong></td><td>智谱 AI</td><td>84.5%</td><td>68.2%</td><td>87.5%</td><td>91.8%</td><td><span class="sb s-h">♥Q</span></td><td>国产最强之一</td></tr>
 </tbody></table></div>
@@ -608,7 +608,9 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 <tr><td>GPT-5</td><td>2024-12</td><td>未公开</td><td>1M</td><td>API</td><td>AGI 能力跃升</td></tr>
 <tr><td>GPT-5.1</td><td>2025-06</td><td>未公开</td><td>2M</td><td>API</td><td>多模态原生</td></tr>
 <tr><td>GPT-5.2</td><td>2026-01</td><td>未公开</td><td>4M</td><td>API</td><td>实时推理</td></tr>
-<tr><td>o1</td><td>2024-09</td><td>未公开</td><td>128K</td><td>API</td><td>思维链推理</td></tr>
+<tr><td>GPT-5.4</td><td>2026-03</td><td>未公开</td><td>1M</td><td>API</td><td><strong>最新旗舰</strong>，75% Computer Use</td></tr>
+<tr><td>GPT-5.4 mini</td><td>2026-03</td><td>未公开</td><td>1M</td><td>API</td><td>高效版旗舰，免费可用</td></tr>
+<tr><td>o1</td><td>2024-09</td><td>已退役</td><td>128K</td><td>API</td><td>思维链推理（已退役）⚠️</td></tr>
 <tr><td>o3</td><td>2025-01</td><td>未公开</td><td>256K</td><td>API</td><td>深度推理</td></tr>
 <tr><td>o4-mini</td><td>2025-06</td><td>未公开</td><td>128K</td><td>API</td><td>高效推理</td></tr>
 </tbody></table></div>
@@ -1297,7 +1299,8 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 </thead><tbody>
 <tr><td>OpenAI o1</td><td>未公开</td><td>128K</td><td>API</td><td>Chain-of-Thought</td><td><a href="https://arxiv.org/abs/2412.16720" target="_blank">arXiv:2412.16720</a></td></tr>
 <tr><td>OpenAI o3</td><td>未公开</td><td>256K</td><td>API</td><td>Deep Reasoning</td><td>System Card</td></tr>
-<tr><td>OpenAI o4-mini</td><td>未公开</td><td>128K</td><td>API</td><td>Efficient Reasoning</td><td>System Card</td></tr>
+<tr><td>OpenAI GPT-5.4</td><td>未公开</td><td>1M</td><td>API</td><td><strong>最新旗舰，Computer Use</strong></td><td><a href="https://arxiv.org/" target="_blank">arXiv</a> (Tech Report)</td></tr>
+<tr><td>OpenAI o4-mini</td><td>已退役(2026-02)</td><td>128K</td><td>—</td><td>Efficient Reasoning（已退役）⚠️</td><td>System Card</td></tr>
 <tr><td>DeepSeek-R1</td><td>671B</td><td>128K</td><td>MIT</td><td>GRPO 强化学习</td><td><a href="https://arxiv.org/abs/2501.12948" target="_blank">arXiv:2501.12948</a></td></tr>
 <tr><td>QwQ</td><td>32B</td><td>32K</td><td>Apache 2.0</td><td>思维链推理</td><td><a href="https://github.com/QwenLM/QwQ" target="_blank">GitHub</a></td></tr>
 <tr><td>Kimi K2</td><td>1T MoE</td><td>128K</td><td>MIT</td><td>Muon 优化器</td><td><a href="https://arxiv.org/abs/2507.20534" target="_blank">arXiv:2507.20534</a></td></tr>
@@ -1390,10 +1393,10 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 <div class="tw"><table><thead>
 <tr><td>模型</td><td>MMLU-Pro</td><td>HumanEval</td><td>GSM8K</td><td>GPQA Diamond</td><td>ARC-AGI-2</td><td><span class="sb s-j">🃏</span> 标记</td></tr>
 </thead><tbody>
-<tr><td>GPT-5</td><td>92.1%</td><td>96.8%</td><td>98.5%</td><td>78.3%</td><td>21.2%</td><td><span class="sb s-h">♥A</span></td></tr>
-<tr><td>Claude 4.6 Opus</td><td>91.8%</td><td>95.2%</td><td>97.8%</td><td>95.4%</td><td>19.8%</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td>GPT-5.4</td><td>93.5%</td><td>97.5%</td><td>98.8%</td><td>82.7%</td><td>23.5%</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td>Claude 4.6 Opus</td><td>91.8%</td><td>95.2%</td><td>97.8%</td><td>91.3%</td><td>19.8%</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>Gemini 3.1</td><td>90.5%</td><td>94.1%</td><td>97.2%</td><td>76.8%</td><td>18.5%</td><td><span class="sb s-h">♥A</span></td></tr>
-<tr><td>o4-mini</td><td>89.2%</td><td>93.5%</td><td>96.8%</td><td>74.2%</td><td>17.2%</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td>GPT-5</td><td>92.1%</td><td>96.8%</td><td>98.5%</td><td>78.3%</td><td>21.2%</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>LLaMA 4 Maverick</td><td>88.5%</td><td>91.2%</td><td>95.5%</td><td>72.1%</td><td>15.8%</td><td><span class="sb s-h">♥K</span></td></tr>
 <tr><td>Qwen3-235B</td><td>87.8%</td><td>90.8%</td><td>94.8%</td><td>71.5%</td><td>14.5%</td><td><span class="sb s-h">♥K</span></td></tr>
 <tr><td>DeepSeek-V3</td><td>86.5%</td><td>89.5%</td><td>93.2%</td><td>70.2%</td><td>13.2%</td><td><span class="sb s-h">♥K</span></td></tr>
@@ -1407,8 +1410,10 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 <div class="tw"><table><thead>
 <tr><td>模型</td><td>输入价格</td><td>输出价格</td><td>备注</td><td><span class="sb s-j">🃏</span> 标记</td></tr>
 </thead><tbody>
+<tr><td>GPT-5.4</td><td>$35.00</td><td>$70.00</td><td>最新旗舰，Computer Use</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>GPT-5</td><td>$30.00</td><td>$60.00</td><td>最强性能</td><td><span class="sb s-h">♥A</span></td></tr>
-<tr><td>GPT-4.5</td><td>$15.00</td><td>$45.00</td><td>平衡选择</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td>GPT-5.4 mini</td><td>$2.00</td><td>$8.00</td><td>高效旗舰（免费可用）</td><td><span class="sb s-h">♥A</span></td></tr>
+<tr><td>GPT-4.5</td><td>$15.00</td><td>$45.00</td><td>平衡选择（即将退役）⚠️</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>Claude 4.6 Opus</td><td>$25.00</td><td>$75.00</td><td>长上下文</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>Gemini 3.1 Pro</td><td>$12.50</td><td>$37.50</td><td>多模态</td><td><span class="sb s-h">♥A</span></td></tr>
 <tr><td>DeepSeek-V3</td><td>$0.27</td><td>$1.10</td><td>极致性价比</td><td><span class="sb s-h">♥K</span></td></tr>
@@ -1553,7 +1558,7 @@ docker run --gpus all -p 8080:80 \
       │   (开源首次逼近闭源 SOTA)                                  │
 2026 ┃ Claude 4.6 ♥A  Gemini 3.1  GLM-5  Kimi K2.5              │
       │   Intern-S1-Pro  Baichuan-M3  MiniMax-M2.5               │
-      │   Qwen3.5  DeepSeek-V3.2                                 │
+      │   Qwen3.5  DeepSeek-V3.2  **GPT-5.4 (最新旗舰)**         │
       ┃────────── AGI 能力加速显现 ──────────────────────────────┃
 </code></pre>
 
@@ -2797,7 +2802,7 @@ LLM 发展路径 (2024-2030):
 
 <hr/>
 
-<h3 id="13-资源索引">13. 资源索引</h3>
+<h3 id="19-资源索引">19. 资源索引</h3>
 
 <h4 id="131-github-仓库索引（152个）">13.1 GitHub 仓库索引（152个）</h4>
 
@@ -2981,7 +2986,7 @@ LLM 发展路径 (2024-2030):
 
 <hr/>
 
-<h3 id="14-贡献指南">14. 贡献指南</h3>
+<h3 id="20-贡献指南">20. 贡献指南</h3>
 
 <h4 id="141-🃏-model-card-模板（含扑克牌标记）">14.1 <span class="sb s-j">🃏</span> Model Card 模板（含扑克牌标记）</h4>
 
@@ -3036,11 +3041,12 @@ LLM 发展路径 (2024-2030):
 
 <hr/>
 
-<h3 id="15-更新日志">15. 更新日志</h3>
+<h3 id="21-更新日志">21. 更新日志</h3>
 
 <div class="tw"><table><thead>
 <tr><td>日期</td><td>更新内容</td></tr>
 </thead><tbody>
+<tr><td><strong>2026-04-05 (v3.1)</strong></td><td><strong>全面审查与信息更新</strong>：① 新增 GPT-5.4（2026-03 最新旗舰）到 GPT系列/SOTA榜/性能表/推理模型/时间线；② o4-mini 标注已退役(2026-02)，SOTA 榜重排（GPT-5.4 登顶）；③ 修复目录编号重复问题（13/14→19/20）；④ Claude 4.6 GPQA 更新为 91.3%；⑤ API 定价表新增 GPT-5.4/GPT-5.4 mini</td></tr>
 <tr><td><strong>2026-04-05 (v3)</strong></td><td><strong>重大扩展</strong>：新增 6 大章节 — 🛡️ 安全与对齐（攻击类型+防御体系）、📏 评测基准详解（30+ Benchmark）、🔧 微调工具链实战（LoRA 模板+工具推荐）、🏭 行业应用案例（10 大行业+RAG架构图）、💡 Prompt Engineering 指南、🎬 视频生成与世界模型</td></tr>
 <tr><td><strong>2026-04-04 (v2)</strong></td><td><strong>重大扩展</strong>：新增 6 大章节 — LLM发展时间线、训练方法与对齐技术、场景化选型指南、开源生态地图、2026趋势展望、FAQ（+500行内容）</td></tr>
 <tr><td><strong>2026-04-04 (v1)</strong></td><td>集成 House of Model Cards (HOMC) 扑克牌分类体系，新增 <span class="sb s-j">🃏</span> 花色/点数标记，完善 README 结构</td></tr>
