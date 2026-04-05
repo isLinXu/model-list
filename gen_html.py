@@ -112,8 +112,8 @@ img{max-width:100%;border-radius:6px}
 
 <nav class="nav"><div class="nb"><a href="#">🃏 <span>HOMC Model List</span></a></div>
 <div class="nl">
-<a href="#快速索引">📑 索引</a><a href="#通用基础模型">🤖 模型</a><a href="#评测基准详解">📏 评测</a>
-<a href="#微调工具链与实战">🔧 微调</a><a href="#安全与对齐">🛡️ 安全</a>
+<a href="#快速索引">📑 索引</a><a href="#通用基础模型">🤖 模型</a><a href="#110-sota-模型排行榜2026年4月实时新增">🏆 排行</a>
+<a href="#评测基准详解">📏 评测</a><a href="#微调工具链与实战">🔧 微调</a><a href="#安全与对齐">🛡️ 安全</a>
 </div></nav>
 
 <div class="ly">
@@ -124,6 +124,10 @@ img{max-width:100%;border-radius:6px}
 <li><a href="#项目特色">🌟 项目特色</a></li>
 <li><a href="#house-of-model-cards">🎴 扑克牌分类体系</a></li>
 <li><a href="#快速索引">1️⃣ 快速索引</a></li>
+<li><a href="#17-按推理能力等级分类新增">🧠 推理能力等级</a></li>
+<li><a href="#18-按部署场景分类新增">🖥️ 部署场景分类</a></li>
+<li><a href="#19-按训练对齐方法分类新增">🎯 训练对齐方法</a></li>
+<li><a href="#110-sota-模型排行榜2026年4月实时新增">🏆 SOTA 排行榜</a></li>
 <li><a href="#通用基础模型">2️⃣ 通用基础模型</a></li>
 <li><a href="#专项领域模型">3️⃣ 专项领域模型</a></li>
 <li><a href="#技术对比">4️⃣ 技术对比</a></li>

@@ -102,6 +102,10 @@
   - [1.4 按参数规模](#14-按参数规模)
   - [1.5 按架构类型](#15-按架构类型)
   - [1.6 🃏 按扑克牌花色分类](#16-按扑克牌花色分类)
+- [1.7 按推理能力等级分类（⭐ 新增）](#17-按推理能力等级分类新增)
+- [1.8 按部署场景分类（⭐ 新增）](#18-按部署场景分类新增)
+- [1.9 按训练对齐方法分类（⭐ 新增）](#19-按训练对齐方法分类新增)
+- [1.10 🏆 SOTA 排行榜（⭐ 新增）](#110-sota-模型排行榜2026年4月实时新增)
 - [2. 通用基础模型](#2-通用基础模型)
 - [3. 专项领域模型](#3-专项领域模型)
 - [4. 技术对比](#4-技术对比)
@@ -274,6 +278,122 @@
 | **🃏 Kimi K2** | Muon 优化器 + 1T MoE | 开源模型首次进入第一梯队 |
 | **🃏 LLaMA 4 Behemoth** | 2T 参数开源 | 最大规模的开源模型 |
 | **🃏 xLSTM** | 扩展 LSTM | LSTM 的现代化复兴 |
+
+### 🃏 双花色标记规则（新增）
+
+部分模型具有多重核心能力，使用双花色标记以更精确描述：
+
+```
+♥♠ 通用+视觉   →  GPT-4V, Gemini 3.1, Claude 4.5（原生多模态通用模型）
+♥♦ 通用+代码   →  Qwen2.5-Coder, LLaMA 3.2（编码增强的通用模型）
+♠♣ 视觉+Agent  →  InternVL-Tool, LLaVA-Agent
+🃏♥ 突破+通用   →  DeepSeek-R1, Kimi K2（推理突破 + 通用能力）
+```
+
+> **说明**：主花色（第一个）表示最突出的能力，副花色（第二个）表示次要但显著的能力。
+
+---
+
+## 1.7 按推理能力等级分类（⭐ 新增）
+
+> 2024-2026 年最重要的范式转移：从「快速响应」到「深度推理」。此维度帮助用户按模型的"思考深度"选型。
+
+| 推理等级 | 符号 | 特征 | 代表模型 | 🃏 标记 |
+|:---|:---:|:---|:---|:---|
+| **Level 0 — 快速响应型** | ⚡ | 单次前向传播，无显式推理链，延迟 <500ms | GPT-3.5-turbo, LLaMA-3-8B, Mistral-7B, Phi-3-mini | ♥J ~ ♥10 |
+| **Level 1 — 轻量思维链** | 🧠 | 内部 CoT，短思考过程，延迟 1-5s | GPT-4, Claude 3.5, Qwen2.5-72B, GLM-4 | ♥Q ~ ♥K |
+| **Level 2 — 深度推理型** | 🔬 | 显式长 CoT / 草稿本推理，延迟 10s-5min | o1, o3, DeepSeek-R1, QwQ, Kimi K1.5 | 🃏 Joker |
+| **Level 3 — Agent 自主推理** | 🤖 | 多步工具调用 + 规划 + 反思循环 | o4-mini-pro, Claude 4.6, GPT-5 (Agent Mode) | ♥A |
+
+**选型建议**：
+- **聊天/客服/翻译** → Level 0-1 即可，成本敏感选 L0
+- **数学/编程/科研** → 必须用 Level 2+，推荐 R1/o3
+- **自主 Agent 工作流** → Level 3，需要强规划能力
+
+---
+
+## 1.8 按部署场景分类（⭐ 新增）
+
+| 部署场景 | 硬件要求 | 延迟目标 | 推荐模型 | 🃏 点数 |
+|:---|:---|:---|:---|:---|
+| **📱 手机端侧** | <4GB RAM, NPU/DSP | <2s | MiniCPM(2.4B), Phi-4-mini(3.8B), SmolLM2(1.7B), Gemma-2-2B, MobileLLM(1B) | 2~7 |
+| **💻 个人电脑** | 8-24GB GPU (RTX 4060/4070) | <5s | LLaMA-3-8B, Qwen2.5-7B, Mistral-7B, DeepSeek-7B, TinyLlama(1.1B) | 8~10 |
+| **🖥️ 工作站** | 48-96GB GPU (RTX 4090/A6000) | <10s | LLaMA-3-70B, Qwen2.5-72B, Mixtral-8x22B, DeepSeek-V3(INT8) | J ~ Q |
+| **☁️ 云端 API** | 无硬件需求 | 取决于供应商 | GPT-5, Claude 4.6, Gemini 3.1, DeepSeek-V3, Qwen-Plus | A ~ K |
+| **🏭 企业私有化** | 8×A100/H100 集群 | <3s (批处理) | LLaMA-4-Behemoth, Qwen3-235B, DeepSeek-V3(FP16), ERNIE 5.0 MoE | K |
+| **🔌 边缘/IoT** | <2GB RAM, ARM/NPU | <1s | SmolLM2(135M), TinyLlama(1.1B) INT4, OpenELM(270M) | 2~4 |
+| **🎮 游戏/实时** | 消费级 GPU, <16GB | <100ms | Phi-3-mini(3.8B), Gemma-2-2B, StableLM-2-1.6B | 7~10 |
+
+**成本估算参考**（单次查询）：
+| 场景 | 模型规模 | 自托管成本/月 | API 成本/百万 Token |
+|:---|:---|:---|:---|
+| 个人项目 | 7B INT4 (RTX 4060) | 电费 ≈¥50 | - |
+| 初创公司 | 70B INT4 (2×4090) | 电费 ≈¥300 | DeepSeek: ¥2~8 |
+| 企业级 | 671B FP8 (8×H100) | 租赁 ≈¥30K/月 | GPT-5: ¥200~400 |
+
+---
+
+## 1.9 按训练对齐方法分类（⭐ 新增）
+
+| 对齐方法 | 全称 | 核心思想 | 代表模型 | 🃏 标记 | 年份 |
+|:---|:---|:---|:---|:---|:---|
+| **SFT** | Supervised Fine-Tuning | 有监督指令微调，最基础的对齐方式 |几乎所有模型的基础步骤 | All | 2022+ |
+| **RLHF** | Reinforcement Learning from Human Feedback | PPO + 人类偏好奖励模型 | ChatGPT, Claude 1-2, LLaMA 2 Chat | ♥ | 2023 |
+| **DPO** | Direct Preference Optimization | 直接偏好优化，无需 RM 模型 | Zephyr, Intel Neural Chat, OpenHathi | ♥Q | 2023 |
+| **Constitutional AI** | CAI | AI 自我批评 + 修正 | Claude 系列 (Anthropic) | ♥A | 2023 |
+| **GRPO** | Group Relative Policy Optimization | 组内相对策略优化，无需 RM | DeepSeek-R1/R1-0528 | 🃏 | 2025 |
+| **KTO** | Kahneman-Tversky Optimization | 基于前景理论的二元反馈 | HuggingFace Zephyr-β | ♥9 | 2024 |
+| **Online DPO** | Online Direct PO | 在线迭代 DPO，持续改进 | QwQ, 部分 Qwen 变体 | ♥ | 2024 |
+| **SimPO** | Simple Preference Opt | 简化的偏好优化，只需一个超参 | Mistral-Nemo, Gemma-2-it | ♥ | 2024 |
+| **ORM** | Outcome Reward Modeling | 结果奖励建模（vs 过程 PRM） | OpenAI o-series | ♥A | 2024 |
+| **PRM** | Process Reward Modeling | 过程奖励建模，逐步验证推理链 | DeepSeek-R1 (辅助) | 🃏 | 2025 |
+| **Muon Optimizer** | Muon 优化器 | 类 momentum 优化用于大规模 MoE 训练 | Kimi K2/K2.5 | 🃏 | 2025 |
+
+**训练方法演进路线图**：
+```
+SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
+                    ↓                ↓              ↓
+               Constitutional      SimPO/KTO     PRM+ORM
+                  AI (2023)       (2024)        (2024-25)
+```
+
+---
+
+## 1.10 🏆 SOTA 模型排行榜（2026年4月实时）（⭐ 新增）
+
+> 综合多项基准测试的 Top 10 排行，分为闭源/开源双赛道。
+
+### 闭源赛道
+
+| 排名 | 模型 | 厂商 | MMLU-Pro | GPQA | Code | Math | 🃏 | 亮点 |
+|:---:|:---|:---|:---:|:---:|:---:|:---:|:---|:---|
+| 🥇 | **GPT-5** | OpenAI | 92.1% | 78.3% | 96.8% | 98.5% | ♥A | AGI 能力跃升，1M 上下文 |
+| 🥈 | **Claude 4.6** | Anthropic | 91.8% | 95.4% | 95.2% | 97.8% | ♥A | 安全最强，2M 上下文 |
+| 🥉 | **Gemini 3.1 Pro** | Google | 90.5% | 76.8% | 94.1% | 97.2% | ♥A | 多模态原生，4M 上下文 |
+| 4 | **o4-mini** | OpenAI | 89.2% | 74.2% | 93.5% | 96.8% | ♥A | 高效推理，成本仅 o3 的 1/10 |
+| 5 | **Grok-4.1** | xAI | 88.8% | 73.5% | 92.8% | 96.2% | ♥K | 实时信息，4M 上下文 |
+| 6 | **Claude 4.5 Opus** | Anthropic | 89.5% | 94.2% | 93.8% | 97.0% | ♥A | 编码增强版 |
+| 7 | **Gemini 2.5 Pro** | Google | 87.2% | 72.1% | 91.5% | 95.5% | ♥Q | Agent 能力突出 |
+| 8 | **GPT-4.5** | OpenAI | 86.8% | 71.2% | 90.2% | 94.8% | ♥A | 创造力最强 |
+| 9 | **MiniMax-M2.5** | MiniMax | 85.5% | 68.8% | 88.5% | 93.2% | ♥K | 2M 上下文，高性价比 |
+| 10 | **GLM-5** | 智谱 AI | 84.5% | 68.2% | 87.5% | 91.8% | ♥Q | 国产最强之一 |
+
+### 开源赛道
+
+| 排名 | 模型 | 组织 | 参数 | MMLU-Pro | GPQA | Code | Math | 🃏 | 许可 |
+|:---:|:---|:---|:---:|:---:|:---:|:---:|:---:|:---|:---|
+| 🥇 | **LLaMA 4 Maverick** | Meta | 400B (52B act) | 88.5% | 72.1% | 91.2% | 95.5% | ♥K | Llama 4 |
+| 🥈 | **DeepSeek-R1** | DeepSeek | 671B | 88.2% | 73.8% | 92.1% | 96.2% | 🃏 | MIT |
+| 🥉 | **Qwen3-235B** | 阿里 | 235B (22B act) | 87.8% | 71.5% | 90.8% | 94.8% | ♥K | Apache 2.0 |
+| 4 | **Kimi K2** | 月之暗面 | 1T (32B act) | 85.8% | 69.5% | 88.2% | 92.5% | 🃏 | MIT |
+| 5 | **DeepSeek-V3** | DeepSeek | 671B (37B act) | 86.5% | 70.2% | 89.5% | 93.2% | ♥K | DeepSeek |
+| 6 | **Qwen2.5-72B** | 阿里 | 72B | 83.2% | 65.8% | 87.2% | 90.5% | ♥Q | Apache 2.0 |
+| 7 | **Mixtral-8x22B** | Mistral | 176B (39B act) | 82.5% | 64.2% | 86.5% | 89.8% | ♥Q | Apache 2.0 |
+| 8 | **Intern-S1-Pro** | 上海 AI Lab | 未公开 | 84.2% | 68.5% | 86.8% | 91.2% | ♠Q | Research |
+| 9 | **Phi-4-reasoning** | Microsoft | 15B | 80.5% | 60.2% | 85.5% | 90.2% | ♥10 | MIT |
+| 10 | **Gemma-3-27B** | Google | 27B | 79.2% | 58.5% | 84.2% | 88.5% | ♥10 | Gemma |
+
+> **注意**：以上数据来源于各官方技术报告及第三方基准测试（Arena、LMSYS Chatbot Arena），具体数值因评测版本不同可能有差异。
 
 ---
 
