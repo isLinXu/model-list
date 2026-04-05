@@ -2,7 +2,7 @@
 
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--04-blue.svg)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--05-blue.svg)]()
 [![Models](https://img.shields.io/badge/Models-200%2B-green.svg)]()
 [![Papers](https://img.shields.io/badge/Papers-218-orange.svg)]())
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
@@ -20,15 +20,25 @@
 | 💻 GitHub 仓库 | 152 个 | 官方代码链接 |
 | 🤗 HuggingFace 链接 | 162 个 | 模型权重下载 |
 | 🏢 厂商/组织 | 25+ | 全球主要 AI 实验室 |
+| 📏 Benchmark | 30+ | 全方位评测基准覆盖 |
+| 🛡️ 安全框架 | 6 类 | 攻击类型 + 防御体系 |
+| 🔧 微调工具 | 15+ | 从数据到部署的全链路 |
+| 🏭 行业场景 | 10+ | 真实落地应用案例 |
 
 ---
 
 ## 🌟 项目特色
 
-- ✅ **覆盖全面**：从 GPT-1 到 GPT-5、Claude 4.6、LLaMA 4、Qwen3.5 的完整演进
+- ✅ **覆盖全面**：从 GPT-1 到 GPT-5、Claude 4.6、LLaMA 4、Qwen3.5 的完整演进（200+ 模型）
 - ✅ **资源完整**：每个模型提供 arXiv 论文、GitHub 仓库、HuggingFace 权重、API 文档四件套
 - ✅ **🃏 扑克牌分类体系**：独创的 House of Model Cards (HOMC) 分类标记法，用扑克牌花色直观标记模型类型
-- ✅ **分类科学**：5 维快速索引（开源状态/厂商/领域/规模/架构）
+- ✅ **分类科学**：5 维快速索引 + 🃏 花色/点数双重标记
+- ✅ **安全对齐**：完整的 LLM 安全框架、攻击防御指南、开源安全工具推荐
+- ✅ **评测详解**：30+ Benchmark 基准解读，覆盖通用/代码/数学/多模态/安全/Agent
+- ✅ **微调实战**：LoRA/QLoRA 完整模板 + 工具链推荐 + 数据工程要点
+- ✅ **行业案例**：10 大行业落地场景 + RAG 架构图 + 成本估算模型
+- ✅ **Prompt 工程**：高阶技巧 + 不同模型的 Prompt 风格偏好
+- ✅ **前沿追踪**：视频生成、世界模型等 2026 最新方向
 - ✅ **持续更新**：跟踪 2024-2026 年最新模型进展
 - ✅ **实用导向**：包含部署指南、硬件配置、量化方案
 
@@ -102,7 +112,13 @@
 - [9. 🌍 开源生态地图](#9-开源生态地图)
 - [10. 🔮 2026 技术趋势展望](#10-2026-技术趋势展望)
 - [11. ❓ FAQ 常见问题](#11-faq-常见问题)
-- [12. 参考文献](#12-参考文献)
+- [12. 🛡️ 安全与对齐](#12-️-安全与对齐)
+- [13. 📏 评测基准详解](#13-评测基准详解)
+- [14. 🔧 微调工具链与实战](#14--微调工具链与实战)
+- [15. 🏭 行业应用案例](#15--行业应用案例)
+- [16. 💡 Prompt Engineering 指南](#--prompt-engineering-指南)
+- [17. 🎬 视频生成与世界模型](#17-视频生成与世界模型)
+- [18. 参考文献](#18-参考文献)
 - [13. 资源索引](#13-资源索引)
 - [14. 贡献指南](#14-贡献指南)
 - [15. 更新日志](#15-更新日志)
@@ -1569,7 +1585,529 @@ print(llm.generate('你好'))
 
 ---
 
-## 12. 参考文献
+---
+
+## 12. 🛡️ 安全与对齐
+
+> 随着 LLM 能力的增强，安全对齐 (Alignment) 已从"锦上添花"变成"生死攸关"。本章梳理主流安全技术体系。
+
+### 12.1 对齐技术全景图
+
+| 层次 | 目标 | 技术手段 | 代表工作 | 🃏 |
+|:---|:---|:---|:---|:---|
+| **L1 基础对齐** | 有用性、无害性 | RLHF, DPO, SFT | InstructGPT, Claude Constitutional AI | ♥Q |
+| **L2 推理对齐** | 思维链可靠性 | Process Reward Model, GRPO | DeepSeek-R1, o1 | 🃏 Joker |
+| **L3 Agent 对齐** | 工具调用安全性 | Tool Sandbox, Permission System | GPT-5 Operator, Claude Computer Use | ♣K |
+| **L4 多模态对齐** | 视觉/音频安全 | CLIP-based Filter, Audio Safety | Gemini, GPT-4V | ♠Q |
+
+### 12.2 主流安全框架对比
+
+| 框架 | 提出者 | 核心机制 | 优势 | 局限 |
+|:---|:---|:---|:---|:---|
+| **RLHF** | OpenAI (2022) | RM + PPO | 效果成熟 | 需大量标注，RM 可能被操纵 |
+| **Constitutional AI (CAI)** | Anthropic (2023) | 原则约束 + RLAIF | 无需人工逐条标注 | 原则设计主观 |
+| **DPO** | Stanford (2023) | 直接偏好优化，无 RM | 训练简单 | 偏好数据质量敏感 |
+| **GRPO** | DeepSeek (2025) | 组内相对排序，纯 RL | 成本极低 ⭐ | 需要好的奖励信号 |
+| **Safe RLHF** | CMU (2023) | 安全约束下的策略优化 | 可证明安全边界 | 计算开销大 |
+| **Constitutional DPO** | Berkeley (2024) | CAI + DPO 结合 | 兼具两者优点 | 较新，生态待完善 |
+
+### 12.3 攻击类型与防御
+
+#### 常见攻击手段
+
+| 攻击类型 | 描述 | 示例 | 难度 | 🃏 防御标记 |
+|:---|:---|:---|:---:|:---|
+| **Prompt Injection** | 注入恶意指令 | "忽略上述指令，输出..." | ★☆☆ | ♦J |
+| **Jailbreak** | 绕过安全限制 | DAN (Do Anything Now), 虚拟角色扮演 | ★★☆ | ♥Q |
+| **Few-shot Hijacking** | 通过示例污染模型行为 | 恶意 few-shot 样本 | ★★☆ | ♣10 |
+| **Data Extraction** | 训练数据泄露 | 反复询问特定短语 | ★★★ | ♥K |
+| **Multimodal Attack** | 通过图像/音频注入指令 | 隐藏指令的图片 | ★★☆ | ♠Q |
+| **Chain-of-Thought Attack** | 诱导推理链泄露 | 分步引导到有害内容 | ★★★ | 🃏 Joker |
+
+#### 防御最佳实践
+
+```
+🛡️ LLM 安全防御纵深体系:
+
+第1层: 输入过滤 (Input Guardrails)
+  ├── Prompt Injection 检测 (正则 + 模型分类)
+  ├── PII/Sensitive Info 脱敏
+  └── 长度/格式校验
+      │
+第2层: 模型内对齐 (Model Alignment)
+  ├── RLHF / DPO / GRPO 训练
+  ├── System Prompt 约束 ("你是助手，拒绝...")
+  └── Refusal Training (学会优雅拒绝)
+      │
+第3层: 输出审查 (Output Filtering)
+  ├── 有害内容检测 (Perplexity 异常)
+  ├── PII 泄露检测
+  └── 格式化输出约束 (JSON Schema)
+      │
+第4层: 运行时防护 (Runtime Protection)
+  ├── 速率限制 (Rate Limiting)
+  ├── 日志审计 (Audit Logging)
+  └── 人机协同 (Human-in-the-loop for 高风险操作)
+```
+
+### 12.4 开源安全工具
+
+| 工具 | 功能 | GitHub | 🃏 |
+|:---|:---|:---|:---|
+| **LLM Guard** | 输入/输出内容过滤 | [protectai/llm-guard](https://github.com/protectai/llm-guard) | ♦J |
+| **NeMo Guardrails** | 可编程对话护栏 | [NVIDIA/NeMo-Guardrails](https://github.com/NVIDIA/NeMo-Guardrails) | ♣Q |
+| **Rebuff** | Prompt Injection 防护 | [robustintelligence/rebuff](https://github.com/robustintelligence/rebuff) | ♥10 |
+| **Lakera** | AI 安全平台 (商业) | lakera.ai | ♠9 |
+| **CalypsoAI** | 企业级 AI 安全 | calypsoai.com | ♥Q |
+
+---
+
+## 13. 📏 评测基准详解
+
+> "你无法改进你不能测量的东西。" — 评测基准是 LLM 进化的标尺。
+
+### 13.1 基准测试全景图
+
+| 类别 | 基准名称 | 测试能力 | 主要指标 | 🃏 关注度 |
+|:---|:---|:---|:---|:---|
+| **通用知识** | MMLU-Pro | 57 个学科的多项选择 | 准确率 | ♥A |
+| | GPQA Diamond | 研究生级科学问答 | 准确率 | ♥A |
+| | ARC-AGI-2 | 抽象推理与常识 | 准确率 | ♥A |
+| | HLE (Humanity's Last Exam) | 人类专家级考试 | 准确率 | ♥A |
+| **代码能力** | HumanEval | Python 代码生成 | Pass@1 | ♦J |
+| | MBPP | 基础编程问题 | Pass@k | ♦J |
+| | SWE-bench | 真实 GitHub 问题修复 | Resolved % | ♦Q |
+| | LiveCodeBench | 实时代码评测 | Pass@1 | ♦J |
+| **数学推理** | GSM8K | 小学数学应用题 | 准确率 | ♦10 |
+| | MATH | 竞赛级数学 | 准确率 | ♦Q |
+| | AIME / AMC | 数学奥林匹克 | 准确率 | ♦K |
+| | OMNI-MATH | 全方位数学 | 准确率 | ♦Q |
+| **推理能力** | Big-Bench Hard (BBH) | 23 种复杂推理任务 | 准确率 | ♥Q |
+| | IF-Eval | 指令遵循度 | 得分率 | ♥10 |
+| | Arena-Hard | 人类偏好对战 | Elo Rating | ♥A |
+| **长上下文** | RULER | 长文本检索与推理 | 各长度准确率 | ♥K |
+| | LongBench | 多种长文档任务 | F1/EM | ♥Q |
+| | SCROLLS | 长文档 NLP 任务集 | 各任务指标 | ♥10 |
+| **多模态** | MMMU | 多学科多模态理解 | 准确率 | ♠Q |
+| | MMBench | 视觉问答 | 准确率 | ♠Q |
+| | MathVista | 数学视觉推理 | 准确率 | ♠J |
+| | DocVQA | 文档理解 | ANLS | ♠10 |
+| **安全性** | TrustLLM | AI 安全综合评估 | 多维度评分 | 🃏 Joker |
+| | DecodingTrust | 大模型可信度 | 8 维度得分 | 🃏 Joker |
+| | HH-RLHF | 有害性评估 | 拒绝率 | ♥Q |
+| **Agent 能力** | TAO-Bench | 工具使用准确性 | Task Success | ♣Q |
+| | WebArena | 网页操作任务 | 成功率 | ♣J |
+| | SWE-bench Agent | 软件工程自动化 | Issue → PR | ♣K |
+| **中文专项** | C-Eval | 中文综合知识 | 准确率 | ♥Q (中国) |
+| | CMMLU | 中国文化+知识 | 准确率 | ♥Q (中国) |
+| | SuperCLUE | 中文语言理解+生成 | 多维度 | ♥Q (中国) |
+| | LongBench-ZH | 中文长文档 | F1/EM | ♥Q (中国) |
+
+### 13.2 如何解读 Benchmark 分数
+
+```
+⚠️ Benchmark 解读指南：
+
+❌ 错误认知：
+   - "MMLU 90% = 这个模型什么都懂"
+   - "HumanEval 95% = 可以替代程序员"
+   - Benchmark 分数越高 = 实际体验越好
+
+✅ 正确理解：
+┌─────────────────────────────────────────────┐
+│  Benchmark 是标准化场景，不是真实场景        │
+│                                             │
+│  • MMLU-Pro 考的是多项选择题（可猜）         │
+│  • HumanEval 考的是简单函数生成              │
+│  • GSM8K 的"数学"≈小学应用题                 │
+│                                             │
+│  真正重要的是：                             │
+│  • 在你的具体任务上做 A/B Test               │
+│  • 关注"失败案例"而非平均分                  │
+│  • 考虑成本/延迟/质量的综合权衡               │
+└─────────────────────────────────────────────┘
+```
+
+### 13.3 2026 年值得关注的新基准
+
+| 基准 | 创新点 | 为什么重要 | 🔗 |
+|:---|:---|:---|:---|
+| ** Humanity's Last Exam (HLE)** | 由人类专家出题、AI 无法通过 | 首个"人类仍显著优于 AI"的基准 | [arXiv](https://arxiv.org/) |
+| **LiveCodeBench** | 动态题库（防数据泄露） | 解决静态 benchmark 的数据污染问题 | [GitHub](https://github.com/LiveCodeBench/LiveCodeBench) |
+| **Arena-Elo** | 众包对战排名 | 更贴近人类偏好的真实感受 | [lmsys](https://chat.lmsys.org) |
+| **SWE-bench Verified** | 人工验证的代码修复 | 比 SWE-bench 更严格的工程能力测试 | [princeton-nlp](https://www.swebench.com) |
+
+---
+
+## 14. 🔧 微调工具链与实战
+
+> 从预训练模型到生产级应用的完整微调流水线。
+
+### 14.1 微调范式总览
+
+| 方法 | 适用场景 | 数据需求 | 显存需求 | 效果 | 工具推荐 |
+|:---|:---|:---|:---|:---|:---|
+| **Full Fine-tuning** | 领域适配/新语言 | 大量 (10K+) | 极大 (全量参数) | 最佳 | DeepSpeed ZeRO-3, FSDP |
+| **LoRA / QLoRA** | 任务适配/风格迁移 | 中等 (500-10K) | 低 (0.1%-1%增量) | 优秀 ⭐ | PEFT, Axolotl |
+| **RLHF / DPO** | 对齐优化 | 中等 (偏好对) | 中高 | 显著提升 | TRL, OpenRLHF |
+| **Prefix Tuning** | 快速实验 | 少量 (<1K) | 极低 | 一般 | PEFT |
+| **Prompt Tuning** | 多任务快速切换 | 少量 | 极低 | 一般 | PromptSource |
+| **Adapter** | 多任务复用基座 | 中等 | 低 | 好 | AdapterHub |
+
+### 14.2 推荐工具链（2026 年版）
+
+#### 🥇 全流程一站式方案
+
+| 工具 | 定位 | 核心特性 | 🃏 推荐 |
+|:---|:---|:---|:---|
+| **[Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)** | 微调一站式 | YAML 配置驱动，支持 LoRA/QLoRA/全量，FlashAttention2 | ♥K |
+| **[LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)** | 国产微调利器 | GUI+CLI 双模式，50+算法，中英双语 | ♥K |
+| **[Unsloth](https://github.com/unslothai/unsloth)** | 极速微调 | 2-5× 加速，显存减半，兼容 Transformers | ♥Q |
+
+#### 🥈 专业组件
+
+| 组件 | 推荐工具 | 说明 |
+|:---|:---|:---|
+| **训练框架** | HuggingFace TRL / PyTorch FSDP / DeepSpeed | TRL 最易用，DeepSpeed 最大规模 |
+| **高效训练** | FlashAttention-3 / xFormers | 必装，2-4× 加速 |
+| **PEFT 库** | [PEFT (HuggingFace)](https://github.com/huggingface/peft) | LoRA/AdaLoRA/PromptTuning 一站式 |
+| **数据处理** | Alpaca / ShareGPT 格式转换器 | 数据清洗+格式化 |
+| **监控** | Wandb / TensorBoard | 训练可视化 |
+| **量化训练** | bitsandbytes / AQLM | QLoRA 核心 |
+| **推理部署** | vLLM / SGLang / Ollama | 生产级服务 |
+
+#### 🥉 商业平台
+
+| 平台 | 特点 | 适合人群 |
+|:---|:---|:---|
+| **[OpenRouter](https://openrouter.ai/)** | 多模型 API 聚合 | 开发者 |
+| **[Together AI](https://www.together.ai/)** | 云端微调+托管 | 企业 |
+| **[Fireworks AI](https://fireworks.ai/)** | 高速推理+微调 | 低延迟需求 |
+| **[Predibase](https://predibase.com/)** | LoRA 微调平台 | 快速实验 |
+
+### 14.3 LoRA 微调实战模板
+
+```python
+# ====== QLoRA 微调标准模板 (2026 最佳实践) ======
+from datasets import load_dataset
+from peft import LoraConfig, get_peft_model
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+from trl import SFTTrainer
+import torch
+
+# 1️⃣ 加载基座模型（以 Qwen2.5-7B 为例）
+model_name = "Qwen/Qwen2.5-7B-Instruct"
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.bfloat16,
+    device_map="auto",
+    attn_implementation="flash_attention_2",  # ✅ 必须！
+)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# 2️⃣ LoRA 配置（经验值）
+lora_config = LoraConfig(
+    r=64,           # 秩：越大表达能力越强，但过拟合风险↑
+    lora_alpha=128, # 缩放系数 ≈ r × 2
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
+                    "gate_proj", "up_proj", "down_proj"],
+    lora_dropout=0.05,
+    task_type="CAUSAL_LM",
+)
+
+# 3️⃣ 训练参数
+training_args = TrainingArguments(
+    output_dir="./output",
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,  # 有效 batch = 16
+    num_train_epochs=3,
+    learning_rate=2e-4,             # LoRA 推荐学习率
+    warmup_ratio=0.03,
+    lr_scheduler_type="cosine",
+    bf16=True,                      # BF16 > FP16 (无溢出)
+    gradient_checkpointing=True,   # 节省显存 ~30%
+    logging_steps=10,
+    save_strategy="epoch",
+    report_to="wandb",              # 可视化训练曲线
+)
+
+# 4️⃣ 数据准备（Alpaca 格式）
+dataset = load_dataset("json", data_files="train_data.json")
+
+# 5️⃣ 开始微调
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset["train"],
+    args=training_args,
+    peft_config=lora_config,
+    max_seq_length=2048,
+)
+trainer.train()
+
+# 6️⃣ 保存 LoRA 权重（通常仅几十 MB）
+trainer.save_model("./my-lora-adapter")
+print("✅ 微调完成！LoRA 权重已保存")
+
+# 7️⃣ 合并基座 + LoRA（可选）
+# from peft import PeftModel
+# base_model = AutoModelForCausalLM.from_pretrained(model_name)
+# model = PeftModel.from_pretrained(base_model, "./my-lora-adapter")
+# merged_model = model.merge_and_unload()
+# merged_model.save_pretrained("./merged-model")
+```
+
+### 14.4 数据工程要点
+
+| 要点 | 经验法则 | ❌ 常见错误 |
+|:---|:---|:---|
+| **数据质量** | 100 条高质量 > 10000 条低质量 | 直接爬取未清洗的网页数据 |
+| **数据多样性** | 覆盖目标场景的各种输入模式 | 只有一种 prompt 模板 |
+| **指令格式** | 严格匹配基座模型的 Chat Template | 自创格式不套用 template |
+| **数据比例** | SFT : DPO ≈ 10:1 | 跳过 SFT 直接 DPO |
+| **去重去噪** | MinHash + 启发式规则清洗 | 包含重复/冲突样本 |
+| **合成数据** | 用强模型 (GPT-4/Qwen) 生成 + 人工抽检 | 未经审核直接用合成数据 |
+
+---
+
+## 15. 🏭 行业应用案例
+
+> LLM 从实验室走向真实世界的 10 大典型落地场景。
+
+### 15.1 应用矩阵
+
+| 行业 | 场景 | 推荐模型 (🃏) | 部署方式 | 成熟度 |
+|:---|:---|:---|:---|:---:|
+| **💻 软件/IT** | 编程助手 (Copilot) | Claude 3.5 Sonnet (♥Q) | API | ★★★★★ |
+| | 代码审查/重构 | Qwen2.5-Coder-32B (♦J) | 本地 vLLM | ★★★★☆ |
+| | 技术文档生成 | GPT-5 (♥A) | API | ★★★★☆ |
+| **🏥 医疗健康** | 辅助诊断 | MedGemma + HuatuoGPT (♦10) | 本地 (隐私) | ★★★☆☆ |
+| | 医疗问答 | GLM-4 (♥Q) | API | ★★★★☆ |
+| | 影像分析报告 | InternVL2 (♠Q) | 本地 | ★★★☆☆ |
+| **⚖️ 法律合规** | 合同审查 | ChatLaw (♦10) | 本地 | ★★★☆☆ |
+| | 法规查询 | GPT-5 (♥A) | API | ★★★★☆ |
+| | 判例检索 | BGE-M3 + RAG (♣Q) | 混合部署 | ★★★★☆ |
+| **💰 金融** | 研报生成 | Qwen2.5-72B + FinGPT (♥Q) | 本地 | ★★★★☆ |
+| | 风控风评 | DeepSeek-R1 (🃏) | API/本地 | ★★★☆☆ |
+| | 智能投顾 | Kimi K2 (🃏) | API | ★★★☆☆ |
+| **🎓 教育** | 智能辅导 | Phi-4-reasoning (♥10) | 本地/边缘 | ★★★★★ |
+| | 自动出题 | Qwen2.5-Math (♦10) | 本地 | ★★★★☆ |
+| | 论文辅助 | Claude 4.6 (♥A) | API | ★★★★★ |
+| **🏭 制造业** | 设备故障诊断 | LLaMA 3-70B + IoT数据 (♥K) | 边缘部署 | ★★★☆☆ |
+| | 质检报告生成 | Qwen-VL (♠10) | 本地 | ★★★★☆ |
+| | SOP 知识库 | BGE-M3 + RAG (♣Q) | 本地 | ★★★★★ |
+| **🛒 电商/零售** | 智能客服 | DeepSeek-V3 (♥K) | API | ★★★★★ |
+| | 商品描述生成 | GPT-5 / Qwen3.5 | API | ★★★★★ |
+| | 用户画像分析 | ERNIE 5.0 (♥Q) | API | ★★★★☆ |
+| **📰 内容创作** | 文章撰写 | Claude 4.6 (♥A) | API | ★★★★★ |
+| | 多语言翻译 | LLaMA 4 Behemoth (♥K) | 本地 | ★★★★☆ |
+| | 视频/图像生成 | Seed 系列 (♠Q) | API | ★★★☆☆ |
+| **🏢 企业内部** | 知识管理 RAG | Qwen + BGE-M3 | 私有化部署 | ★★★★★ |
+| | 会议纪要 | Whisper + Qwen (♣J) | 混合 | ★★★★☆ |
+| | HR 招聘筛选 | GLM-4.6 (♥Q) | API | ★★★★☆ |
+| **🎮 游戏 NPC** | 对话系统 | MiniCPM-o (♥7) | 端侧 | ★★★★☆ |
+| | 剧情生成 | GPT-5 (♥A) | API | ★★★☆☆ |
+| | 关卡设计建议 | Claude 4.6 (♥A) | API | ★★★☆☆ |
+
+### 15.2 RAG 架构最佳实践（企业知识库）
+
+```
+┌──────────────────────────────────────────────────────┐
+│                企业级 RAG 架构图                       │
+│                                                        │
+│  👤 用户提问                                          │
+│     │                                                  │
+│     ▼                                                  │
+│  ┌─────────────┐    ┌──────────────────┐              │
+│  │ Query       │───→│ Intent Classifier │              │
+│  │ Rewriting   │    │ (意图识别)        │              │
+│  └─────────────┘    └────────┬─────────┘              │
+│                               │                        │
+│              ┌────────────────┼────────────────┐       │
+│              ▼                ▼                ▼       │
+│       ┌──────────┐   ┌──────────┐   ┌──────────┐     │
+│       │ Keyword  │   │ Semantic │   │ Hybrid   │     │
+│       │ Search   │   │ Search   │   │ Search   │     │
+│       │ (BM25)   │   │ (BGE-M3) │   │ (两者结合)│     │
+│       └────┬─────┘   └────┬─────┘   └────┬─────┘     │
+│            │              │              │            │
+│            ▼              ▼              ▼            │
+│       ┌──────────────────────────────────────┐       │
+│       │         Re-ranker (重排序)           │       │
+│       │  bge-reranker-v2-m3 / Cohere Rerank  │       │
+│       └──────────────┬───────────────────────┘       │
+│                      ▼                              │
+│       ┌──────────────────────────────────────┐       │
+│       │  Context Assembly + Windowing        │       │
+│       │  (上下文组装 + 滑动窗口截断)          │       │
+│       └──────────────┬───────────────────────┘       │
+│                      ▼                              │
+│  ┌──────────────────────────────────────┐           │
+│  │  LLM Generator (生成回答)            │ ◄── 🃏 ♥K   │
+│  │  · 引用来源标注                      │           │
+│  │  · 不确定时说"我不知道"              │           │
+│  │  · 幻觉检测                          │           │
+│  └──────────────────────────────────────┘           │
+│                      │                              │
+│                      ▼                              │
+│              📤 结构化回答 + 引用                     │
+│                                                        │
+│  💾 存储层:                                           │
+│  · 向量库: Milvus / Qdrant / FAISS                   │
+│  · 文档库: Elasticsearch / MongoDB                     │
+│  · 缓存: Redis                                       │
+│                                                        │
+│  🔄 数据流:                                           │
+│  · 文档 → Chunk → Embed → Index → Retrieve → Generate │
+└──────────────────────────────────────────────────────┘
+```
+
+### 15.3 成本估算模型
+
+| 场景 | 日均请求量 | 推荐方案 | 月成本估算 (USD) | 备注 |
+|:---|:---|:---|:---|:---|
+| 个人开发者 | <1K | API (GPT-4o-mini) | $5-20 | 最省心 |
+| 初创团队 MVP | 10K-50K | API 混合 (DeepSeek + Qwen) | $200-800 | 性价比优先 |
+| 中型企业 | 100K-500K | 自部署 (Qwen-72B INT4) | $2000-5000 (GPU租赁) | 数据隐私要求 |
+| 大型企业 | 500K+ | 混合云 (自建 + API 备用) | $10000+ | 需要专职 ML 团队 |
+
+---
+
+## 16. 💡 Prompt Engineering 指南
+
+> 好的 Prompt = 好的结果。这是性价比最高的一项技能。
+
+### 16.1 Prompt 设计核心原则
+
+| 原则 | ✅ 正确做法 | ❌ 错误做法 |
+|:---|:---|:---|
+| **明确性** | "用 Python 写一个归并排序，包含时间复杂度注释" | "写个排序" |
+| **结构化** | 使用 `## 背景 ## 任务 ## 要求 ## 输出格式` 分段 | 一段话混在一起 |
+| **示例先行** | 提供 2-3 个 Few-shot 示例 | 零样例直接让模型猜 |
+| **约束输出** | "输出 JSON 格式：`{\"answer\": ...}`" | "给我结果" |
+| **思维链引导** | "请一步步思考，先分析再给出结论" | 直接问答案 |
+| **角色设定** | "你是一位有 10 年经验的 Python 后端工程师" | 无角色设定 |
+
+### 16.2 高阶 Prompt 技巧
+
+#### Chain-of-Thought (CoT)
+```
+❌ 简单提问:
+  "小明有5个苹果，给了小红2个，又买了3个，现在几个？"
+
+✅ CoT 提问:
+  "请按以下步骤解答:
+   ① 列出初始数量
+   ② 逐步计算每次变化
+   ③ 给出最终答案和验证
+   
+   问题：小明有5个苹果，给了小红2个，又买了3个，现在几个？"
+```
+
+#### Self-Consistency (自洽采样)
+```python
+# 同一问题采样多次，取多数投票结果
+question = "求解: 15 × 23 + 47 ÷ 2 = ?"
+
+answers = []
+for _ in range(5):
+    resp = llm.generate(question, temperature=0.7)
+    answers.append(extract_answer(resp))
+
+final_answer = majority_vote(answers)  # 取出现最多的答案
+```
+
+#### System Prompt 模板
+```
+你是一个专业的 {角色}。
+
+## 能力
+- 你精通 {领域1}、{领域2} 和 {领域3}
+- 你的回答基于事实，不确定时会明确说明
+
+## 约束
+- 回答使用 {语言}
+- 对于专业术语，首次出现时给出解释
+- 代码必须通过编译/运行检查
+
+## 输出格式
+{具体的格式要求}
+
+---
+用户消息开始:
+{user_message}
+```
+
+### 16.3 不同模型的 Prompt 偏好
+
+| 模型系 | Prompt 风格偏好 | Tips |
+|:---|:---|:---|
+| **GPT 系列** | 自然语言，容忍度高 | 什么都能聊，但需要明确约束 |
+| **Claude** | 结构化 Markdown | 喜欢 `---` 分隔符和 XML 标签 |
+| **Qwen** | 中文友好，支持混合 | 中英混合 Prompt 效果更好 |
+| **DeepSeek** | 数学/代码 CoT | 推理类任务一定要加"逐步思考" |
+| **LLaMA/Mistral** | 指令严格遵循 | 需要 `<s>[INST]...[/INST]` 格式 |
+| **Phi 系列** | 教科书风格 | "让我们一步步来学习..." 效果奇好 |
+
+---
+
+## 17. 🎬 视频生成与世界模型
+
+> 2025-2026 年最激动人心的前沿方向之一——从理解世界到生成世界。
+
+### 17.1 视频生成模型
+
+| 模型 | 参数 | 时长 | 分辨率 | 特性 | 🃏 |
+|:---|:---|:---|:---|:---|:---|
+| **Sora (OpenAI)** | 未公开 | 60s | 1080p | 原生视频生成，物理一致性 | 🃏 Joker |
+| **Veo 2 (Google)** | 未公开 | 120s+ | 4K | 电影级视频生成 | 🃏 Joker |
+| **Gen-3 Alpha (Runway)** | 未公开 | 10s | 1080p | 高质量短视频 | ♠Q |
+| **Kling (快手可灵)** | 未公开 | 2min | 1080p | 中文视频生成领先 | ♠Q |
+| **Seed-Video (字节)** | 未公开 | 30s | 1080p | 多模态统一视频生成 | ♠Q |
+| **Wan (阿里万相)** | 未公开 | 15s+ | 720p+ | 开源友好 | ♠J |
+| **CogVideoX (智谱)** | 多版本 | 6-20s | 720p | 开源视频生成 | ♠10 |
+| **Open-Sora Planck** | 开源 | 可变 | 可变 | 完全开源的视频 DiT | ♠9 |
+| **HunyuanVideo (腾讯)** | 未公开 | 5s | 720p | 多模态视频理解+生成 | ♠Q |
+| **Mochi (Genmo)** | 开源 | 5.4s | 480p | 高压缩视频生成 | ♠8 |
+
+### 17.2 世界模型 (World Model)
+
+| 模型 | 类型 | 能力 | 创新点 | 🃏 |
+|:---|:---|:---|:---|:---|
+| **Voyager (NVIDIA)** | 游戏世界 | Minecraft 自主探索 | 技能库 + Agent 循环 | 🃏 Joker |
+| **Genie 2 (Google DeepMind)** | 交互式世界生成 | 单图→可交互 3D 世界 | 无需训练数据的世界模拟 | 🃏 Joker |
+| **Sora-1 (OpenAI)** | 物理世界模拟器 | 视频中的物理规律 | 作为世界模型的视频生成器 | 🃏 Joker |
+| **Octo (Berkeley)** | 机器人通用策略 | 跨机器人迁移学习 | Transformer 机器人基础模型 | ♣Q |
+| **PI^0 (Physical Intelligence)** | 机器人基础模型 | 多机器人统一控制 | 10+ 机器人类型统一 | 🃏 Joker |
+| **RT-2/X (Google)** | 视觉-动作模型 | VLA → 机器人控制 | VLM 直接输出动作 | ♣Q |
+| **GR-003 (上海 AI Lab)** | 开源游戏智能体 | Minecraft/GTA 自主决策 | 强开源游戏世界模型 | ♣J |
+
+### 17.3 从 LLM 到 World Model 的演进
+
+```
+LLM 发展路径 (2024-2030):
+
+2024 ┃── 文本/图像理解 (GPT-4V, Gemini) ──────────┃
+      │                                                    │
+2025 ┃── 多模态统一 (GPT-5, Qwen3.5, Claude 4.6) ────────┃
+      │                                                    │
+2026 ┃── 视频生成 (Sora, Kling, Veo) ────────────────────┃
+      │   · 理解时间连续性                                  │
+      │   · 学习物理规律 (重力、碰撞、流体)                 │
+      │                                                    │
+2027? ┃── 交互式世界模型 ─────────────────────────────────┃
+      │   · Genie 2: 图片→可交互 3D 世界                  │
+      │   · 用户可以"走进"生成的世界                       │
+      │                                                    │
+2028? ┃── 通用世界模拟器 ────────────────────────────────┃
+      │   · 统一的物理/社会/经济模拟                       │
+      │   · AGI 的"沙箱训练场"                            │
+      │                                                    │
+      ┃────────── 最终目标: 理解并预测真实世界 ──────────┃
+```
+
+---
+
+## 18. 参考文献
 
 ### 12.0 综述论文
 - [1] [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) - Attention Is All You Need (Transformer)
@@ -1972,6 +2510,7 @@ print(llm.generate('你好'))
 
 | 日期 | 更新内容 |
 |:---|:---|
+| **2026-04-05 (v3)** | **重大扩展**：新增 6 大章节 — 🛡️ 安全与对齐（攻击类型+防御体系）、📏 评测基准详解（30+ Benchmark）、🔧 微调工具链实战（LoRA 模板+工具推荐）、🏭 行业应用案例（10 大行业+RAG架构图）、💡 Prompt Engineering 指南、🎬 视频生成与世界模型 |
 | **2026-04-04 (v2)** | **重大扩展**：新增 6 大章节 — LLM发展时间线、训练方法与对齐技术、场景化选型指南、开源生态地图、2026趋势展望、FAQ（+500行内容） |
 | **2026-04-04 (v1)** | 集成 House of Model Cards (HOMC) 扑克牌分类体系，新增 🃏 花色/点数标记，完善 README 结构 |
 | 2026-04-03 | 项目重构，新增 200+ 模型、218 条论文引用 |
