@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate beautiful preview.html from README.md — v2 (fixed tables, badges, images)"""
+"""Generate beautiful index.html from README.md — v3 (GitHub Pages root)"""
 
 import re, html as html_mod
 
@@ -360,10 +360,10 @@ def md2html(md_text):
 
 
 # ========== Generate ==========
-with open('preview.html', 'w', encoding='utf-8') as f:
+with open('index.html', 'w', encoding='utf-8') as f:
     f.write(HEADER)
     body = md2html(md)
     f.write(body + '\n')
     f.write(FOOTER)
 
-print(f'Done! preview.html created ({len(HEADER)+len(body)+len(FOOTER)} bytes)')
+print(f'Done! index.html created ({len(HEADER)+len(body)+len(FOOTER)} bytes)')
