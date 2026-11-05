@@ -129,6 +129,8 @@ img{max-width:100%;border-radius:6px}
 <li><a href="#19-按训练对齐方法分类新增">🎯 训练对齐方法</a></li>
 <li><a href="#110-sota-模型排行榜2026年4月实时新增">🏆 SOTA 排行榜</a></li>
 <li><a href="#通用基础模型">2️⃣ 通用基础模型</a></li>
+<li><a href="#20-模型汇总核实总表-截至-2026-11-05">📋 核实总表 2026-11-05</a></li>
+<li><a href="#208-每日-hf-自动抓取候选">🤗 每日 HF 候选</a></li>
 <li><a href="#专项领域模型">3️⃣ 专项领域模型</a></li>
 <li><a href="#技术对比">4️⃣ 技术对比</a></li>
 <li><a href="#部署指南">5️⃣ 部署指南</a></li>
@@ -154,7 +156,7 @@ FOOTER = r'''
 <div class="btt"id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 <footer class="ft">
 <p>🃏 <strong>House of Model Cards (HOMC)</strong> — AI模型扑克牌分类体系 |
-<a href="https://github.com/gatilin/model-list" target="_blank">GitHub ⭐</a> | MIT License | Last Updated: 2026-04-05<br/>
+<a href="https://github.com/gatilin/model-list" target="_blank">GitHub ⭐</a> | MIT License | Last Updated: 2026-11-05<br/>
 <span style="opacity:.6">Made with ❤️ by gatilin · GitHub Pages + Jekyll Primer Theme</span></p></footer>
 <script>
 window.addEventListener('scroll',()=>{
@@ -238,6 +240,12 @@ def md2html(md_text):
 
         # Skip the first few lines that we render manually in HEADER
         if i < 5:
+            i += 1
+            continue
+
+        # Skip the auto-generated HF daily digest markers (README §2.0.8).
+        # The content between them is plain Markdown and is rendered normally.
+        if stripped.startswith('<!-- HF_DAILY_'):
             i += 1
             continue
 

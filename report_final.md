@@ -4,7 +4,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/awesome-llm/model-list?style=social)](https://github.com/awesome-llm/model-list)
 [![GitHub Forks](https://img.shields.io/github/forks/awesome-llm/model-list?style=social)](https://github.com/awesome-llm/model-list)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Last Update](https://img.shields.io/badge/Last%20Update-2026--04--03-brightgreen)](https://github.com/awesome-llm/model-list)
+[![Last Update](https://img.shields.io/badge/Last%20Update-2026--11--05-brightgreen)](https://github.com/awesome-llm/model-list)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/awesome-llm/model-list/pulls)
 
 > 📚 **最全面的大语言模型索引项目** — 涵盖从GPT-1到最新开源模型的完整调研，包含技术细节、性能指标、部署方式与官方资源。
@@ -45,6 +45,7 @@
 - [7. 资源索引](#7-资源索引)
 - [8. 贡献指南](#8-贡献指南)
 - [9. 更新日志](#9-更新日志)
+- [10. 模型汇总核实（2026-11-05）](#10-模型汇总核实2026-11-05)
 
 ---
 
@@ -126,6 +127,8 @@
 ---
 
 ## 2. 通用基础模型
+
+> 📌 **核实入口**：本章 2.1–2.30 与第 3 章保留为 **2026-04-03 基线快照**。截至 **2026-11-05** 的完整核实结果（新增 / 更新 / 待确认三态清单）统一收录于本项目主文档 **README.md §2.0 模型汇总核实总表**，并同步渲染至 index.html；两处不一致时以 §2.0 为准。本文件第 10 章仅给出同步摘要，不重复全量清单。
 
 ### 2.1 OpenAI GPT 系列
 
@@ -1325,6 +1328,8 @@ docker run --gpus all -p 8080:80 \
 
 |日期|更新内容|
 |:---|:---|
+|2026-11-05 (v4.1)|第二轮复核与纠偏：补查 OpenAI / Meta / Google / Hugging Face 一手页面，新增 19 条遗漏模型，修正 7 类第一轮错误（含 3 项权重交付与许可证、GPT-5.4 mini/nano、Llama 4 Scout 10M），收敛 4 条待确认项；三态计数更新为 114 / 34 / 13 = 161 条；覆盖边界见 README.md §2.0.7|
+|2026-11-05 (v4)|模型汇总深度核实与增补：以本文件及 README 现有汇总为基线，完成 146 条核实记录（新增 95 / 更新 34 / 待确认 17）；全量清单见 README.md §2.0，本文件第 10 章为同步摘要|
 |2026-04-03|项目重构，新增200+模型、218条论文引用|
 |2026-03-15|新增Kimi K2.5、Baichuan-M3|
 |2026-02-20|新增GPT-5.2、Claude 4.6、GLM-5|
@@ -1333,6 +1338,67 @@ docker run --gpus all -p 8080:80 \
 |2025-10-15|新增Claude 4.5、Grok 4|
 |2025-07-20|新增Kimi K2、Falcon-H1|
 |2025-05-01|项目初始化|
+
+---
+
+## 10. 模型汇总核实（2026-11-05）
+
+> 本章为**同步摘要**，不是独立清单。项目模型汇总的唯一权威增量清单位于本项目主文档 **README.md §2.0 模型汇总核实总表**（已同步渲染至 `index.html`），包含全部 161 条记录及统一字段：模型名称、提供方、发布或更新时间、模型类别、核心能力、可用状态、信息来源、标记。为避免重复，本章不复制全量表格。**查准查全自评、已修正错误与未覆盖边界见 README.md §2.0.7**。
+
+### 10.1 三态统计
+
+| 分类 | 条数 | 含义 |
+|:---|:---:|:---|
+| 🆕 新增项（已核实） | 114 | 基线未收录、本轮检索可核实；海外 64 + 中国 50，其中 19 条为第二轮补查 |
+| 🔄 更新项（已核实） | 34 | 已收录模型的版本 / 时间 / 能力 / 状态 / 许可更正 |
+| ⚠️ 待确认项 | 13 | 无法核实、来源冲突或仅见预告；**不作确定内容**；第二轮有 4 项收敛移出 |
+| 引用编号反查 | 10 条记录 | 7 项确认真实、1 项性质需更正、2 项待复核 |
+| 官方退役状态 | 8 组事件 | 均为 `[A]` 一手来源，见 README.md §2.0.7 |
+| **合计** | **161** | 三态互斥、按模型名称全局去重 |
+
+### 10.2 核实口径
+
+| 等级 | 定义 |
+|:---|:---|
+| A | 厂商官网 / 官方博客 / 官方文档 / API 发布说明 / arXiv 原文 / Hugging Face 官方模型卡 |
+| B | 权威媒体 / 百科 / 行业追踪站，原则上 ≥2 源交叉；仅列一个 B 源的条目属单一来源，引用前须复核 |
+| C | 单一二手来源、社媒或聚合站消息、官方承诺但未交付 → 一律进入 ⚠️ 待确认 |
+
+- 官方未披露的参数、上下文或许可证一律写「未披露」，不沿用基线推测值。
+- §2.1–2.30、§3.x 保留为 2026-04-03 基线快照；与核实结果不一致时以 README §2.0 为准。
+- 同一模型只出现在 🆕 / 🔄 / ⚠️ 之一；同家族档位合并为一行。
+
+### 10.3 关键更正与收敛速览（摘要，非全量）
+
+| 模型名称 | 提供方 | 发布或更新时间 | 模型类别 | 核心能力 | 可用状态 | 信息来源 | 标记 |
+|:---|:---|:---|:---|:---|:---|:---|:---:|
+| GPT-5 | OpenAI | 2025-08-07 | 通用 | 快速模型 + 深度推理模型 + 实时路由；400K 总上下文 | 已开放 API | `[A]` arXiv:2601.03267 GPT-5 System Card；`[B]` AI Wiki GPT | 🔄 原记 2024-12 / 1M |
+| GPT-5.2 | OpenAI | 2025-12-11 | 通用 / 推理 | Instant / Thinking / Pro 三形态 | 已开放 API | `[B]` AI Wiki GPT · 百度百科 | 🔄 原记 2026-01 / 4M |
+| Claude 4.6 | Anthropic | 2026-02-05 | 通用 / Agent | 1M 上下文（beta）、adaptive thinking、Agent Teams | 已开放 API | `[A]` anthropic.com/news/claude-opus-4-6 | 🔄 原记 2M 无一手来源 |
+| Gemini 3.1 | Google | 2026-02-19（预览） | 通用 / 推理 | ARC-AGI-2 77.1%、SWE-Bench Verified 80.6% | 预览 | `[B]` Wikiwand Gemini；`[A]` Google Cloud 文档 | 🔄 原记 2026-01 / 4M |
+| Qwen 3.5 | 阿里巴巴 | 2026-02-15 | 开源原生多模态 | Qwen3.5-397B-A17B，397B / 17B 激活，201 语言 | 开放权重；许可证未披露 | `[A]` qwen.ai/blog?id=qwen3.5 | 🔄 原记 2026-01 / 256K / Apache 2.0 |
+| DeepSeek-V3.2 | DeepSeek | 2025-12-01 | 通用 / Agent | 强化 Agent 能力并融入思考推理 | 已开放 API | `[A]` deepseek.com/transparency · API 更新日志 | 🔄 原记 2026-02 / 512K |
+| ERNIE 5.0 | 百度 | 2026-01-22 正式版 | 原生全模态 | 2.4T 超稀疏 MoE，统一自回归全模态理解与生成 | 已开放 API（闭源） | `[A]` arXiv:2602.04705；`[B]` 光明网 | 🔄 原记 2025-03 / 424B / Apache 2.0 |
+| Baichuan-M3-235B | 百川智能 | 2026-01-13 | 医疗大模型 | HealthBench 65.1、幻觉率 3.5%、主动问诊 | 开源可商用 | `[A]` arXiv:2602.06570 · 百川官网 | 🔄 原记 2026-02 / 闭源 API / 通用旗舰 |
+| Intern-S1-Pro | 上海 AI Lab | 2026-04-02（论文 v2） | 科学多模态基础模型 | 万亿参数级，100+ 科学任务 | 开源权重 · Apache 2.0 | `[A]` arXiv:2603.25040 · HF internlm/Intern-S1-Pro | 🔄 原记 2026-03 / 256K / Research |
+| Mamba-3 | CMU / Princeton / Cartesia | 2026-03-16 | 新架构 SSM | 指数-梯形离散化、复值状态、MIMO | 论文与代码已公开（ICLR 2026） | `[A]` arXiv:2603.15569 | 🔄 原记 2025-12 新增 / 7B |
+| LLaMA 4 Behemoth | Meta | 待核实 | 通用 / 超大规模 MoE | 待核实 | **未发布** | `[A]` ai.meta.com 官方博客（明言 still training, not yet releasing）；`[B]` benchr.org | ⚠️ 基线记「已发布」，无官方发布记录 |
+| Grok 5 | xAI | 未发布 | 通用 | 待核实 | **未发布** | `[B]` Elonosphere · GrokMag | ⚠️ 官方文档与 API 列表均无此模型 |
+| GPT-5.4 mini / nano | OpenAI | 2026-03-18 | 轻量推理 | mini 供 Free/Go 与限流回退；nano 见 API 弃用清单 | 已开放；nano 已弃用（2027-04-01 下线） | `[A]` OpenAI Model Release Notes · Deprecations | 🆕 第二轮纠错：首轮误列「待确认」，官方已确认存在 |
+| Qwen3.8-Max 权重 | 阿里巴巴 | 2026-08-12 | 开源权重 | 纯文本子集、强制 thinking、原生 262K（可扩约 1.01M），与 API 多模态版不同产物 | 已交付 HF | `[A]` HF Qwen/Qwen3.8-2.4T-A95B 模型卡 | 🆕 第二轮收敛：许可证 `qwen3.8-max`，非 Apache 2.0 |
+| Kimi K3.1 Pro 权重 | 月之暗面 | 2026-11-02 / 11-04 公开 | 开源权重 | 2.8T / 104B 激活，MXFP4，约 1.56TB | 已交付 HF | `[B]` Fello AI · BenchLM · 新浪科技 | 🆕 第二轮收敛：`Kimi K3.1-Pro License`（MIT + 商业阈值） |
+| Mistral Large 4 权重 | Mistral AI | 2026-10-29 | 开源权重 | 1T / 49B 激活，1M 上下文 | 已交付 HF | `[B]` Unite.AI · Times of AI · HF 模型卡 | 🆕 第二轮收敛：`Mistral Ecosystem Open-Weight License`（修改版 MIT） |
+| Gemma 4 系列 | Google | 2026-04-02 | 开源多模态 | E2B / E4B / 26B-MoE / 31B-Dense，128K / 256K，140+ 语言 | 开源权重 · Apache 2.0 | `[A]` blog.google（新华社转引）；`[B]` 多源 | 🆕 第二轮补查：首轮误记「日期未披露」 |
+
+### 10.4 待确认项说明
+
+以下 13 类在 README §2.0.4 逐条列出并标注原因，本文件同步声明**不得作为确定内容引用**：LLaMA 4 Behemoth 发布状态、基线表 2M/4M 级上下文数值、o1 退役状态、独立 GPT-5 Technical Report 是否存在、Grok 5、Gemini 4 Carbon、Muse Spark Open、Qwen3.6/3.7 系列、Baichuan-M4、xLSTM 7B、§4.1 基准数值、§4.2 定价数值、§1.10 SOTA 榜单。QwQ 与 Step-3.5-Flash 的日期/规格在 README §2.0.3 中同样标注为待核实。
+
+**第二轮已收敛（不再列为待确认）**：GPT-5.4 mini/nano（官方已发布）、Qwen3.8-Max 权重（2026-08-12，许可证 `qwen3.8-max`）、Kimi K3.1 Pro 权重（2026-11-02/04，许可证 `Kimi K3.1-Pro License`）、Mistral Large 4 权重（2026-10-29，`Mistral Ecosystem Open-Weight License`）。**Llama 4 Scout 的 10M 上下文有 Meta 官方来源，亦不属待确认**。
+
+### 10.5 覆盖边界（摘要）
+
+第二轮复核修正了 7 类第一轮错误，但仍**未达到查全**：§3.1–3.12 专项领域、§17 视频生成全量（可灵 / Runway / Luma / Pika / Seedance / HunyuanVideo 等）、长尾厂商（Amazon Nova 2 / Phi-5 / Apple / Stability AI / 商汤 / 360 / Reflection AI 等）、基线 200+ 模型逐条状态复核、§4 基准与定价数值均未穷举。单一 B 源条目与日期冲突清单见 README.md §2.0.7。结论：**查准经纠偏显著提升，查全在开放域不可一次性达成**，需按官方 model directory / deprecations / Hugging Face 组织页滚动维护。为此项目已增加每日自动抓取流水线（`.github/workflows/hf-daily.yml` + `scripts/fetch_hf_models.py`），输出见 README.md §2.0.8 与 `HF_DAILY.md`；其结果为**机器抓取候选、未经人工核实**，不并入三态清单。
 
 ---
 
