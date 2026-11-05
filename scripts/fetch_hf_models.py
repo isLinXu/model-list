@@ -12,7 +12,7 @@
 
 重要：本脚本输出的是「机器抓取候选」，**未经人工核实**，
 不并入 README §2.0.1–2.0.7 的三态清单，也不得作为确定内容引用。
-经人工核实后才可迁入 🆕 新增项。
+经人工核实后才可迁入 🆕 新增项；已迁入的 HF 仓库会被自动排除，不再重复上报。
 
 用法：
     python3 scripts/fetch_hf_models.py --dry-run
@@ -441,6 +441,51 @@ def score(model: dict, now: dt.datetime, cfg: Config) -> float:
     return round(s, 2)
 
 
+HF_URL_REPO_RE = re.compile(
+    r"huggingface\.co/(?:api/models/)?([A-Za-z0-9][A-Za-z0-9_.\-]*/[A-Za-z0-9][A-Za-z0-9_.\-]*)",
+    re.I,
+)
+BARE_REPO_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.\-]*/[A-Za-z0-9][A-Za-z0-9_.\-]*")
+
+
+def load_known_repos(root: Path) -> set[str]:
+    """抽取 §2.0.1–2.0.7 人工核实清单中已收录的 HF 仓库 id（小写）。
+
+    每日流水线只负责「发现」，人工核实后模型会迁入 §2.0.2 / §2.0.3。
+    若不排除这些仓库，第二天 trending 榜会把已核实模型当成新发现再次上报。
+    这里只认两种明确写法，避免宽泛的关键词匹配误杀新模型：
+      1) 指向 huggingface.co/(api/models/)?<org>/<repo> 的链接；
+      2) 表格单元格整个内容就是一个 <org>/<repo>。
+    必须跳过 §2.0.8 marker 块，否则自动候选里的链接会造成自我抑制。
+    """
+    readme = root / "README.md"
+    if not readme.exists():
+        return set()
+    try:
+        text = readme.read_text(encoding="utf-8")
+    except OSError:
+        return set()
+    start = text.find("#### 2.0.1")
+    if start == -1:
+        return set()
+    ends = [p for p in (text.find(MARKER_START), text.find("#### 2.0.8"),
+                        text.find("### 2.1 OpenAI")) if p > start]
+    segment = text[start:min(ends) if ends else len(text)]
+
+    known = {
+        hit.lower() for hit in HF_URL_REPO_RE.findall(segment)
+        if not hit.lower().startswith(("docs/", "spaces/", "datasets/", "api/"))
+    }
+    for line in segment.splitlines():
+        if not line.strip().startswith("|"):
+            continue
+        for cell in line.split("|")[1:-1]:
+            c = cell.strip().strip("*` ")
+            if BARE_REPO_RE.fullmatch(c) and any(ch.isalpha() for ch in c):
+                known.add(c.lower())
+    return known
+
+
 def load_seen(path: Path) -> dict[str, dict]:
     if not path.exists():
         return {}
@@ -617,7 +662,8 @@ def render_daily_md(rows: list[dict[str, str]], meta: dict, root_level: bool = T
         "4. 打分 = 下载量与点赞的对数项 + trendingScore + 官方组织加权 + 新发布加权 + 任务类型加权；量化与纯微调降权。",
         "5. 「新发布」保留 1/3 名额，避免高热度老仓库的小改动挤掉当天真正的新模型。",
         "6. 跨天去重：`seen.json` 记录已上报仓库；已上报仓库仅在 sha / lastModified 变化且超过冷却期后，才以「🔄 近期有更新」再次上报。",
-        "7. 「值得关注」是启发式排序，不代表模型质量结论；排序分数不可用于横向比较模型能力。",
+        "7. 与人工核实清单去重：README §2.0.1–2.0.7 已收录的 Hugging Face 仓库不再作为新候选上报（本期抑制数见 `latest.json` 的 `suppressed_in_registry`），避免「机器发现 → 人工核实迁入」后又被重复报出。",
+        "8. 「值得关注」是启发式排序，不代表模型质量结论；排序分数不可用于横向比较模型能力。",
         "",
         "## 历史归档",
         "",
@@ -687,7 +733,8 @@ def write_outputs(root: Path, rows: list[dict[str, str]], meta: dict,
 
 
 def build_meta(models: list[dict], qualified: list[dict], rows: list[dict],
-               cfg: Config, now: dt.datetime, root: Path) -> dict:
+               cfg: Config, now: dt.datetime, root: Path,
+               suppressed_in_registry: int = 0) -> dict:
     archives = sorted(
         (p.stem for p in (root / "data" / "hf-daily").glob("20??-??-??.md")),
         reverse=True,
@@ -699,6 +746,7 @@ def build_meta(models: list[dict], qualified: list[dict], rows: list[dict],
         "window_hours": cfg.lookback_hours,
         "scanned": len(models),
         "qualified": len(qualified),
+        "suppressed_in_registry": suppressed_in_registry,
         "new_count": sum(1 for r in rows if r["_kind"] == "new"),
         "update_count": sum(1 for r in rows if r["_kind"] == "update"),
         "min_likes": cfg.min_likes,
@@ -745,8 +793,14 @@ def run(cfg: Config) -> dict[str, bool]:
 
     seen_path = root / "data" / "hf-daily" / "seen.json"
     seen = load_seen(seen_path)
+    known_repos = load_known_repos(root)
     candidates: list[tuple[dict, str]] = []
+    suppressed_in_registry = 0
     for m in qualified:
+        # 已在 §2.0 人工核实清单里的仓库不再重复上报；每日流水线只负责发现增量。
+        if (m.get("id") or "").lower() in known_repos:
+            suppressed_in_registry += 1
+            continue
         kind = classify(m, seen, cfg.today, cfg, now)
         if kind:
             candidates.append((m, kind))
@@ -763,10 +817,10 @@ def run(cfg: Config) -> dict[str, bool]:
     rest = rank(new_items[new_quota:] + upd_items)
     selected += rest[: max(0, cfg.top_n - len(selected))]
     print(f"[filter] reportable: new={len(new_items)} update={len(upd_items)} "
-          f"(new_quota={new_quota})", file=sys.stderr)
+          f"(new_quota={new_quota}, already_verified={suppressed_in_registry})", file=sys.stderr)
 
     rows = [build_row(m, kind, cfg, now) for m, kind in selected]
-    meta = build_meta(models, qualified, rows, cfg, now, root)
+    meta = build_meta(models, qualified, rows, cfg, now, root, suppressed_in_registry)
 
     # 仅对实际入选的仓库更新去重状态；避免候选被 top_n 截掉后永久失去上报机会。
     for m, kind in selected:

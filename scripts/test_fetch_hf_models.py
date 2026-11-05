@@ -292,6 +292,53 @@ class TestValidateOutputs(unittest.TestCase):
             self.assertTrue(any("列数不一致" in e for e in m.validate_outputs(root)))
 
 
+class TestKnownRepos(unittest.TestCase):
+    """第四轮：自动候选不得与人工核实清单重复。"""
+
+    def _readme(self, root: Path) -> None:
+        (root / "README.md").write_text(
+            "#### 2.0.1 核实口径与标记说明\n\n"
+            "| 模型名称 | 信息来源 |\n|:---|:---|\n"
+            "| `Qwen/Qwen3.9-Max` | "
+            "`[A]` [HF 模型 API](https://huggingface.co/api/models/Qwen/Qwen3.9-Max) |\n"
+            "| 混元 Hy-Nomas | `[A]` https://huggingface.co/tencent/Hy-Nomas |\n\n"
+            + m.MARKER_START + "\n"
+            "| [someone/hot-model](https://huggingface.co/someone/hot-model) | 机器抓取 |\n"
+            + m.MARKER_END + "\n",
+            encoding="utf-8",
+        )
+
+    def test_extracts_verified_repos_but_ignores_marker_block(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._readme(root)
+            known = m.load_known_repos(root)
+            self.assertIn("qwen/qwen3.9-max", known)
+            self.assertIn("tencent/hy-nomas", known)
+            # §2.0.8 marker 内的自动候选链接不能被当作已核实，否则会自我抑制
+            self.assertNotIn("someone/hot-model", known)
+
+    def test_missing_readme_returns_empty(self):
+        with tempfile.TemporaryDirectory() as td:
+            self.assertEqual(m.load_known_repos(Path(td)), set())
+
+    def test_verified_repo_is_not_reported_again(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._readme(root)
+            fixture = root / "fixture.json"
+            fixture.write_text(json.dumps({"models": [
+                model("Qwen/Qwen3.9-Max"),
+                model("someone/hot-model", likes=200, downloads=50000, trendingScore=120),
+            ]}), encoding="utf-8")
+            m.run(cfg(root=root, offline_fixture=str(fixture)))
+            payload = json.loads((root / "data/hf-daily/latest.json").read_text(encoding="utf-8"))
+            self.assertEqual(len(payload["models"]), 1)
+            self.assertEqual(payload["models"][0]["模型名称"].split("]")[0][1:],
+                             "someone/hot-model")
+            self.assertEqual(payload["meta"]["suppressed_in_registry"], 1)
+
+
 class TestEndToEndOffline(unittest.TestCase):
     def test_dry_run_writes_nothing(self):
         with tempfile.TemporaryDirectory() as td:
