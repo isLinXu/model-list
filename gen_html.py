@@ -156,7 +156,7 @@ FOOTER = r'''
 <div class="btt"id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 <footer class="ft">
 <p>🃏 <strong>House of Model Cards (HOMC)</strong> — AI模型扑克牌分类体系 |
-<a href="https://github.com/gatilin/model-list" target="_blank">GitHub ⭐</a> | MIT License | Last Updated: 2026-11-05<br/>
+<a href="https://github.com/gatilin/model-list" target="_blank">GitHub ⭐</a> | MIT License | Last Updated: 2026-11-06<br/>
 <span style="opacity:.6">Made with ❤️ by gatilin · GitHub Pages + Jekyll Primer Theme</span></p></footer>
 <script>
 window.addEventListener('scroll',()=>{
