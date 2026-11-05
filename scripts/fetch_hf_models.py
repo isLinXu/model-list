@@ -18,6 +18,7 @@
     python3 scripts/fetch_hf_models.py --dry-run
     python3 scripts/fetch_hf_models.py --lookback-hours 36 --top-n 12
     python3 scripts/fetch_hf_models.py --force          # 覆盖当天已生成的日报
+    python3 scripts/fetch_hf_models.py --validate       # 只校验已有产物（CI 用）
     python3 scripts/fetch_hf_models.py --offline-fixture sample.json --dry-run
     python3 -m unittest scripts/test_fetch_hf_models.py
 """
@@ -79,6 +80,14 @@ NOISE_TOKENS = (
     "-4bit", "-8bit", "-bnb", "-onnx", "-mlx", "abliterat", "uncensored", "heretic",
     "-lora", "lora-", "-merge", "backup", "-copy", "-test", "-demo", "-tmp",
     "-finetune", "-distill", "reverseengineer", "primal_vae",
+)
+
+# 「跨组织再分发」判定：仓库名干净但 base_model 指向别家，且属于纯再打包格式。
+# 这类仓库即使作者是知名组织，也不是原厂模型发布（如 ComfyUI 单文件、GGUF 量化）。
+# 有独立技术贡献的后训练模型（如 Pika-H3-Flex）不在此列，因此只匹配明确的再打包标记。
+REDISTRIBUTION_LIBS = frozenset({"diffusion-single-file", "gguf"})
+REDISTRIBUTION_TAGS = frozenset(
+    "comfyui gguf ggml quantized onnx mlx awq gptq exl2".split()
 )
 
 # 关注的任务类型 → 中文类别（与 README §2.0「模型类别」命名风格一致），以及加分权重。
@@ -144,6 +153,7 @@ class Config:
     date: str = ""
     dry_run: bool = False
     force: bool = False
+    validate: bool = False
     offline_fixture: str = ""
     root: Path = field(default_factory=lambda: Path.cwd())
 
@@ -238,28 +248,84 @@ def fetch_all(cfg: Config) -> list[dict]:
     return list(by_id.values())
 
 
+def _tags(model: dict) -> list[str]:
+    """HF API 的 tags 偶尔为 None / 字符串；统一成 list[str]，避免逐字符迭代。"""
+    raw = model.get("tags")
+    if isinstance(raw, (list, tuple)):
+        return [str(t) for t in raw]
+    if isinstance(raw, str):
+        return [raw]
+    return []
+
+
+def _num(model: dict, key: str) -> int:
+    """把可能缺失或类型异常的计数安全转成非负整数。"""
+    try:
+        return max(0, int(model.get(key) or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
 def is_official(model: dict) -> bool:
-    author = (model.get("author") or "").lower()
-    mid = (model.get("id") or "").lower()
+    author = str(model.get("author") or "").lower()
+    mid = str(model.get("id") or "").lower()
     org = mid.split("/")[0] if "/" in mid else ""
     return author in OFFICIAL_ORGS or org in OFFICIAL_ORGS
 
 
 def noise_hit(model: dict) -> bool:
-    name = (model.get("id") or "").lower()
+    name = str(model.get("id") or "").lower()
     return any(tok in name for tok in NOISE_TOKENS)
+
+
+def base_model_ids(model: dict) -> list[str]:
+    """从 cardData.base_model 与 tags 的 base_model: 标记中提取基座仓库 id。"""
+    out: list[str] = []
+    card = model.get("cardData")
+    if isinstance(card, dict):
+        bm = card.get("base_model")
+        if isinstance(bm, str):
+            out.append(bm)
+        elif isinstance(bm, (list, tuple)):
+            out.extend(str(x) for x in bm)
+    for t in _tags(model):
+        if t.lower().startswith("base_model:"):
+            raw = t.split(":", 1)[1]
+            # base_model:finetune:xxx / base_model:adapter:xxx 是修饰前缀，取真正的仓库名
+            if raw.lower().startswith(("finetune:", "adapter:", "quantized:")):
+                raw = raw.split(":", 1)[1]
+            if "/" in raw:
+                out.append(raw)
+    return out
+
+
+def is_cross_org_redistribution(model: dict) -> bool:
+    own = str(model.get("author") or "").lower()
+    if not own:
+        mid = str(model.get("id") or "")
+        own = mid.split("/")[0].lower() if "/" in mid else ""
+    if not own:
+        return False
+    cross = any(
+        "/" in b and b.split("/")[0].lower() != own for b in base_model_ids(model)
+    )
+    if not cross:
+        return False
+    lib = str(model.get("library_name") or "").lower()
+    tags = {t.lower() for t in _tags(model)}
+    return lib in REDISTRIBUTION_LIBS or bool(tags & REDISTRIBUTION_TAGS)
 
 
 def infer_pipeline(model: dict) -> tuple[str, int]:
     tag = model.get("pipeline_tag")
     if tag in PIPELINE_CN:
         return PIPELINE_CN[tag][0], PIPELINE_CN[tag][1]
-    tags = model.get("tags") or []
+    tags = _tags(model)
     for t in tags:
         if t in PIPELINE_CN and PIPELINE_CN[t][1] >= 6:
             return PIPELINE_CN[t][0], PIPELINE_CN[t][1] - 2
     # 无 pipeline_tag 时按仓库名 / 标签兜底推断，避免全部落到「其他」。
-    hay = ((model.get("id") or "") + " " + " ".join(str(t) for t in tags)).lower()
+    hay = (str(model.get("id") or "") + " " + " ".join(tags)).lower()
     for needle, label in FALLBACK_CATEGORY:
         if needle in hay:
             return label, 3
@@ -286,9 +352,8 @@ FALLBACK_CATEGORY = (
 
 
 def capability_text(model: dict, category: str) -> str:
-    tags = [str(t) for t in (model.get("tags") or [])]
     hints: list[str] = []
-    for t in tags:
+    for t in _tags(model):
         low = t.lower()
         if low.startswith(TAG_SKIP_PREFIX) or low in TAG_SKIP_EXACT or LANG_CODE.match(low):
             continue
@@ -297,8 +362,8 @@ def capability_text(model: dict, category: str) -> str:
         hints.append(t)
         if len(hints) == 3:
             break
-    suffix = "、".join(hints) if hints else "无附加标签"
-    return f"{category}；标签 {suffix}（按 HF 标签推断）"
+    suffix = "、".join(hints) if hints else "标签信息不足"
+    return f"{category}；{suffix}（按 HF 标签推断）"
 
 
 def in_window(model: dict, now: dt.datetime, cfg: Config) -> bool:
@@ -310,9 +375,12 @@ def in_window(model: dict, now: dt.datetime, cfg: Config) -> bool:
 
 
 def is_hot(model: dict, cfg: Config) -> bool:
-    likes = int(model.get("likes") or 0)
-    downloads = int(model.get("downloads") or 0)
-    trending = float(model.get("trendingScore") or 0)
+    likes = _num(model, "likes")
+    downloads = _num(model, "downloads")
+    try:
+        trending = max(0.0, float(model.get("trendingScore") or 0))
+    except (TypeError, ValueError):
+        trending = 0.0
     return (
         (likes >= cfg.min_likes and downloads >= cfg.min_downloads)
         or likes >= max(25, cfg.min_likes * 5)
@@ -328,9 +396,12 @@ def qualify(model: dict, now: dt.datetime, cfg: Config) -> tuple[bool, str]:
     if not in_window(model, now, cfg):
         return False, "outside-window"
     official = is_official(model)
-    # 量化 / 派生 / 个人微调仓库一律排除（含知名组织），本项目跟踪的是模型发布而非权重再分发。
+    # 量化 / 派生仓库一律排除（含知名组织），本项目跟踪的是模型发布而非权重再分发。
     if noise_hit(model):
         return False, "quantized-or-derived"
+    # 名字干净但 base_model 指向其他组织、且属于纯再打包格式的仓库同样排除。
+    if is_cross_org_redistribution(model):
+        return False, "cross-org-redistribution"
     if not official and not is_hot(model, cfg):
         return False, "below-heat-threshold"
     if score(model, now, cfg) < cfg.min_score:
@@ -340,9 +411,12 @@ def qualify(model: dict, now: dt.datetime, cfg: Config) -> tuple[bool, str]:
 
 def score(model: dict, now: dt.datetime, cfg: Config) -> float:
     """「值得关注」打分。热度为主，官方/新发布/任务类型加权，派生仓库降权。"""
-    likes = max(0, int(model.get("likes") or 0))
-    downloads = max(0, int(model.get("downloads") or 0))
-    trending = max(0.0, float(model.get("trendingScore") or 0))
+    likes = _num(model, "likes")
+    downloads = _num(model, "downloads")
+    try:
+        trending = max(0.0, float(model.get("trendingScore") or 0))
+    except (TypeError, ValueError):
+        trending = 0.0
     s = min(30.0, 6.0 * math.log10(downloads + 1))
     s += min(25.0, 5.0 * math.sqrt(likes))
     s += min(20.0, trending / 10.0)
@@ -360,7 +434,7 @@ def score(model: dict, now: dt.datetime, cfg: Config) -> float:
         s -= 8.0
     if noise_hit(model):
         s -= 15.0
-    if not official and any(str(t).lower().startswith("base_model") for t in (model.get("tags") or [])):
+    if not official and any(t.lower().startswith("base_model") for t in _tags(model)):
         s -= 10.0
     if "trending" in (model.get("_feeds") or []):
         s += 4.0
@@ -438,11 +512,12 @@ def build_row(model: dict, kind: str, cfg: Config,
     modified = parse_ts(model.get("lastModified"))
     shown = created if kind == "new" else (modified or created)
     when = shown.strftime("%Y-%m-%d %H:%M UTC") if shown else "未披露"
-    likes = int(model.get("likes") or 0)
-    downloads = int(model.get("downloads") or 0)
+    likes = _num(model, "likes")
+    downloads = _num(model, "downloads")
     status = "需申请（gated）" if model.get("gated") else "公开仓库"
     status += f"；HF 下载 {downloads} / 赞 {likes}（未核实）"
     kind_label = "🆕 新发布" if kind == "new" else "🔄 近期有更新"
+    license_tags = [t.split(":", 1)[1] for t in _tags(model) if t.lower().startswith("license:")]
     return {
         "模型名称": f"[{md_cell(mid)}]({model_link(mid)})",
         "提供方": ("⭐ " if official else "") + md_cell(author),
@@ -458,6 +533,8 @@ def build_row(model: dict, kind: str, cfg: Config,
         "_sha": model.get("sha") or "",
         "_lastModified": model.get("lastModified") or "",
         "_feeds": ",".join(model.get("_feeds") or []),
+        "_license": " / ".join(dict.fromkeys(license_tags)) or "未披露",
+        "_heat": f"赞 {likes} · 下载 {downloads}",
     }
 
 
@@ -519,26 +596,28 @@ def render_daily_md(rows: list[dict[str, str]], meta: dict, root_level: bool = T
         "",
         "## 打分明细（用于调参，非模型规格）",
         "",
-        "| 模型 | 分数 | 类型 | 命中的榜单 | 热度 |",
-        "|:---|---:|:---|:---|:---|",
+        "| 模型 | 分数 | 类型 | 命中的榜单 | 热度 | HF 许可标记 |",
+        "|:---|---:|:---|:---|:---|:---|",
     ]
     for r in rows:
         lines.append(
             f"| {r['模型名称']} | {r['_score']} | "
             f"{'新发布' if r['_kind'] == 'new' else '有更新'} | {r['_feeds']} | "
-            f"{r['可用状态']} |"
+            f"{r['_heat']} | `{md_cell(r['_license'])}` |"
         )
     if not rows:
-        lines.append("| — | — | — | — | — |")
+        lines.append("| — | — | — | — | — | — |")
     lines += [
         "",
         "## 筛选规则",
         "",
         "1. 排除私有仓库；量化 / abliterated / LoRA / 备份类仓库一律排除（含知名组织），本项目跟踪模型发布而非权重再分发。",
-        "2. 非官方仓库需满足热度门槛（点赞与下载组合，或高点赞 / 高下载 / trendingScore ≥ 50）。",
-        "3. 打分 = 下载量与点赞的对数项 + trendingScore + 官方组织加权 + 新发布加权 + 任务类型加权；量化与纯微调降权。",
-        "4. 跨天去重：`seen.json` 记录已上报仓库；已上报仓库仅在 sha / lastModified 变化且超过冷却期后，才以「🔄 有更新」再次上报。",
-        "5. 「值得关注」是启发式排序，不代表模型质量结论；排序分数不可用于横向比较模型能力。",
+        "2. 排除「跨组织再分发」：`base_model` 指向其他组织且属于 ComfyUI 单文件 / GGUF / ONNX 等纯再打包格式的仓库；有独立技术贡献的后训练模型不在此列。",
+        "3. 非官方仓库需满足热度门槛（点赞与下载组合，或高点赞 / 高下载 / trendingScore ≥ 50）。",
+        "4. 打分 = 下载量与点赞的对数项 + trendingScore + 官方组织加权 + 新发布加权 + 任务类型加权；量化与纯微调降权。",
+        "5. 「新发布」保留 1/3 名额，避免高热度老仓库的小改动挤掉当天真正的新模型。",
+        "6. 跨天去重：`seen.json` 记录已上报仓库；已上报仓库仅在 sha / lastModified 变化且超过冷却期后，才以「🔄 近期有更新」再次上报。",
+        "7. 「值得关注」是启发式排序，不代表模型质量结论；排序分数不可用于横向比较模型能力。",
         "",
         "## 历史归档",
         "",
@@ -712,6 +791,80 @@ def run(cfg: Config) -> dict[str, bool]:
     return changed
 
 
+def table_column_counts(path: Path) -> list[set[int]]:
+    """按「连续表格块」分别统计数据列数；日报里主表与打分明细表列数本就不同。"""
+    blocks: list[set[int]] = []
+    cur: set[int] = set()
+
+    def flush() -> None:
+        nonlocal cur
+        if cur:
+            blocks.append(cur)
+            cur = set()
+
+    for line in path.read_text(encoding="utf-8").split("\n"):
+        if line.strip().startswith("|"):
+            if re.match(r"^\s*\|[\s\-:|]+\|\s*$", line):
+                continue
+            cur.add(len(re.split(r"(?<!\\)\|", line.strip())) - 2)
+        else:
+            flush()
+    flush()
+    return blocks
+
+
+def validate_outputs(root: Path) -> list[str]:
+    """校验自动产物完整性；返回错误列表，空列表代表通过。"""
+    errors: list[str] = []
+    daily = root / "data" / "hf-daily"
+
+    payload_path = daily / "latest.json"
+    if not payload_path.exists():
+        errors.append("缺少 data/hf-daily/latest.json")
+    else:
+        try:
+            payload = json.loads(payload_path.read_text(encoding="utf-8"))
+            models = payload.get("models")
+            if not isinstance(models, list):
+                errors.append("latest.json 的 models 不是数组")
+            else:
+                for row in models:
+                    missing = [c for c in TABLE_COLS if c not in row]
+                    if missing:
+                        errors.append(f"latest.json 条目缺字段: {','.join(missing)}")
+                        break
+            if "未经人工核实" not in str(payload.get("meta", {}).get("disclaimer", "")):
+                errors.append("latest.json 缺少未核实免责声明")
+        except (json.JSONDecodeError, OSError) as exc:
+            errors.append(f"latest.json 无法解析: {exc}")
+
+    readme = root / "README.md"
+    if not readme.exists():
+        errors.append("缺少 README.md")
+    else:
+        text = readme.read_text(encoding="utf-8")
+        if text.count(MARKER_START) != 1 or text.count(MARKER_END) != 1:
+            errors.append("README.md 的 HF_DAILY marker 缺失或重复")
+        else:
+            block = text.split(MARKER_START, 1)[1].split(MARKER_END, 1)[0]
+            if "未经人工核实" not in block:
+                errors.append("README §2.0.8 缺少未核实免责声明")
+
+    archives = sorted(daily.glob("20??-??-??.md")) if daily.exists() else []
+    if not (root / "HF_DAILY.md").exists():
+        errors.append("缺少 HF_DAILY.md")
+    if not archives:
+        errors.append("缺少当日归档 data/hf-daily/YYYY-MM-DD.md")
+
+    for f in [root / "HF_DAILY.md"] + archives[-1:]:
+        if not f.exists():
+            continue
+        for idx, counts in enumerate(table_column_counts(f), 1):
+            if len(counts) > 1:
+                errors.append(f"{f.name} 第 {idx} 个表格列数不一致: {sorted(counts)}")
+    return errors
+
+
 def parse_args(argv: list[str] | None = None) -> Config:
     p = argparse.ArgumentParser(description="每日抓取 Hugging Face 值得关注的模型")
     p.add_argument("--lookback-hours", type=int, default=36, help="时间窗（小时），默认 36")
@@ -725,6 +878,7 @@ def parse_args(argv: list[str] | None = None) -> Config:
     p.add_argument("--date", default="", help="覆盖日期 YYYY-MM-DD（测试用）")
     p.add_argument("--dry-run", action="store_true", help="只预览，不写文件")
     p.add_argument("--force", action="store_true", help="覆盖当天已存在的日报")
+    p.add_argument("--validate", action="store_true", help="只校验已有产物完整性，不联网、不写入")
     p.add_argument("--offline-fixture", default="", help="从本地 JSON 读候选，跳过网络")
     p.add_argument("--root", default="", help="仓库根目录，默认当前目录")
     a = p.parse_args(argv)
@@ -733,13 +887,23 @@ def parse_args(argv: list[str] | None = None) -> Config:
         min_downloads=a.min_downloads, top_n=a.top_n,
         cooldown_days=a.cooldown_days, per_feed_limit=a.per_feed_limit,
         pages=a.pages, min_score=a.min_score, date=a.date,
-        dry_run=a.dry_run, force=a.force, offline_fixture=a.offline_fixture,
+        dry_run=a.dry_run, force=a.force, validate=a.validate,
+        offline_fixture=a.offline_fixture,
         root=Path(a.root).resolve() if a.root else Path.cwd(),
     )
 
 
 def main(argv: list[str] | None = None) -> int:
     cfg = parse_args(argv)
+    if cfg.validate:
+        errors = validate_outputs(cfg.root)
+        for err in errors:
+            print(f"[validate] ERROR: {err}", file=sys.stderr)
+        if errors:
+            return 1
+        print("[validate] OK: latest.json / README marker / 日报归档 / 表格列数 全部通过",
+              file=sys.stderr)
+        return 0
     try:
         run(cfg)
     except (RuntimeError, OSError, ValueError) as exc:

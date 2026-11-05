@@ -118,6 +118,47 @@ class TestQualify(unittest.TestCase):
             "世界模型",
         )
 
+    def test_comfyui_cross_org_repack_excluded(self):
+        mdl = model("Comfy-Org/MOSS-Image", library_name="diffusion-single-file",
+                    tags=["comfyui", "base_model:OpenMOSS-Team/MOSS-Image-Base"])
+        self.assertTrue(m.is_cross_org_redistribution(mdl))
+        ok, why = m.qualify(mdl, self.now, self.c)
+        self.assertFalse(ok)
+        self.assertEqual(why, "cross-org-redistribution")
+
+    def test_gguf_adapter_cross_org_excluded(self):
+        mdl = model("Viggle/Viggle-Remake", library_name="minimax-h3",
+                    tags=["gguf", "lora", "base_model:adapter:MiniMaxAI/MiniMax-H3"])
+        self.assertTrue(m.is_cross_org_redistribution(mdl))
+
+    def test_post_trained_adapter_is_kept(self):
+        mdl = model("Pika-Labs/Pika-H3-Flex", library_name="diffusers",
+                    tags=["lora", "base_model:adapter:MiniMaxAI/MiniMax-H3"])
+        self.assertFalse(m.is_cross_org_redistribution(mdl))
+
+    def test_same_org_base_model_is_kept(self):
+        mdl = model("openbmb/MiniCPM-OCR-1.0", library_name="diffusion-single-file",
+                    cardData={"base_model": ["openbmb/MiniCPM-V-4.6"]})
+        self.assertFalse(m.is_cross_org_redistribution(mdl))
+
+    def test_cross_org_but_own_research_model_is_kept(self):
+        mdl = model("apple/LensVLM-9B", library_name="transformers",
+                    tags=["base_model:finetune:Qwen/Qwen3.5-9B"])
+        self.assertFalse(m.is_cross_org_redistribution(mdl))
+
+    def test_malformed_api_fields_do_not_crash(self):
+        mdl = model("someone/x", tags="transformers,en", likes="not-a-number",
+                    downloads=None, trendingScore="bad")
+        row = m.build_row(mdl, "new", cfg())
+        self.assertEqual(row["_heat"], "赞 0 · 下载 0")
+        self.assertIsInstance(m.score(mdl, NOW, cfg()), float)
+        self.assertFalse(m.is_hot(mdl, cfg()))
+        self.assertNotIn("标签 t、", row["核心能力"])
+
+    def test_none_tags_render_insufficient_info(self):
+        row = m.build_row(model("someone/x", tags=None), "new", cfg())
+        self.assertIn("标签信息不足", row["核心能力"])
+
     def test_official_quantized_is_also_excluded(self):
         ok, why = m.qualify(model("nvidia/DeepSeek-V4.1-NVFP4"), self.now, self.c)
         self.assertFalse(ok)
@@ -207,6 +248,48 @@ class TestRendering(unittest.TestCase):
             (root / "README.md").write_text("no markers", encoding="utf-8")
             with self.assertRaises(RuntimeError):
                 m.update_readme(root, "NEW", dry_run=False)
+
+
+class TestValidateOutputs(unittest.TestCase):
+    def _fixture(self, root: Path, **kw):
+        (root / "README.md").write_text(
+            m.MARKER_START + "\nOLD\n" + m.MARKER_END + "\n", encoding="utf-8"
+        )
+        fixture = root / "fixture.json"
+        fixture.write_text(json.dumps({"models": [model("Qwen/Q3")]}), encoding="utf-8")
+        m.run(cfg(root=root, offline_fixture=str(fixture), **kw))
+
+    def test_valid_outputs_pass(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._fixture(root)
+            self.assertEqual(m.validate_outputs(root), [])
+
+    def test_missing_latest_json_detected(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._fixture(root)
+            (root / "data/hf-daily/latest.json").unlink()
+            self.assertTrue(any("latest.json" in e for e in m.validate_outputs(root)))
+
+    def test_duplicated_marker_detected(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._fixture(root)
+            text = (root / "README.md").read_text(encoding="utf-8")
+            (root / "README.md").write_text(text + "\n" + m.MARKER_START, encoding="utf-8")
+            self.assertTrue(any("marker" in e for e in m.validate_outputs(root)))
+
+    def test_inconsistent_table_columns_detected(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            self._fixture(root)
+            p = root / "HF_DAILY.md"
+            text = p.read_text(encoding="utf-8")
+            sep = "|" + "|".join([":---"] * 8) + "|"
+            self.assertIn(sep, text)
+            p.write_text(text.replace(sep, sep + "\n| a | b | c |", 1), encoding="utf-8")
+            self.assertTrue(any("列数不一致" in e for e in m.validate_outputs(root)))
 
 
 class TestEndToEndOffline(unittest.TestCase):

@@ -90,6 +90,10 @@ jobs:
           fi
           python3 scripts/fetch_hf_models.py "${args[@]}"
 
+      - name: Validate generated outputs
+        if: ${{ inputs.dry_run != true }}
+        run: python3 scripts/fetch_hf_models.py --validate
+
       - name: Regenerate index.html
         if: ${{ inputs.dry_run != true }}
         run: python3 gen_html.py
@@ -106,4 +110,16 @@ jobs:
             exit 0
           fi
           git commit -m "🤖 chore(hf-daily): 更新 HF 每日模型候选 $(date -u +%F)"
-          git push
+          # 并发运行或 Pages 工作流同时推送时做 rebase 重试，避免 non-fast-forward 直接失败
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Pushed on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Push failed (attempt ${attempt}); rebasing onto origin/main" >&2
+            git fetch origin main --quiet
+            git rebase origin/main
+            sleep 5
+          done
+          echo "Push failed after 3 attempts" >&2
+          exit 1
