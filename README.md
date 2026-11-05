@@ -2,14 +2,14 @@
 
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--11--05-blue.svg)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--11--06-blue.svg)]()
 [![Models](https://img.shields.io/badge/Models-200%2B-green.svg)]()
 [![Papers](https://img.shields.io/badge/Papers-218-orange.svg)]())
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 > 🎴 **最全面的大语言模型索引项目 — 模型卡牌屋 (House of Model Cards)** — 使用扑克牌花色体系对 AI 模型进行创意分类，涵盖从 GPT-1 到最新开源模型的完整调研，包含技术细节、性能指标、部署方式与官方资源。
 
-> 📋 **2026-11-05 更新**：新增 [§2.0 模型汇总核实总表](#20-模型汇总核实总表-截至-2026-11-05)，以项目现有模型汇总为基线完成 188 条核实记录（🆕 新增 143 / 🔄 更新 36 / ⚠️ 待确认 9），每项含模型名称、提供方、发布或更新时间、模型类别、核心能力、可用状态与信息来源。
+> 📋 **2026-11-06 更新**：新增 [§2.0 模型汇总核实总表](#20-模型汇总核实总表-截至-2026-11-05)，以项目现有模型汇总为基线完成 194 条核实记录（🆕 新增 150 / 🔄 更新 40 / ⚠️ 待确认 4），每项含模型名称、提供方、发布或更新时间、模型类别、核心能力、可用状态与信息来源。剩余 4 条待确认均为「基线无来源历史数值」，已定性为结构性开放项。
 
 ---
 
@@ -26,7 +26,7 @@
 | 🛡️ 安全框架 | 6 类 | 攻击类型 + 防御体系 |
 | 🔧 微调工具 | 15+ | 从数据到部署的全链路 |
 | 🏭 行业场景 | 10+ | 真实落地应用案例 |
-| ✅ 本轮核实增量 | 188 条 | 2026-11-05（四轮 + 自动抓取闭环）：🆕 新增 143 / 🔄 更新 36 / ⚠️ 待确认 9，详见 §2.0；覆盖边界见 §2.0.7 |
+| ✅ 本轮核实增量 | 194 条 | 2026-11-06（五轮 + 自动抓取闭环）：🆕 新增 150 / 🔄 更新 40 / ⚠️ 待确认 4，详见 §2.0；覆盖边界见 §2.0.7 |
 
 ---
 
@@ -368,7 +368,7 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 ## 1.10 🏆 SOTA 模型排行榜（2026年4月实时）（⭐ 新增）
 
-> ⚠️ **榜单可信度警示（第四轮核实补注）**：本榜为 **2026-04 基线快照**，排名与分数未标注第三方评测来源、评测日期与 harness 配置，且「亮点」列含多条无一手依据的上下文数值（2M / 4M）。截至 2026-11-05，榜单前列型号（GPT-5.4、Claude 4.6、Gemini 3.1）已被后续版本取代，**已明显滞后，不得作为当前 SOTA 结论引用**。可核实的后续官方口径示例：Gemini 4 Carbon 于 2026-10-28 官方宣布在 Artificial Analysis Intelligence Index **v5.0** 排名第一（59 分），见 §2.0.2。本榜已列入 §2.0.4 待确认项。
+> ⚠️ **榜单可信度警示（第四轮核实补注）**：本榜为 **2026-04 基线快照**，排名与分数未标注第三方评测来源、评测日期与 harness 配置，且「亮点」列含多条无一手依据的上下文数值（2M / 4M）。截至 2026-11-06，榜单前列型号（GPT-5.4、Claude 4.6、Gemini 3.1）已被后续版本取代，**已明显滞后，不得作为当前 SOTA 结论引用**。可核实的后续官方口径示例：Gemini 4 Carbon 于 2026-10-28 官方宣布在 Artificial Analysis Intelligence Index **v5.0** 排名第一（59 分），见 §2.0.2。本榜已列入 §2.0.4 待确认项。
 
 > 综合多项基准测试的 Top 10 排行，分为闭源/开源双赛道。
 
@@ -517,6 +517,8 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | Runway Gen-4.5 | Runway | 2025-12-11（2026-01-21 增首帧图生视频） | 视频生成 | 文生视频 / 图生视频，连续动作、镜头控制与叙事一致性；2026-07-29 上线 OpenRouter API | 已开放（付费计划 / API） | `[A]` [runway.com 官方 Changelog](https://runway.com/changelog) | 🆕 第四轮：官方 changelog 明确首发日；第三方「2026-07-29 发布」实为 API 上架日，不采用 |
 | Luma Ray3.2 | Luma AI | 2026-06（月份级） | 视频生成 | 16-bit 原生 HDR / ACES EXR 导出、Multi-Keyframe 最多 16 帧、V2V 20s@1080p、Draft Mode | 已开放（Luma App / API） | `[A]` [lumalabs.ai/llm-info](https://lumalabs.ai/llm-info)（官方给 AI 助手的权威信息页，Last updated 2026-07-13） | 🆕 第四轮；官方仅给到月份。此前版本含 Ray3、Ray3 Modify、Ray3.14；官网首页仍推 Ray3.14，与 llm-info「当前为 Ray3.2」口径不一致，已如实并列 |
 | Luma UNI-1 / UNI-1.1 | Luma AI | 未披露 | 图像生成 / 多模态推理 | 参考引导生成、最多 9 张参考图、意图推理后生成像素；官方称人类偏好 Elo 第一 | 已开放（Luma API） | `[A]` [lumalabs.ai/llm-info](https://lumalabs.ai/llm-info) | 🆕 第四轮；官方页面未给发布日期与参数规模，不推测 |
+| NX-AI/TiRex-2 | NX-AI | 2026-06-16 | 时间序列预测 / 新架构 | 零样本时间序列预测，仓库标注 `time-series-forecasting`、附 arXiv:2607.01204；49 赞 / 5873 下载 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/NX-AI/TiRex-2) | 🆕 第五轮：§3.6 新架构与时间序列方向补白；另有 fevbench / gifteval 评测变体 |
+| NX-AI/KronLSTM 系列 | NX-AI | 2026-10-16 | 新架构 / 线性注意力 | 1.5B、100B token、32K 上下文四款研究性 checkpoint（含 SWA 滑动窗口变体） | 开放权重（研究 checkpoint，0–1 赞 / 43–147 下载） | `[A]` HF NX-AI 组织页与模型 API | 🆕 第五轮；**低热度实验仓库**，不代表成熟发布，仅作 §3.6 架构演进线索 |
 
 **中国厂商与机构**
 
@@ -588,6 +590,11 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | Qwen3.7-Max / Qwen3.7-Plus | 阿里巴巴 | 2026-05-20 / 06-01 | 闭源 Agent / 多模态 Agent | Max：编码与办公 Agent、35 小时 / 1158 次工具调用全自主内核优化（10× 加速）、机器人导航；Plus：GUI+CLI 混合多模态 Agent，1M 上下文 | 已开放 API（阿里云百炼 / 千问云）；**未开源权重** | `[A]` [qwen.ai Qwen3.7](https://qwen.ai/blog?id=qwen3.7) · [Qwen3.7-Plus](https://qwen.ai/blog?id=qwen3.7-plus) | 🆕 第四轮：由 ⚠️ 待确认收敛；官方未披露参数规模与技术报告 |
 | Baichuan-M4 | 百川智能 / 清华大学 | 2026-06-22 | 医疗增强大模型 | 主动问诊、全病程记忆、证据锚定与低幻觉；HealthBench 68.6（Hard 49.7 / Professional 55.1）、SCAN-bench 初诊 79.0、幻觉率 3.3% | 已发布；**未见开源权重**（HF 检索无对应仓库） | `[A]` [百川官网基准表](https://www.baichuan-ai.com/)（列有 Baichuan-M4）；`[B]` 每日经济新闻 · 网易科技 · 动脉网三源交叉 | 🆕 第四轮：由 ⚠️ 待确认收敛；日期为 B 级三源一致，评测分数为官方披露口径 |
 | 混元 Hy-SimulMT-30B-A3B | 腾讯 | 2026-10-22 | 语音 / 同声传译 | 30B / 3B 激活，中英等多语语音到语音实时同传，约 3 秒延迟；含 Interleave / FP8 变体 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/tencent/Hy-SimulMT-30B-A3B) | 🆕 第四轮：HF 官方仓库客观确认；仓库 `pipeline_tag=translation` |
+| Hailuo 2.3 / 2.3 Fast · Media Agent | MiniMax | **2025-10-28** | 视频生成 / 多模态创作 Agent | 复杂肢体动作、风格化（动漫 / 水墨 / 游戏 CG）、面部微表情；2.3 Fast 降低批量成本最多 50%；Video Agent 同日升级为全模态 Media Agent | 已开放（海螺 AI 网页 / App / 开放平台 API） | `[A]` [MiniMax 官方 API 发布说明](https://platform.minimax.io/docs/release-notes/apis)（明写 `Oct. 28, 2025` 新增两个模型）· [官方发布博客](https://www.minimax.io/news/minimax-hailuo-23) · [中文官网](https://www.minimax.cn/news/minimax-hailuo-23)；`[B]` 人民日报客户端 | 🆕 第五轮：由 ⚠️ 收敛。**此前 5 种冲突口径中，2026 年的日期均为第三方 API 平台上架日或 AI 日报误标，非发布日**；官方发布说明给出确切日期 |
+| RynnBrain 1.1 系列 | 阿里达摩院 | 2026-07-16（官宣）/ HF 2B 仓库 07-13 | 具身基础模型 / VLA | 2B / 9B / 122B-A10B 三规模，首个 122B 级具身 MoE；RynnBrain-VLA 迁移至 Unitree G1 / Astribot 等真实机器人 | 开源权重 · Apache 2.0 | `[A]` [ModelScope 官方模型页](https://www.modelscope.cn/models/DAMO_Academy/RynnBrain1.1-9B) · [HF 模型 API](https://huggingface.co/api/models/Alibaba-DAMO-Academy/RynnBrain1.1-2B)（27 万下载） | 🆕 第五轮：具身 / 机器人方向补白；同日发布 arXiv 技术报告 |
+| 腾讯 Hy-Embodied 系列 | 腾讯 Robotics X / 混元 | 2026-04-02 起（0.5）；06-11 VLA-UMI；07-14 VLM 1.0 / RxBrain 1.0 | 具身 VLA / 机器人 | HY-Embodied-0.5（923 赞）、0.5-VLA-UMI 端到端 VLA、VLM 1.0 与 RxBrain 1.0；适配 UMI 数据与双臂操作 | 开放权重（HF `tencent` 组织） | `[A]` HF 模型 API：`tencent/HY-Embodied-0.5`、`tencent/Hy-Embodied-0.5-VLA-UMI`、`tencent/Hy-Embodied-VLM-1.0` | 🆕 第五轮：多个官方仓库客观确认；二手报道称 2026-06-15 开源 HyVLA-0.5，此处以 HF 仓库日期为准，不采用未核实的官宣日 |
+| 宇树 UnifoLM 系列 | 宇树科技 | 2026-01-28（VLM-Base）/ 2026-09-28（WLA-1.0-Base） | 世界-语言-动作 / 具身 | UnifoLM-VLA-0 → WLA-1.0，统一世界建模、语言理解与动作生成；另有 ER-1 具身推理模型 | 开放权重（HF `unitreerobotics` 组织） | `[A]` [HF 模型 API](https://huggingface.co/api/models/unitreerobotics/UnifoLM-WLA-1.0-Base) · VLM-Base；`[B]` 中国经济网 | 🆕 第五轮：世界模型与具身交叉方向补白；能力描述含 B 级来源，已在说明中标明 |
+| Index-1.9B 系列 | 哔哩哔哩 | 2024-06 开源 / **2026-07-10 补发技术报告 v1**（v4 10-17） | SLM / RAG 增强 | 1.9B 非嵌入参数、2.8T 中英语料；Base / Pure / Chat / Character 四变体，Character 引入 RAG 做少样本角色定制；基准均分 64.92 | 开源（GitHub `bilibili/Index-1.9B`；HF `IndexTeam` 仓库 2024-06） | `[A]` [arXiv:2607.09885](https://arxiv.org/abs/2607.09885) · HF `IndexTeam/Index-1.9B-*` 仓库 | 🆕 第五轮：SLM / RAG 方向补白。**注意这是「模型 2024 年开源、技术报告 2026 年补发」，不是 2026 新模型**；不可按 HF 建仓日或论文日推断为当年发布 |
 
 #### 2.0.3 🔄 更新项 已收录模型的版本 / 能力 / 状态更正
 
@@ -631,6 +638,10 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | Step-3.5-Flash | 阶跃星辰 | 原记 2025-04，官网在列但无日期 | 通用 / 高效 | 官网列为 Flash 系列在售模型 | 已开放 API；**原记日期待核实** | `[A]` stepfun.com · `[C]` 基线表日期 | 🔄 原记日期无法核实；已按官网在列状态保留，引用基线日期前须复核 |
 | o1 / o1-pro | OpenAI | 2026-04-22 公告弃用 / **2026-10-23 从 API 关停** | 推理增强 | 思维链推理；官方推荐替代 `gpt-5.6-sol`（o1-pro 需 `reasoning.mode: pro`） | **已退役**（API 不可用） | `[A]` [OpenAI 官方 Deprecations](https://developers.openai.com/api/docs/deprecations)（2026-04-22 Legacy GPT model snapshots 条目） | 🔄 第四轮：由 ⚠️ 待确认收敛；基线仅写「已退役」，现补齐公告/关停日期与替代型号；与 ChatGPT 侧 o4-mini 退役（2026-02-13）属不同事件 |
 | HunyuanVideo / HunyuanVideo 1.5 | 腾讯混元 | 2024-12-01 建仓（论文 12-03）/ 2025-11-18 建仓（1.5 官宣 11-21） | 视频生成 | 初代 13B DiT + 3D 因果 VAE；1.5 为 8.3B，SSTA 稀疏注意力、480p/720p 原生、超分至 1080p、14G 显存可运行 | 开放权重 · Tencent Hunyuan Community License（非 Apache 2.0） | `[A]` [HF tencent/HunyuanVideo](https://huggingface.co/api/models/tencent/HunyuanVideo) · [HunyuanVideo-1.5](https://huggingface.co/api/models/tencent/HunyuanVideo-1.5)（标签含 arXiv:2511.18870） | 🔄 第四轮：§17 基线仅记「发布日期未公开 / 5s / 720p」，现补齐版本时间线、参数与许可证；建仓日与官宣日并列，不混用 |
+| LLaMA 4 Behemoth | Meta | 2025-04-05 官方预览，**至今未发布** | 通用 / 超大规模 MoE | 官方仅作预览；288B 激活 / 16 专家等规格为预览口径，未交付 | **未发布** | `[A]` [ai.meta.com Llama 4 官方博客](https://ai.meta.com/blog/llama-4-multimodal-intelligence/)（明言「still training, not yet releasing」） | 🔄 第五轮：由 ⚠️ 收敛。基线记「2025-10 已发布 / 最强开源」为错误；官方从未正式宣布取消，也从未发布。**结论已确定，不再作为待确认项** |
+| GPT-5 引用名称 | OpenAI | 2025-08-07 发布 / System Card 同期 | 文献引用 | GPT-5 为统一系统（fast 模型 + 推理模型 + 实时路由）；官方只发布 System Card | 已发布 | `[A]` [openai.com GPT-5 System Card](https://openai.com/index/gpt-5-system-card/) · [官方 PDF](https://cdn.openai.com/gpt-5-system-card.pdf) · arXiv:2601.03267 | 🔄 第五轮：由 ⚠️ 收敛。**不存在独立的「GPT-5 Technical Report」**；基线以该名称引用 arXiv:2601.03267 属引用名称错误，应改为 GPT-5 System Card |
+| Grok 5 | xAI | 未发布 | 通用 | 不适用 | **未发布** | `[A]` [docs.x.ai 官方模型目录](https://docs.x.ai/docs/models)（完整列出 grok-4.3 / 4.5 / 4.6 / 4.7 / 4.20 系列与 Imagine / Voice，并称 Grok 4.7 为「the most capable model we've built」）；`[B]` Elonosphere · allthings-elon | 🔄 第五轮：由 ⚠️ 收敛。**官方模型目录无 Grok 5**；部分二手站称「2026-10-28 发布、10-31 开放 API」，与官方目录直接冲突，不采信。结论已确定，不再作为待确认项 |
+| xLSTM 7B 引用对应关系 | NX-AI | 2024-12-11（HF 仓库） | 新架构 | xLSTM 7B 参数规模，循环架构 | 开放权重 · license:other | `[A]` [HF NX-AI/xLSTM-7b](https://huggingface.co/api/models/NX-AI/xLSTM-7b)（125 赞 / 3336 下载）· [arXiv:2510.02228](https://arxiv.org/abs/2510.02228) | 🔄 第五轮：由 ⚠️ 收敛。模型**真实存在**（2024-12-11），但基线把 arXiv:2510.02228 当作其模型报告是错的——该论文是《xLSTM Scaling Laws》（v1 2025-10-02 / v2 2026-02-20，ICLR 2026），其中 **7B 指 scaling law 实验的最大规模（80M–7B）**，并非该模型的发布论文；代码见 `NX-AI/xlstm_scaling_laws` |
 
 #### 2.0.4 ⚠️ 待确认项 无法核实 / 来源冲突 / 仅见预告
 
@@ -638,23 +649,24 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 | 模型名称 | 提供方 | 发布或更新时间 | 模型类别 | 核心能力 | 可用状态 | 信息来源 | 标记与待确认原因 |
 |:---|:---|:---|:---|:---|:---|:---|:---|
-| LLaMA 4 Behemoth | Meta | 待核实 | 通用 / 超大规模 MoE | 待核实（基线记 2T / 10M） | **未发布**（官方无发布记录） | `[A]` [ai.meta.com Llama 4 官方博客](https://ai.meta.com/blog/llama-4-multimodal-intelligence/)（明言「still training, not yet releasing」）；`[B]` benchr.org · The AI Rankings | ⚠️ 基线记「2025-10 已发布 / 最强开源」；Meta 官方仅作预览且后续搁置，未正式宣布取消。不可按已发布模型收录 |
-| 基线表 2M / 4M 级上下文数值 | 多家 | 不适用 | 规格字段 | 不适用 | 不适用 | `[C]` 基线表自述 | ⚠️ GPT-5.1 2M、GPT-5.2 4M、Claude 4.6 2M、Gemini 3.1 4M、Grok-4.1 4M、Claude 4.5 Opus 1M 等数值均无一手来源；已在 §2.0.3 逐条标注。**注意：Llama 4 Scout 的 10M 有 Meta 官方来源，不在此列**（见第二轮纠偏） |
-| 独立 GPT-5 Technical Report | OpenAI | 待核实 | 文献引用 | 已核实存在的是 GPT-5 System Card（arXiv:2601.03267） | 待确认 | `[A]` [arXiv:2601.03267](https://arxiv.org/abs/2601.03267) · [OpenAI 部署安全中心](https://deploymentsafety.openai.com/rss.xml) | ⚠️ 基线以「GPT-5 Technical Report」引用该编号；是否存在独立技术报告未见公开来源，引用名称需更正 |
-| Grok 5 | xAI | 未发布 | 通用 | 待核实（预告扩大上下文与更快推理） | **未发布** | `[B]` Elonosphere · GrokMag | ⚠️ 官方新闻页、docs.x.ai 模型列表、API 定价与发布说明均无该模型；当前最新为 Grok 4.7 |
-| Hailuo 2.3 发布日期 | MiniMax | 待核实 | 视频生成 | 不适用 | 待确认 | `[B]` 百度百科 · 界面新闻日报 · AI 网关目录 · 第三方评测站 | ⚠️ **多源严重冲突**：百度百科记 10-28（年份不明）、界面新闻日报记 2026-10-28、AI 网关记 2026-05-22、TokenLab 记 2026-10-04、HailuoLabs 记 2026-02；另有「Hailuo 03 于 2026-07 发布」说法。未查到 MiniMax 官方发布公告，故不写入确定日期 |
-| xLSTM 7B | NX-AI | 待核实 | 新架构 | 待核实 | 待确认 | `[C]` 基线表自述 arXiv:2510.02228 | ⚠️ 本轮未核实到该编号与模型的对应关系及 7B 规模 |
-| §4.1 性能基准表数值 | 多家 | 2026-04（基线） | 评测数据 | 不适用 | 待确认 | `[C]` 基线表自述，未标注评测来源与版本 | ⚠️ MMLU-Pro / GPQA / ARC-AGI-2 等数值无来源标注；已在 §4.1 表头加显式警示，不得作为确定基准引用 |
-| §4.2 API 定价表数值 | 多家 | 2026-04（基线） | 定价 | 不适用 | 待确认 | `[C]` 基线表自述 | ⚠️ 价格随模型版本与档位变动；已在 §4.2 表头加警示并列出各厂商官方价目页，须以官方实时价目为准 |
-| §1.10 SOTA 排行榜 | 多家 | 2026-04（基线） | 排行榜 | 不适用 | 待确认 | `[C]` 基线表自述 | ⚠️ 榜单含 GPT-5.4、Claude 4.6、Gemini 3.1 等条目及分数，未标注第三方评测来源；截至 2026-11-05 已明显滞后，表头已加警示 |
+| 基线表 2M / 4M 级上下文数值 | 多家 | 不适用 | 规格字段 | 不适用 | 不适用 | `[C]` 基线表自述 | ⚠️ **结构性开放**：GPT-5.1 2M、GPT-5.2 4M、Claude 4.6 2M、Gemini 3.1 4M、Grok-4.1 4M、Claude 4.5 Opus 1M 等数值均无一手来源；已在 §2.0.3 逐条标注。**注意：Llama 4 Scout 的 10M 有 Meta 官方来源，不在此列**。厂商未披露的规格无法「核实出结果」，只能等待官方模型卡更新 |
+| §4.1 性能基准表数值 | 多家 | 2026-04（基线） | 评测数据 | 不适用 | 不适用 | `[C]` 基线表自述，未标注评测来源与版本 | ⚠️ **结构性开放**：MMLU-Pro / GPQA / ARC-AGI-2 等数值无来源标注；已在 §4.1 表头加显式警示。历史快照无评测 harness 记录，无法反向溯源，不得作为确定基准引用 |
+| §4.2 API 定价表数值 | 多家 | 2026-04（基线） | 定价 | 不适用 | 不适用 | `[C]` 基线表自述 | ⚠️ **结构性开放**：价格随版本与档位变动；已在 §4.2 表头加警示并列出各厂商官方价目页。基线数值不回溯改写，须以官方实时价目为准 |
+| §1.10 SOTA 排行榜 | 多家 | 2026-04（基线） | 排行榜 | 不适用 | 不适用 | `[C]` 基线表自述 | ⚠️ **结构性开放**：榜单含 GPT-5.4、Claude 4.6、Gemini 3.1 等条目及分数，未标注第三方评测来源；截至 2026-11-06 已明显滞后，表头已加警示 |
+
+> **第五轮判定说明**：原 9 条中 5 条已关闭（结论见 §2.0.3 与 §2.0.7 第五轮表），剩余 4 条全部属于**同一类结构性开放项**——基线表里「无来源、无版本、无 harness」的历史数值。它们不是「还没查」，而是**不存在可供反查的原始记录**；除非厂商补发带评测配置的模型卡，否则只能保持「不得引用」的标注。这类条目不应再被计为待办，改为随基线快照一起长期标注。
 
 #### 2.0.5 引用编号核实结果
 
-> 对基线中 10 条 2025–2026 年引用记录做了反查，其中 7 条取得 arXiv 原文或权威索引、1 条经二手报道确认、2 组本轮未逐条复核。**编号大多真实存在**，凭直觉判定为伪造会造成误伤；以下仅记录反查结论与需要更正的标注。措辞上不称「逐条反查全部」。
+> 对基线中 12 条 2025–2026 年引用记录做了反查，其中 **9 条取得 arXiv 原文或权威索引**、1 条经二手报道确认、2 组本轮未逐条复核。**编号大多真实存在**，凭直觉判定为伪造会造成误伤；以下仅记录反查结论与需要更正的标注。措辞上不称「逐条反查全部」。
 
 | 编号 | 项目标注用途 | 反查结论 | 处理建议 |
 |:---|:---|:---|:---|
-| [arXiv:2601.03267](https://arxiv.org/abs/2601.03267) | GPT-5 Technical Report | ✅ 真实，标题为 **OpenAI GPT-5 System Card**，v1 提交 2025-12-19 | 更正标注名称，勿称 Technical Report |
+| [arXiv:2601.03267](https://arxiv.org/abs/2601.03267) | GPT-5 Technical Report | ✅ 真实，标题为 **OpenAI GPT-5 System Card**，v1 提交 2025-12-19；第五轮另核对 openai.com 官方 System Card 与 PDF，**不存在独立 Technical Report** | 更正标注名称为 GPT-5 System Card，见 §2.0.3 |
+| [arXiv:2510.02228](https://arxiv.org/abs/2510.02228) | 基线 §3.6 用作 xLSTM 7B 的模型引用 | ✅ 真实，标题 **xLSTM Scaling Laws: Competitive Performance with Linear Time-Complexity**（NX-AI，v1 2025-10-02 / v2 2026-02-20，ICLR 2026）；但**不是 xLSTM-7b 的模型报告**，文中 7B 指实验规模上限（80M–7B） | 解除引用对应关系；模型本身真实存在（HF `NX-AI/xLSTM-7b`，2024-12-11），见 §2.0.3 |
+| [arXiv:2607.09885](https://arxiv.org/abs/2607.09885) | 第五轮新增：Index-1.9B 技术报告 | ✅ 真实，标题 **Index SLM Technical Report**（Bilibili，v1 2026-07-10 / v4 2026-10-17） | 作为 SLM / RAG 方向补白依据；注意模型 2024-06 已开源，论文为补发 |
+| arXiv:2510.12178 | LLaMA 4 Technical Report | ⚠️ 本轮未逐条复核到该编号的原文 | 保持原状，标记为待复核 |
+| arXiv:2509.23661 / arXiv:2508.06471 等 | 其他基线引用 | ⚠️ 本轮未逐条复核 | 保持原状，不作真伪判断 |
 | [arXiv:2602.04705](https://arxiv.org/abs/2602.04705) | ERNIE 5.0 Technical Report | ✅ 真实，2026-02-04 提交，百度 ERNIE Team | 保留；模型本身为闭源 API，见 §2.0.3 |
 | [arXiv:2602.02276](https://arxiv.org/abs/2602.02276) | Kimi K2.5 Technical Report | ✅ 真实，标题 **Kimi K2.5: Visual Agentic Intelligence**，v1 2026-02-02 | 保留；补充多模态 Agent 定位 |
 | [arXiv:2602.06570](https://arxiv.org/abs/2602.06570) | Baichuan-M3 Technical Report | ✅ 真实，标题 **Baichuan-M3: Modeling Clinical Inquiry for Reliable Medical Decision-Making**，v1 2026-02-06 | 保留；属医疗专用模型 |
@@ -662,21 +674,19 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | [arXiv:2603.15569](https://arxiv.org/abs/2603.15569) | Mamba-3 | ✅ 真实，ICLR 2026，2026-03-16 提交 | 保留；更正基线中的发布时间与实验规模 |
 | [arXiv:2511.21631](https://arxiv.org/abs/2511.21631) | Qwen3-VL Technical Report | ✅ 真实，2025-11-26 提交，原生 256K 上下文 | 保留；更正 §3.3 中的规模与上下文 |
 | [arXiv:2601.11659](https://arxiv.org/abs/2601.11659) | LLaMA 4 Full Report | ⚠️ 编号真实，标题为 The Llama 4 Herd；但正文自述为「对公开材料的独立调查」，且未明确标识来自 Meta | 不宜标注为「Meta 官方完整技术报告」 |
-| arXiv:2510.12178 | LLaMA 4 Technical Report | ⚠️ 本轮未逐条复核到该编号的原文 | 保持原状，标记为待复核 |
-| arXiv:2509.23661 / arXiv:2510.02228 / arXiv:2508.06471 等 | 其他基线引用 | ⚠️ 本轮未逐条复核 | 保持原状，不作真伪判断 |
 
 #### 2.0.6 统计、去重与维护说明
 
 | 分类 | 条目数 | 说明 |
 |:---|:---:|:---|
-| 🆕 新增项（已核实） | 143 | 海外厂商 77 + 中国厂商与机构 66；其中 19 条为第二轮补查、19 条为第三轮闭环与定向补查、10 条为第四轮纠偏与收敛 |
-| 🔄 更新项（已核实） | 36 | 时间 / 版本 / 能力 / 状态 / 许可 / 类别更正，原记录保留在基线表；第四轮新增 2 条 |
-| ⚠️ 待确认项 | 9 | 含未发布、仅预告、来源冲突与无来源数值；**均不作为确定内容**；累计 4（第二轮）+ 5（第四轮）= 9 项已收敛移出，新增 1 项来源冲突 |
-| 引用编号反查 | 10 条记录（7 项编号核实为真实 / 1 项性质需更正 / 2 项待复核） | 见 §2.0.5 |
-| 官方退役状态 | 9 组事件（含第四轮 o1 / o1-pro） | 见 §2.0.7 与 §2.0.3，均为 `[A]` 一手来源 |
+| 🆕 新增项（已核实） | 150 | 海外厂商 79 + 中国厂商与机构 71；其中 19 条为第二轮补查、19 条为第三轮、10 条为第四轮、7 条为第五轮 |
+| 🔄 更新项（已核实） | 40 | 时间 / 版本 / 能力 / 状态 / 许可 / 类别更正，原记录保留在基线表；第五轮新增 4 条（含 3 条待确认收敛） |
+| ⚠️ 待确认项 | 4 | 全部为「基线无来源历史数值」同类项，已在表头加警示；第五轮关闭 5 条，累计关闭 14 条 |
+| 引用编号反查 | 12 条记录（9 项编号核实为真实 / 1 项性质需更正 / 2 项待复核） | 见 §2.0.5；第五轮新增 arXiv:2510.02228、arXiv:2607.09885 |
+| 官方退役状态 | 9 组事件（含 o1 / o1-pro） | 见 §2.0.7 与 §2.0.3，均为 `[A]` 一手来源 |
 | HF 组织页核查 | 10 组结论 | 见 §2.0.7，均为 `[A]` 一手来源 |
 | 基线仓库状态机检 | 20 / 20 个可映射代表仓库命中 | 见 §2.0.7 第四轮表，抽样机检非全量复核 |
-| **本轮核实合计** | **188 条模型记录** | 143 + 36 + 9，三态互斥、全局去重 |
+| **本轮核实合计** | **194 条模型记录** | 150 + 40 + 4，三态互斥、全局去重 |
 
 **去重规则**：
 1. 以「模型名称」为主键全局去重；同一模型只归入 🆕 / 🔄 / ⚠️ 之一，跨表不重复出现。
@@ -756,7 +766,7 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | Gemini 4 Carbon | 见上表第 1 条 | 🆕 | `[A]` blog.google |
 | Muse Spark Open | 见上表第 2 条 | 🆕 | `[A]` Meta 官方 + HF |
 
-同时**新增 1 条待确认**：Hailuo 2.3 发布日期存在 5 种互相冲突的二手口径（10-28 年份不明 / 2026-10-28 / 2026-05-22 / 2026-10-04 / 2026-02），且未找到 MiniMax 官方公告，故不写入确定日期。三态由 13 → **9** 条。
+同时**新增 1 条待确认**：Hailuo 2.3 发布日期存在 5 种互相冲突的二手口径（10-28 年份不明 / 2026-10-28 / 2026-05-22 / 2026-10-04 / 2026-02），当时未找到 MiniMax 官方公告，故不写入确定日期。三态由 13 → **9** 条。**（该条已在第五轮由官方 API 发布说明解决，见下方第五轮表；此处保留第四轮当时判断的原始记录。）**
 
 **新增的一手核实模型（5 条，非待确认收敛）**：Runway Gen-4.5（官方 changelog 明确 2025-12-11 首发；第三方「2026-07-29」实为 OpenRouter API 上架日，不采用）、Luma Ray3.2 与 UNI-1.1（官方 llm-info，Last updated 2026-07-13）、Muse Spark 1.2 / Muse Code、混元 Hy-SimulMT-30B-A3B（HF 官方仓库，Apache 2.0）。另补 2 条更新项：o1 / o1-pro 退役、HunyuanVideo 版本时间线。
 
@@ -789,18 +799,43 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 机检同时发现两条需要注意的口径差异：`deepseek-ai/DeepSeek-V3` 与 `baichuan-inc/Baichuan2-7B-Chat` 的 HF 标签**未标注许可证**，引用基线中相关许可表述前须读模型卡；`microsoft/phi-4` 仓库在 2026-07-14 仍有更新，但这是仓库元数据变更，**不代表发布了 Phi-5**（此前对该型号的猜测仍未获证实）。
 
+**第五轮：待确认项终局判定与专项领域补白（2026-11-06）**
+
+第五轮不再追加新的开放检索面，而是对上一轮留下的 9 条待确认项逐个给出**终局判定**，并补齐此前明确列出的专项领域空白。
+
+| 原待确认项 | 终局判定 | 依据 | 处置 |
+|:---|:---|:---|:---|
+| LLaMA 4 Behemoth | **未发布**（结论确定） | Meta 官方博客「still training, not yet releasing」；从未正式宣布取消，也从未交付 | 🔄 收敛，基线「2025-10 已发布」为错误 |
+| 独立 GPT-5 Technical Report | **不存在**（已证伪） | openai.com 官方只发布 GPT-5 System Card（网页 + PDF + arXiv:2601.03267） | 🔄 收敛为「引用名称更正」 |
+| Grok 5 | **未发布**（官方目录无此型号） | `docs.x.ai/docs/models` 完整列出 grok-4.3 / 4.5 / 4.6 / 4.7 / 4.20 系列，并称 Grok 4.7 为最強模型；二手站称 2026-10-28 发布与官方目录直接冲突，不采信 | 🔄 收敛，记录来源冲突 |
+| Hailuo 2.3 发布日期 | **2025-10-28**（冲突消解） | MiniMax 官方 API 发布说明明写 `Oct. 28, 2025` 新增 Hailuo-2.3 与 2.3-Fast；官方中英文发布博客同步 | 🆕 收敛；**2026 年的 4 种口径均为第三方平台上架日或 AI 日报误标** |
+| xLSTM 7B | **模型真实存在，但引用对应关系错误** | HF `NX-AI/xLSTM-7b` 2024-12-11（125 赞 / 3336 下载）；arXiv:2510.02228 实为《xLSTM Scaling Laws》，7B 是实验规模上限（80M–7B） | 🔄 收敛为「引用更正」；不重复新增条目（基线 §3.6 已收录） |
+| 基线 2M/4M 上下文、§4.1、§4.2、§1.10 | **结构性开放** | 基线快照无来源、无版本、无 harness 记录，不存在可反查的原始记录；三处表头已加警示 | 保留 ⚠️ 4 条，但**不再计为待办**，改为长期标注 |
+
+**专项领域补白（7 条新增项，均为 `[A]` 一手）**：时间序列预测 / 新架构（NX-AI TiRex-2、KronLSTM 系列）、SLM 与 RAG（Bilibili Index-1.9B 系列）、具身与机器人（阿里达摩院 RynnBrain 1.1、腾讯 Hy-Embodied 系列、宇树 UnifoLM-WLA-1.0）、视频生成（Hailuo 2.3 / Media Agent）。其中 **Index-1.9B 是「模型 2024-06 开源、技术报告 2026-07 补发」**，不是 2026 新模型，已在条目中显式标注，避免按论文日期误判。
+
+**单一 B 源条目来源升级（第五轮抽查）**
+
+| 条目 | 原等级 | 升级依据 | 结果 |
+|:---|:---|:---|:---|
+| Grok 4.3 / 4.6 | `[B]` | xAI 官方模型目录 `docs.x.ai/docs/models` 定价表列出 `grok-4.3`（1M 上下文）、`grok-4.6`、`grok-4.7`（500K） | ✅ 升至 `[A]` |
+| MiniMax M2 / M2.1 / M2.5 | `[B]` | HF `MiniMaxAI` 组织官方仓库：2025-10-22 / 2025-12-20 / 2026-02-12（另确认 M2.7 2026-04-09） | ✅ 升至 `[A]` |
+| 其余（Olmo-core 3、Kimi K2.7-Code、豆包 Seed 2.x、Baichuan-M3 Plus、星火 X2-VL、Voxtral TTS、小米 MiMo-V2-Flash、蚂蚁 Ling-3.0-flash-VL、Jina v4/v5、Vidu Q3、Seedance 2.0） | `[B]` | 本轮未找到对应的一手模型卡或官方公告；多为闭源商业产品或仅见媒体转述 | ⏸ 维持 `[B]`，引用前须复核 |
+
 **明确未覆盖的范围（因此不能称「已查全」）**
 
 | 范围 | 状态 | 说明 |
 |:---|:---|:---|
-| §3.1–3.12 专项领域逐条复核 | 第三、四轮定向补齐，**仍未穷举** | 补入嵌入（EmbeddingGemma-2）、OCR / 文档（MiniCPM-OCR-1.0）、ASR（Nemotron 3.5 Transcribe）、GUI Agent VLM（Mage-VL-Cowork）、端侧 VLM（LFM3-VL-2B）、视觉定位（WeVisOne-VL）、医疗（Baichuan-M4）、语音同传（Hy-SimulMT）；数学、SLM、RAG 的 2026 全量新模型仍未系统检索 |
-| §17 视频生成与世界模型 | 第四轮补齐主要缺口，**仅剩日期冲突项** | 补入 Runway Gen-4.5、Luma Ray3.2 / UNI-1.1、HunyuanVideo 版本线；加上第三轮的 Hy-Nomas / MiniMax-H3 / Pika-H3-Flex / Wan2.2-Animate-2 / FLUX.3 Klein / 可灵 3.0 / Seedance 2.0 / Vidu Q3。仍待确认：Hailuo 2.3 发布日期（5 种冲突口径）、阿里 HappyHorse 1.0（无官方来源） |
+| §3.1–3.12 专项领域逐条复核 | 第五轮补齐各方向代表模型，**仍未穷举** | 已覆盖嵌入、OCR / 文档、ASR、GUI Agent VLM、端侧 VLM、视觉定位、医疗、语音同传、时间序列 / 新架构（TiRex-2 / KronLSTM）、SLM / RAG（Index-1.9B）、具身 / 机器人（RynnBrain 1.1 / Hy-Embodied / UnifoLM）。**各方向只收录可核实的代表模型，未做全量普查** |
+| §17 视频生成与世界模型 | 第五轮**日期冲突已消解**，仅剩无官方来源项 | 补入 Runway Gen-4.5、Luma Ray3.2 / UNI-1.1、HunyuanVideo 版本线、Hailuo 2.3（官方 2025-10-28）；加第三轮的 Hy-Nomas / MiniMax-H3 / Pika-H3-Flex / Wan2.2-Animate-2 / FLUX.3 Klein / 可灵 3.0 / Seedance 2.0 / Vidu Q3。仅剩阿里 HappyHorse 1.0 无官方来源，未收录 |
 | 长尾厂商 | 第三轮已用 HF 官方 API 客观核查 | 见下方核查表。Microsoft / Apple / Amazon / Google / AI21 / Black Forest Labs / CohereLabs 确认有 2026 新仓库；01-ai、SenseTime 最新公开仓库仍停留在 2024 / 2022；部分 author 检索无结果**不代表厂商没有模型**（存在组织别名或仅闭源发布） |
-| 基线 200+ 模型逐条状态复核 | **由「未做」推进到「20 条抽样机检」** | 见上方机检表，20 / 20 仓库可访问；但仅覆盖可明确映射到 HF repo 的开源代表模型，**闭源模型、无 HF 仓库条目、参数 / 能力 / 发布日期的逐条复核仍未做** |
-| §4.1 基准数值 / §4.2 定价 / §1.10 SOTA 榜 | 第四轮**已加显式警示，数值本身仍未溯源** | 三处表头均写入「不得作为确定内容引用」的警示；§4.2 附 6 家官方实时价目页；§1.10 附可核实的后续官方口径（Gemini 4 Carbon / AA Index v5.0）。历史数值保持原样，不伪造溯源、不静默改写 |
+| 基线 200+ 模型逐条状态复核 | 20 条抽样机检，**规格复核仍未做** | 见上方机检表，20 / 20 仓库可访问；闭源模型、无 HF 仓库条目、参数 / 能力 / 发布日期的逐条复核未做。这属于**结构性开放**：基线为 2026-04 快照，逐条复核等价于重建整份文档，应随版本迭代分批处理 |
+| §4.1 基准数值 / §4.2 定价 / §1.10 SOTA 榜 | 已加显式警示，**数值本身结构性开放** | 三处表头均写入「不得作为确定内容引用」；§4.2 附 6 家官方实时价目页；§1.10 附可核实的后续口径。历史数值保持原样，不伪造溯源、不静默改写 |
 | 闭源模型参数规模 | 普遍不可得 | 厂商不披露，表内写「未披露」即不推测 |
-| 非中英语种模型、具身/机器人、安全护栏模型 | 仍未纳入 | 世界模型已由 Hy-Nomas 补入；其余超出检索口径 |
-| 2026-11-05 之后 | 不在窗口内 | 由 §2.0.8 每日流水线滚动维护 |
+| 非中英语种模型、安全护栏模型 | 仍未系统纳入 | 具身 / 机器人已由第五轮补入，世界模型已由 Hy-Nomas / UnifoLM-WLA-1.0 补入；其余超出检索口径 |
+| 2026-11-06 之后 | 不在窗口内 | 由 §2.0.8 每日流水线滚动维护 |
+
+**结构性开放项（不是待办，是口径边界）**：以上 4 条 ⚠️ 待确认与「基线规格复核」「非中英语种 / 安全护栏全量检索」共同构成本项目的长期边界。它们的共同特征是**缺少可供反查的原始记录或需要重建整份基线**，无法靠一次检索关闭；处理原则是显式标注 + 每日流水线持续发现，而不是反复声明「未完成」。
 
 **HF 组织页客观核查（第三轮，一手）**
 
@@ -821,16 +856,18 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 **残余准确性风险**
 
-- **单一 B 源条目**（日期与规格须以官方模型卡复核）：Grok 4.3 / 4.6、Olmo-core 3、Kimi K2.7-Code、MiniMax M2 / M2.1、豆包 Seed 2.1 / 2.0、Baichuan-M3 Plus、星火 X2-VL、Voxtral TTS、小米 MiMo-V2-Flash、蚂蚁 Ling-3.0-flash-VL、Jina v4/v5、Vidu Q3、Seedance 2.0 的具体日期。
+- **单一 B 源条目**（日期与规格须以官方模型卡复核）：Olmo-core 3、Kimi K2.7-Code、豆包 Seed 2.1 / 2.0、Baichuan-M3 Plus、星火 X2-VL、Voxtral TTS、小米 MiMo-V2-Flash、蚂蚁 Ling-3.0-flash-VL、Jina v4/v5、Vidu Q3、Seedance 2.0 的具体日期。**Grok 4.3 / 4.6 与 MiniMax M2 / M2.1 / M2.5 已于第五轮升至 `[A]`**，详见上方升级表。
 - **HF 元数据 ≠ 官方发布**：仓库 `createdAt` 可能远早于正式发布（ERNIE-5.5-Flash-Base 10-21 建仓、11-05 才官宣；MiniMax-M3.1-Flash 10-17 建仓、10-19 发布）。表内优先取官方公告日，并在说明中并列仓库时间。
 - **组织别名陷阱**：首轮以 `cohere` / `ai21` / `Kuaishou` 等 author 检索为空就推断「无新模型」是错的，实际分布在 `CohereLabs` / `ai21labs` 等别名下。第三轮已纠正，但其他组织仍可能存在同类问题。
 - **跨组织再分发**：`base_model` 指向其他组织的 ComfyUI / LoRA / 量化仓库，即使作者是知名组织，也不等于原厂模型发布，不迁入三态清单。
 - **聚合站可信度**：PRIMO.ai、AI Wiki、aikitapp、aiwiki.ai、theworldofai、qdna.fr 等可能含 AI 生成内容，本表一律限定为 B/C 级，不作为单一确定依据。**但第四轮的教训是：降级之后不能就此搁置**——Gemini 4 Carbon 与 Muse Spark 最初都来自聚合站线索，最终均由厂商官方博客证实。聚合站线索应触发官方反查，而非直接判为不存在。
 - **官方页之间也可能冲突**：`lumalabs.ai/llm-info`（Last updated 2026-07-13）称当前视频模型为 Ray3.2、发布于 2026-06，而 Luma 官网首页仍以「Ray3.14 is here」为主推；Meta 的 `meta-models` HF 组织未能通过组织 API 单独验证归属。这些冲突已在条目中并列写明，未强行统一。
 - **抓取方式**：WebFetch 返回的是页面摘要而非逐字原文，个别日期或数值可能与官方原文有出入。
-- **未消解的日期冲突**：Kimi K3（7-16 vs 7-17 发布、权重 7-27 vs 7-28）、Qwen3.8-Max 权重（8-12 vs 8-13）、GLM-5.3（仅有二手日期）、Kimi K3.1 Pro（10-23 vs 10-24 时区差异）、Hy-Nomas（官方宣布 10-23 vs 10-24，仓库 10-21）、**Hailuo 2.3（5 种口径，已列入待确认）**。已在可核实条目按官方来源取值，未强行统一。
+- **未消解的日期冲突**：Kimi K3（7-16 vs 7-17 发布、权重 7-27 vs 7-28）、Qwen3.8-Max 权重（8-12 vs 8-13）、GLM-5.3（仅有二手日期）、Kimi K3.1 Pro（10-23 vs 10-24 时区差异）、Hy-Nomas（官方宣布 10-23 vs 10-24，仓库 10-21）。已在可核实条目按官方来源取值，未强行统一。
+- **已消解的日期冲突**：**Hailuo 2.3** 的 5 种口径由 MiniMax 官方 API 发布说明（`Oct. 28, 2025`）收敛；2026 年的 4 种日期分别对应第三方 API 平台上架、AI 日报误标与评测站收录，**不是发布日**。这类冲突也给每日流水线提了个醒：`createdAt` / 平台上架日 / 官方发布日必须分开记录。
+- **HF 论文与模型的错配**：arXiv:2510.02228 是 xLSTM 的 scaling law 论文，不是 `NX-AI/xLSTM-7b` 的模型报告；arXiv:2607.09885 是 Index-1.9B 在开源两年后补发的技术报告，不能按论文日期推断模型发布年份。引用基线中的 arXiv 编号前须核对「编号 → 具体实体」的对应关系。
 
-**结论**：查准方面，四轮累计修正 10 类错误（第四轮新增 2 类硬误判），待确认项从 17 → 13 → **9** 条，主线厂商的一手来源覆盖显著提升；但仍有 9 条待确认与若干单一 B 源条目。查全方面**仍未达成**，且在开放域无法一次性达成——第四轮把「§17 视频生成」从「仍有缺口」推进到「仅剩日期冲突项」，把「基线逐条复核」从「未做」推进到「20 条抽样机检」，给三处无来源数值表加了显式警示与官方复核入口，但 200+ 基线条目的规格复核、数学 / SLM / RAG 专项全量检索、非中英语种与具身模型仍未做。对无法一次性穷举的部分，处理原则是**显式标注而非假装完成**：无来源的写「待确认」、无法溯源的加警示、抽样机检标明口径边界。真正可持续的收敛方式已经落地：§2.0.8 每日流水线负责发现，人工按 A/B/C 来源口径核实后再迁入三态清单，未核实的一律留在候选区。
+**结论**：查准方面，五轮累计修正 10 类错误，待确认项 17 → 13 → 9 → **4** 条，且剩余 4 条已定性为「基线无来源历史数值」这一同类结构性开放项，不再是待办。第五轮还关闭了三条长期悬置的判断（LLaMA 4 Behemoth 未发布、GPT-5 无独立技术报告、Grok 5 官方目录不存在），消解了 Hailuo 2.3 的 5 种日期冲突，并纠正了 xLSTM 7B 的引用错配。查全方面**仍未达成且无法一次性达成**：第五轮补齐了时间序列 / 新架构、SLM / RAG、具身 / 机器人等此前列为空白的方向，但每个方向只收录可核实的代表模型，不是全量普查。因此本轮把开放项分成两类——**已关闭**（可判定、已给出确定结论）与**结构性开放**（缺原始记录或需重建基线，只能长期标注 + 滚动发现）。后者不应再被反复声明为「未完成」：三处数值表已有警示与官方复核入口，基线快照明确标注为 2026-04 版本，§2.0.8 每日流水线负责发现增量、人工按 A/B/C 口径核实后迁入三态，未核实的一律留在候选区。**这份清单现在的边界是清楚的，剩下的是持续维护，不是一次性补齐的任务。**
 
 <!-- HF_DAILY_START -->
 #### 2.0.8 每日 HF 自动抓取候选
@@ -3099,6 +3136,7 @@ LLM 发展路径 (2024-2030):
 
 | 日期 | 更新内容 |
 |:---|:---|
+| **2026-11-06 (v4.5)** | **第五轮：待确认项终局判定与专项领域补白（收尾轮）**：① 对 9 条待确认项逐个给出终局判定，关闭 5 条——LLaMA 4 Behemoth（官方确认未发布）、GPT-5 独立 Technical Report（证伪，官方只有 System Card）、Grok 5（xAI 官方模型目录无此型号，二手报道与官方冲突不采信）、Hailuo 2.3（**MiniMax 官方 API 发布说明确认 2025-10-28**，5 种冲突口径根因是第三方上架日 / 日报误标）、xLSTM 7B（模型真实存在，但 arXiv:2510.02228 是 scaling law 论文而非其模型报告）；剩余 4 条定性为「基线无来源历史数值」结构性开放项；② 补入 7 条专项领域代表模型：TiRex-2 / KronLSTM（时间序列 / 新架构）、Index-1.9B（SLM / RAG）、RynnBrain 1.1 / 腾讯 Hy-Embodied / 宇树 UnifoLM（具身 / 机器人）、Hailuo 2.3（视频生成 / Media Agent）；③ 单一 B 源抽查升级：Grok 4.3 / 4.6 与 MiniMax M2 系列升至 `[A]`；④ §2.0.5 引用编号反查增至 12 条，新增 arXiv:2510.02228、arXiv:2607.09885 原文核实；⑤ §2.0.7 增加第五轮判定表、来源升级表，并把覆盖边界改为「已关闭 / 结构性开放」两分，明确剩余工作是持续维护而非一次性补齐；三态更新至 **150 / 40 / 4 = 194 条** |
 | **2026-11-05 (v4.4)** | **第四轮：待确认项收敛、硬误判纠偏与未完成任务收尾**：① 逐条复核 13 条待确认项，**纠正 2 类硬误判**——Gemini 4 Carbon（Google 官方博客 2026-10-28 公告、受限开放）与 Muse Spark / Muse Spark Open（Meta 官方博客 + HF `meta-models` 仓库）此前被误列为「聚合站传闻」；② 收敛 5 条（o1 退役、Qwen3.6 / 3.7 系列、Baichuan-M4、Gemini 4 Carbon、Muse Spark Open），新增 1 条来源冲突（Hailuo 2.3 五种日期口径），三态由 13 → 9；③ 补入 10 条 🆕（Runway Gen-4.5、Luma Ray3.2 / UNI-1.1、Muse Spark 1.2 / Muse Code、Qwen3.6 / 3.7、Baichuan-M4、混元 Hy-SimulMT 等）与 2 条 🔄（o1 / o1-pro 退役、HunyuanVideo 版本线），三态更新至 **143 / 36 / 9 = 188 条**；④ 对 §4.1 基准、§4.2 定价、§1.10 SOTA 榜三处无来源数值表加**显式可信度警示**并附 6 家官方实时价目页，历史数值不静默改写；⑤ 用 HF 官方 API 完成 **20 / 20 基线代表仓库状态机检**，明确「仅证明仓库可见性、不证明规格」的口径边界；⑥ §2.0.7 增加第四轮纠偏表、基线机检表与方法论教训，覆盖边界逐项更新；⑦ 抓取脚本增加「与人工核实清单去重」：`load_known_repos()` 只读取 §2.0.1–2.0.7（跳过 §2.0.8 marker 块以免自我抑制），已核实仓库不再重复上报，离线自测 39 → **42 项** |
 | **2026-11-05 (v4.3)** | **第三轮：自动抓取闭环与查全补齐**：① 首期 12 条 HF 机器候选逐条用 HF 模型 API 与官方发布页人工核实，5 条迁入 🆕、1 条补一手来源、6 条因跨组织再分发或信息不足保留候选，跑通「机器发现 → 人工核实 → 迁入三态」闭环；② 补入 ERNIE-5.5-Flash-Base、MiniMax-M3.1-Flash / H3 / Music3、混元 Hy-Nomas、MiniCPM-OCR-1.0、LFM3-VL-2B、WeVisOne-VL、EmbeddingGemma-2、Jamba2、FLUX.3 Klein、Mage-VL-Cowork、LensVLM-9B、Nemotron 3.5 Transcribe、Pika-H3-Flex、Wan2.2-Animate-2、可灵 3.0 / Seedance 2.0 / Vidu Q3 等 19 条；③ 用 HF 官方 API 客观核查 10 组长尾厂商，纠正「组织名别名陷阱」与「无公开仓库」的错误推断；④ §2.0.7 覆盖边界更新为「§17 与长尾厂商已定向补齐、仍未穷举」；⑤ 三态计数更新为 133 / 34 / 13 = **180 条**；⑥ 抓取脚本增加跨组织再分发排除、API 字段防御与 `--validate` 产物校验，日报打分明细补充许可列，CI 增加校验步骤与 push 失败 rebase 重试，离线自测扩充至 39 项 |
 | **2026-11-05 (v4.2)** | **新增 Hugging Face 每日自动抓取流水线**：`scripts/fetch_hf_models.py`（零第三方依赖，三路 HF API 榜单 + 时间窗 + 热度/官方加权 + 量化仓库排除 + 跨天去重与冷却）、`scripts/test_fetch_hf_models.py`（离线自测）、`.github/workflows/hf-daily.yml`（每日 01:17 UTC 定时 + 手动触发）；产出 `HF_DAILY.md`、`data/hf-daily/` 归档与 `latest.json`，并自动重建 `index.html`；新增 README §2.0.8，所有自动条目标注「机器抓取 · 未经人工核实」，不并入三态清单 |
