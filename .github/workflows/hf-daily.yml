@@ -1,0 +1,109 @@
+# 每日从 Hugging Face Hub 拉取「最新发布 / 有更新且值得关注」的模型，
+# 写入 data/hf-daily/、HF_DAILY.md 与 README.md §2.0.8，并重建 index.html。
+#
+# 说明：
+#   - 输出均为「机器抓取候选 · 未经人工核实」，不并入 README §2.0.1–2.0.7 三态清单。
+#   - 可选项：在仓库 Settings → Secrets 配置 HF_TOKEN 以提高 API 速率上限；不配置也能跑。
+#   - 若 main 分支启用了保护规则导致 GITHUB_TOKEN 无法直接推送，改用具备 contents:write 的 PAT，
+#     并在 checkout 步骤传入该 token；同时确认 Pages 工作流会在本次 push 后自动重新部署。
+#   - 本工作流 push 会触发 pages.yml，站点随之更新。
+
+name: Daily Hugging Face Model Digest
+
+on:
+  schedule:
+    # 每天 01:17 UTC（北京时间 09:17），避开整点调度拥塞
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+    inputs:
+      lookback_hours:
+        description: "时间窗（小时）"
+        required: false
+        default: "36"
+      top_n:
+        description: "本期最多上报条数"
+        required: false
+        default: "12"
+      min_likes:
+        description: "最低点赞门槛"
+        required: false
+        default: "5"
+      pages:
+        description: "每路榜单翻页数"
+        required: false
+        default: "1"
+      dry_run:
+        description: "只预览，不写入文件、不提交"
+        type: boolean
+        required: false
+        default: false
+      force:
+        description: "覆盖当天已生成的日报（默认跳过二次运行）"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hf-daily
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Offline self-test
+        run: python3 -m unittest scripts.test_fetch_hf_models -v
+
+      - name: Fetch models from Hugging Face Hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          LOOKBACK_HOURS: ${{ inputs.lookback_hours || '36' }}
+          TOP_N: ${{ inputs.top_n || '12' }}
+          MIN_LIKES: ${{ inputs.min_likes || '5' }}
+          PAGES: ${{ inputs.pages || '1' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          FORCE: ${{ inputs.force || 'false' }}
+        run: |
+          set -euo pipefail
+          args=(--lookback-hours "$LOOKBACK_HOURS"
+                --top-n "$TOP_N"
+                --min-likes "$MIN_LIKES"
+                --pages "$PAGES")
+          if [ "$DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          if [ "$FORCE" = "true" ]; then
+            args+=(--force)
+          fi
+          python3 scripts/fetch_hf_models.py "${args[@]}"
+
+      - name: Regenerate index.html
+        if: ${{ inputs.dry_run != true }}
+        run: python3 gen_html.py
+
+      - name: Commit and push
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- README.md HF_DAILY.md index.html data/hf-daily/
+          if git diff --cached --quiet; then
+            echo "No changes since last run; skipping commit."
+            exit 0
+          fi
+          git commit -m "🤖 chore(hf-daily): 更新 HF 每日模型候选 $(date -u +%F)"
+          git push
