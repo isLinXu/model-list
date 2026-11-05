@@ -1,0 +1,61 @@
+# 🤗 Hugging Face 每日值得关注模型（自动抓取 · 未经人工核实）
+
+- **抓取时间**：2026-11-05 08:38 UTC
+- **时间窗**：最近 36 小时（createdAt 或 lastModified 落入窗口）
+- **数据源**：HF Hub API `trendingScore` / `createdAt` / `lastModified` 三路榜单，每路 200 条
+- **扫描**：562 个去重仓库 → 合格候选 22 条 → 去重后上报 12 条
+- **参数**：min_likes=5、min_downloads=50、min_score=24.0、top_n=12、cooldown=7d
+
+> ⚠️ 本节由 GitHub Action 每日自动更新，数据直接来自 Hugging Face Hub API，**未经人工核实，不得作为确定内容引用**；不并入 §2.0.1–2.0.7 的 🆕 / 🔄 / ⚠️ 三态清单。「核心能力」由 HF 标签推断，「可用状态」仅反映仓库可见性。经人工核实后方可迁入 🆕 新增项。
+
+## 本期候选
+
+| 模型名称 | 提供方 | 发布或更新时间 | 模型类别 | 核心能力 | 可用状态 | 信息来源 | 标记 |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| [ricursiveAI/Ripple-65B-Preview](https://huggingface.co/ricursiveAI/Ripple-65B-Preview) | ⭐ ricursiveAI | 2026-11-04 02:41 UTC（🆕 新发布） | 其他 / 未标注 | 其他 / 未标注；标签 ricursive（按 HF 标签推断） | 公开仓库；HF 下载 0 / 赞 168（未核实） | [HF API](https://huggingface.co/api/models/ricursiveAI/Ripple-65B-Preview) · [模型卡](https://huggingface.co/ricursiveAI/Ripple-65B-Preview) | ⚙️ 机器抓取 · 待人工核实 |
+| [moonshotai/Kimi-K3.1-Pro](https://huggingface.co/moonshotai/Kimi-K3.1-Pro) | ⭐ moonshotai | 2026-11-05 07:11 UTC（🔄 近期有更新） | 多模态 VLM | 多模态 VLM；标签 kimi_k31、compressed-tensors、8-bit（按 HF 标签推断） | 公开仓库；HF 下载 797 / 赞 656（未核实） | [HF API](https://huggingface.co/api/models/moonshotai/Kimi-K3.1-Pro) · [模型卡](https://huggingface.co/moonshotai/Kimi-K3.1-Pro) | ⚙️ 机器抓取 · 待人工核实 |
+| [LiquidAI/LFM3-VL-2B](https://huggingface.co/LiquidAI/LFM3-VL-2B) | ⭐ LiquidAI | 2026-11-03 21:29 UTC（🔄 近期有更新） | 多模态 VLM | 多模态 VLM；标签 lfm3_vl、liquid、lfm3（按 HF 标签推断） | 公开仓库；HF 下载 12688 / 赞 260（未核实） | [HF API](https://huggingface.co/api/models/LiquidAI/LFM3-VL-2B) · [模型卡](https://huggingface.co/LiquidAI/LFM3-VL-2B) | ⚙️ 机器抓取 · 待人工核实 |
+| [openbmb/MiniCPM-OCR-1.0](https://huggingface.co/openbmb/MiniCPM-OCR-1.0) | ⭐ openbmb | 2026-11-04 08:23 UTC（🔄 近期有更新） | 多模态 VLM | 多模态 VLM；标签 minicpm-ocr、minicpm_ocr、ocr（按 HF 标签推断） | 公开仓库；HF 下载 18359 / 赞 444（未核实） | [HF API](https://huggingface.co/api/models/openbmb/MiniCPM-OCR-1.0) · [模型卡](https://huggingface.co/openbmb/MiniCPM-OCR-1.0) | ⚙️ 机器抓取 · 待人工核实 |
+| [Comfy-Org/Idol](https://huggingface.co/Comfy-Org/Idol) | ⭐ Comfy-Org | 2026-11-04 11:44 UTC（🔄 近期有更新） | 3D 生成 | 3D 生成；标签 diffusion-single-file、comfyui（按 HF 标签推断） | 公开仓库；HF 下载 13209 / 赞 127（未核实） | [HF API](https://huggingface.co/api/models/Comfy-Org/Idol) · [模型卡](https://huggingface.co/Comfy-Org/Idol) | ⚙️ 机器抓取 · 待人工核实 |
+| [MiniMaxAI/MiniMax-M3.1-Flash](https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash) | ⭐ MiniMaxAI | 2026-11-05 00:55 UTC（🔄 近期有更新） | 多模态 VLM | 多模态 VLM；标签 minimax_m3_vl、multimodal、moe（按 HF 标签推断） | 公开仓库；HF 下载 30211 / 赞 548（未核实） | [HF API](https://huggingface.co/api/models/MiniMaxAI/MiniMax-M3.1-Flash) · [模型卡](https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash) | ⚙️ 机器抓取 · 待人工核实 |
+| [Comfy-Org/MOSS-Image](https://huggingface.co/Comfy-Org/MOSS-Image) | ⭐ Comfy-Org | 2026-11-04 11:43 UTC（🔄 近期有更新） | 图像生成 | 图像生成；标签 diffusion-single-file、comfyui（按 HF 标签推断） | 公开仓库；HF 下载 4899287 / 赞 605（未核实） | [HF API](https://huggingface.co/api/models/Comfy-Org/MOSS-Image) · [模型卡](https://huggingface.co/Comfy-Org/MOSS-Image) | ⚙️ 机器抓取 · 待人工核实 |
+| [tencent/Hy-Nomas](https://huggingface.co/tencent/Hy-Nomas) | ⭐ tencent | 2026-11-04 22:04 UTC（🔄 近期有更新） | 世界模型 | 世界模型；标签 diffusion-single-file、hy-nomas、world-model（按 HF 标签推断） | 公开仓库；HF 下载 78162 / 赞 143（未核实） | [HF API](https://huggingface.co/api/models/tencent/Hy-Nomas) · [模型卡](https://huggingface.co/tencent/Hy-Nomas) | ⚙️ 机器抓取 · 待人工核实 |
+| [baidu/ERNIE-5.5-Flash-Base](https://huggingface.co/baidu/ERNIE-5.5-Flash-Base) | ⭐ baidu | 2026-11-05 06:33 UTC（🔄 近期有更新） | 通用 / 对话 | 通用 / 对话；标签 ernie5_5_moe、ERNIE5.5、MoE（按 HF 标签推断） | 公开仓库；HF 下载 4 / 赞 115（未核实） | [HF API](https://huggingface.co/api/models/baidu/ERNIE-5.5-Flash-Base) · [模型卡](https://huggingface.co/baidu/ERNIE-5.5-Flash-Base) | ⚙️ 机器抓取 · 待人工核实 |
+| [Viggle/Viggle-Remake](https://huggingface.co/Viggle/Viggle-Remake) | ⭐ Viggle | 2026-11-04 16:11 UTC（🔄 近期有更新） | 视频编辑 | 视频编辑；标签 minimax-h3、video-editing、character-replacement（按 HF 标签推断） | 公开仓库；HF 下载 4 / 赞 62（未核实） | [HF API](https://huggingface.co/api/models/Viggle/Viggle-Remake) · [模型卡](https://huggingface.co/Viggle/Viggle-Remake) | ⚙️ 机器抓取 · 待人工核实 |
+| [ccore/Qwen3.5-4B-GLB-3D-Coder](https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder) | ccore | 2026-11-05 06:11 UTC（🔄 近期有更新） | 通用 / 对话 | 通用 / 对话；标签 qwen3_5、code、threejs（按 HF 标签推断） | 公开仓库；HF 下载 8652 / 赞 154（未核实） | [HF API](https://huggingface.co/api/models/ccore/Qwen3.5-4B-GLB-3D-Coder) · [模型卡](https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder) | ⚙️ 机器抓取 · 待人工核实 |
+| [Vxtzq/Crowd-v1](https://huggingface.co/Vxtzq/Crowd-v1) | Vxtzq | 2026-11-05 08:35 UTC（🔄 近期有更新） | 通用 / 对话 | 通用 / 对话；标签 无附加标签（按 HF 标签推断） | 公开仓库；HF 下载 72686 / 赞 33（未核实） | [HF API](https://huggingface.co/api/models/Vxtzq/Crowd-v1) · [模型卡](https://huggingface.co/Vxtzq/Crowd-v1) | ⚙️ 机器抓取 · 待人工核实 |
+
+## 打分明细（用于调参，非模型规格）
+
+| 模型 | 分数 | 类型 | 命中的榜单 | 热度 |
+|:---|---:|:---|:---|:---|
+| [ricursiveAI/Ripple-65B-Preview](https://huggingface.co/ricursiveAI/Ripple-65B-Preview) | 74.4 | 新发布 | trending | 公开仓库；HF 下载 0 / 赞 168（未核实） |
+| [moonshotai/Kimi-K3.1-Pro](https://huggingface.co/moonshotai/Kimi-K3.1-Pro) | 101.41 | 有更新 | trending | 公开仓库；HF 下载 797 / 赞 656（未核实） |
+| [LiquidAI/LFM3-VL-2B](https://huggingface.co/LiquidAI/LFM3-VL-2B) | 97.32 | 有更新 | trending | 公开仓库；HF 下载 12688 / 赞 260（未核实） |
+| [openbmb/MiniCPM-OCR-1.0](https://huggingface.co/openbmb/MiniCPM-OCR-1.0) | 96.38 | 有更新 | trending | 公开仓库；HF 下载 18359 / 赞 444（未核实） |
+| [Comfy-Org/Idol](https://huggingface.co/Comfy-Org/Idol) | 96.33 | 有更新 | trending | 公开仓库；HF 下载 13209 / 赞 127（未核实） |
+| [MiniMaxAI/MiniMax-M3.1-Flash](https://huggingface.co/MiniMaxAI/MiniMax-M3.1-Flash) | 95.88 | 有更新 | trending | 公开仓库；HF 下载 30211 / 赞 548（未核实） |
+| [Comfy-Org/MOSS-Image](https://huggingface.co/Comfy-Org/MOSS-Image) | 85.4 | 有更新 | trending | 公开仓库；HF 下载 4899287 / 赞 605（未核实） |
+| [tencent/Hy-Nomas](https://huggingface.co/tencent/Hy-Nomas) | 81.76 | 有更新 | trending | 公开仓库；HF 下载 78162 / 赞 143（未核实） |
+| [baidu/ERNIE-5.5-Flash-Base](https://huggingface.co/baidu/ERNIE-5.5-Flash-Base) | 74.99 | 有更新 | trending | 公开仓库；HF 下载 4 / 赞 115（未核实） |
+| [Viggle/Viggle-Remake](https://huggingface.co/Viggle/Viggle-Remake) | 70.39 | 有更新 | trending | 公开仓库；HF 下载 4 / 赞 62（未核实） |
+| [ccore/Qwen3.5-4B-GLB-3D-Coder](https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder) | 65.92 | 有更新 | trending | 公开仓库；HF 下载 8652 / 赞 154（未核实） |
+| [Vxtzq/Crowd-v1](https://huggingface.co/Vxtzq/Crowd-v1) | 64.17 | 有更新 | modified | 公开仓库；HF 下载 72686 / 赞 33（未核实） |
+
+## 筛选规则
+
+1. 排除私有仓库；量化 / abliterated / LoRA / 备份类仓库一律排除（含知名组织），本项目跟踪模型发布而非权重再分发。
+2. 非官方仓库需满足热度门槛（点赞与下载组合，或高点赞 / 高下载 / trendingScore ≥ 50）。
+3. 打分 = 下载量与点赞的对数项 + trendingScore + 官方组织加权 + 新发布加权 + 任务类型加权；量化与纯微调降权。
+4. 跨天去重：`seen.json` 记录已上报仓库；已上报仓库仅在 sha / lastModified 变化且超过冷却期后，才以「🔄 有更新」再次上报。
+5. 「值得关注」是启发式排序，不代表模型质量结论；排序分数不可用于横向比较模型能力。
+
+## 历史归档
+
+- [2026-11-05](data/hf-daily/2026-11-05.md)
+
+---
+
+由 `.github/workflows/hf-daily.yml` 每日自动生成；请勿手工编辑本文件的抓取结果。
+
+返回 [项目 README](README.md) · [最新一期](HF_DAILY.md)

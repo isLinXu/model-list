@@ -1,0 +1,89 @@
+{
+  "updated_at": "2026-11-05 08:38 UTC",
+  "models": {
+    "ricursiveAI/Ripple-65B-Preview": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "new",
+      "sha": "e27e171792f303d74c048184e8259ba663cfa0d5",
+      "lastModified": "2026-11-04T23:02:21.000Z"
+    },
+    "moonshotai/Kimi-K3.1-Pro": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "d9e99b0792a5e93b78ea9bea62a68167e36ddd9e",
+      "lastModified": "2026-11-05T07:11:43.000Z"
+    },
+    "LiquidAI/LFM3-VL-2B": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "71d8e745d97c224984e0f20412f532a5ce9dfd3e",
+      "lastModified": "2026-11-03T21:29:55.000Z"
+    },
+    "openbmb/MiniCPM-OCR-1.0": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "b2890ab4ce9d18c7f75b90966b76a972b6c9ac58",
+      "lastModified": "2026-11-04T08:23:17.000Z"
+    },
+    "Comfy-Org/Idol": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "3d050f4bc705ca1202a0ae4d21d2d97987521307",
+      "lastModified": "2026-11-04T11:44:00.000Z"
+    },
+    "MiniMaxAI/MiniMax-M3.1-Flash": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "ce7f4df87d2e05262f5775f373dac4772f134041",
+      "lastModified": "2026-11-05T00:55:30.000Z"
+    },
+    "Comfy-Org/MOSS-Image": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "2929efe3cdd506c0a430bcfca70a9a8d805cc095",
+      "lastModified": "2026-11-04T11:43:29.000Z"
+    },
+    "tencent/Hy-Nomas": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "621df1570098aa1ebf916dac3ac72ae3cbe25caa",
+      "lastModified": "2026-11-04T22:04:35.000Z"
+    },
+    "baidu/ERNIE-5.5-Flash-Base": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "028544b2ffceea189b2d8768ed2b9d09b06f2343",
+      "lastModified": "2026-11-05T06:33:30.000Z"
+    },
+    "Viggle/Viggle-Remake": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "21665fa7a1e038e0a5312fb15f37b18d0f06f117",
+      "lastModified": "2026-11-04T16:11:36.000Z"
+    },
+    "ccore/Qwen3.5-4B-GLB-3D-Coder": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "af1317d39b8ea645719cc90c4d3177ca22935429",
+      "lastModified": "2026-11-05T06:11:29.000Z"
+    },
+    "Vxtzq/Crowd-v1": {
+      "first": "2026-11-05",
+      "last": "2026-11-05",
+      "kind": "update",
+      "sha": "cbe89eebedb3df51ce3ef6ad982c94dd7f426a8f",
+      "lastModified": "2026-11-05T08:35:38.000Z"
+    }
+  }
+}
