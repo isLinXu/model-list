@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": "1.0",
+    "updated": "2026-11-06",
+    "principle": "只登记有一手官方链接的评测公告、价目页与榜单口径。凡是找不到官方依据的分数、价格与排名一律不固化；价格与榜单会变动，因此本表提供的是可复核的入口，不是静态数值结论。",
+    "maintainer_note": "更新本文件后运行 python3 scripts/render_source_tables.py 重渲染 README；CI 会执行 --validate 校验结构并阻止旧的无来源数值表回填。",
+    "source_count": 22
+  },
+  "tables": {
+    "benchmarks": {
+      "section": "4.1",
+      "title": "官方评测来源索引",
+      "columns": ["模型", "提供方", "官方评测来源", "官方披露的代表性指标", "版本 / 日期", "可引用范围", "核实状态", "备注"],
+      "rows": [
+        ["Gemini 4 Carbon", "Google", "[blog.google 官方公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "AA Intelligence Index v5.0 第一（59 分）；SEC-bench Pro 88.2%、ExploitGym 54.8%、CWE-bench 71.0%", "v5.0 / 2026-10-28", "仅该公告口径；网络安全三项为「无护栏」条件下评测", "✅ `[A]`", "介绍期定价见 §4.2"],
+        ["Qwen3.7-Max", "阿里巴巴", "[qwen.ai Qwen3.7](https://qwen.ai/blog?id=qwen3.7)", "GPQA Diamond 92.4、MMLU-Pro 89.6、HLE 41.4、Terminal Bench 2.0-Terminus 69.7", "2026-05-20", "厂商自评，harness 与采样设置见博客脚注", "✅ `[A]`", "非第三方独立复测"],
+        ["Qwen3.7-Plus", "阿里巴巴", "[qwen.ai Qwen3.7-Plus](https://qwen.ai/blog?id=qwen3.7-plus)", "MRCR-v2 128K 91.7、BabyVision 64.7、ScreenSpot Pro 79.0、AndroidWorld 81.0", "2026-06-01", "厂商自评；视觉与 GUI Agent 专项", "✅ `[A]`", "多模态 Agent 档位"],
+        ["Baichuan-M4", "百川智能 / 清华大学", "[百川官网基准表](https://www.baichuan-ai.com/)", "HealthBench 68.6（Hard 49.7 / Professional 55.1）、SCAN-bench 初诊 79.0、幻觉率 3.3%", "2026-06-22", "医疗专用评测，不与通用模型横比", "✅ 指标 `[A]` / 日期 `[B]`", "日期为三家媒体交叉；未见开源权重"],
+        ["GPT-5", "OpenAI", "[arXiv:2601.03267 GPT-5 System Card](https://arxiv.org/abs/2601.03267) · [官方 PDF](https://cdn.openai.com/gpt-5-system-card.pdf)", "400K 总上下文（272K 输入 + 128K 推理/输出）；附指令层级与提示注入评测表", "2025-08-07", "官方系统卡口径", "✅ `[A]`", "**不存在独立 GPT-5 Technical Report**"],
+        ["Claude Opus 4.6", "Anthropic", "[anthropic.com 官方公告](https://www.anthropic.com/news/claude-opus-4-6)", "1M token 上下文（beta，Opus 系列首次）", "2026-02-05", "官方公告；beta 功能不等于默认可用", "✅ `[A]`", "基线曾记 2M，无一手来源"],
+        ["Llama 4 Scout", "Meta", "[ai.meta.com 官方博客](https://ai.meta.com/blog/llama-4-multimodal-intelligence/) · [开发者页](https://developer.meta.com/ai/models/llama-4/)", "10M 上下文（iRoPE）；109B 总参 / 17B 激活", "2025-04-05", "官方明示的 Scout 上限，非全系列规格", "✅ `[A]`", "Behemoth 至今未发布"],
+        ["Grok 4.7 / grok-4.3", "xAI", "[docs.x.ai 官方模型目录](https://docs.x.ai/docs/models)", "Grok 4.7 为 500K 上下文；grok-4.3 为 1M；官方称 4.7 为最强模型", "官方目录（未标日期）", "官方定价表所列型号", "✅ `[A]`", "**官方目录无 Grok 5**"],
+        ["Muse Spark 1.2", "Meta", "[Meta 开发者博客](https://developer.meta.com/ai/resources/blog/build-with-muse-code)", "1M 上下文，长周期多 Agent 编码与全仓级上下文", "2026-08-05", "官方博客；编码 Agent 专用档位", "✅ `[A]`", "另见 §2.0.2 Muse Spark 系列"]
+      ]
+    },
+    "pricing": {
+      "section": "4.2",
+      "title": "官方价目页索引",
+      "columns": ["厂商 / 模型", "官方价目页", "计费口径", "可核实的价格示例", "核实日期", "币种", "核实状态", "备注"],
+      "rows": [
+        ["OpenAI", "[OpenAI API Pricing](https://openai.com/api/pricing/)", "每百万 token；区分输入 / 输出 / 缓存输入，另有 Batch 与长上下文档", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "退役型号见 [Deprecations](https://developers.openai.com/api/docs/deprecations)"],
+        ["Anthropic", "[Anthropic Pricing](https://www.anthropic.com/pricing)", "每百万 token；含缓存读写与 Batch 折扣", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "API 与 Claude 订阅计价不同"],
+        ["Google Gemini", "[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing) · [blog.google 公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "每百万 token；分输入 / 输出 / 缓存 / grounding，另有介绍期价", "**Gemini 4 Carbon 介绍期 $2 / $10；期满 $4 / $20**（官方公告）", "2026-10-28", "USD", "✅ `[A]`", "缓存输入介绍期为输入价 95% 折扣"],
+        ["DeepSeek", "[DeepSeek API Pricing](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)", "每百万 token；区分缓存命中与未命中", "不在本表固化（以官方页为准）", "2026-11-06", "CNY / USD", "✅ 链接有效", "另有 [API 更新日志](https://api-docs.deepseek.com/zh-cn/updates)"],
+        ["阿里云百炼 / Qwen", "[百炼模型价格](https://help.aliyun.com/zh/model-studio/getting-started/models) · [千问云模型页](https://www.qianwenai.com/models/qwen3.6-27b)", "每百万 token；按模型档位与上下文长度分档", "**Qwen3.6-27B ¥3 输入 / ¥18 输出，262K 上下文**（官方模型页）", "2026-11-06", "CNY", "✅ `[A]`", "1M TPM / 600 RPM 为该档位限流"],
+        ["智谱开放平台", "[开放平台定价](https://open.bigmodel.cn/pricing)", "每百万 token 或按次计费", "不在本表固化（以官方页为准）", "2026-11-06", "CNY", "✅ 链接有效", "GLM 系列不同档位价差较大"],
+        ["MiniMax", "[视频计费说明](https://platform.minimax.io/docs/guides/pricing-video) · [官方发布博客](https://www.minimax.io/news/minimax-hailuo-23)", "视频按秒或按条；语音按字符；文本按 token", "**Hailuo 2.3 维持 Hailuo 02 定价；2.3 Fast 批量成本最多降 50%**（官方博客）", "2025-10-28", "USD", "✅ `[A]`", "具体档位以平台页为准；发布日见 [API 更新日志](https://platform.minimax.io/docs/release-notes/apis)"],
+        ["xAI", "[docs.x.ai 官方模型目录](https://docs.x.ai/docs/models)", "每百万 token；`< 200k` 与 `≥ 200k` 提示长度两档计价", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "文本 / Imagine / Voice 分开计价"]
+      ]
+    },
+    "leaderboards": {
+      "section": "1.10",
+      "title": "可核实的官方榜单口径",
+      "columns": ["榜单 / 评测", "模型", "名次或分数", "官方来源", "版本 / 日期", "适用范围", "核实状态", "备注"],
+      "rows": [
+        ["Artificial Analysis Intelligence Index", "Gemini 4 Carbon", "第 1 名，59 分", "[blog.google 官方公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "v5.0 / 2026-10-28", "仅该版本指数，跨版本不可直接比较", "✅ `[A]`", "厂商公告引述第三方指数"],
+        ["WebDev Arena", "Gemini 4 Carbon", "第 4 名，1768 Elo（+89）", "[blog.google 官方公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "2026-10-28", "榜单快照，随投票变动", "✅ `[A]`", "网页开发交付物质量"],
+        ["SEC-bench Pro / ExploitGym / CWE-bench", "Gemini 4 Carbon", "88.2% / 54.8% / 71.0%", "[blog.google 官方公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "2026-10-28", "官方注明为「无护栏」条件下评测", "✅ `[A]`", "网络安全防御生命周期专项"],
+        ["HealthBench 及 Hard / Professional", "Baichuan-M4", "三个子集均列第一；综合 68.6", "[百川官网基准表](https://www.baichuan-ai.com/)", "2026-06-22", "医疗专用评测，不与通用模型横比", "✅ 指标 `[A]` / 排名 `[B]`", "日期为三家媒体交叉"],
+        ["Terminal-Bench 4.0 对齐项", "Gemini 4 Carbon", "成功作弊 0.0%、尝试作弊 0.4%", "[blog.google 官方公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "2026-10-28", "内部安全对齐测试，非能力排名", "✅ `[A]`", "不得解读为模型能力分数"]
+      ]
+    }
+  }
+}
