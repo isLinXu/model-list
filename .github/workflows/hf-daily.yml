@@ -65,7 +65,10 @@ jobs:
           python-version: "3.11"
 
       - name: Offline self-test
-        run: python3 -m unittest scripts.test_fetch_hf_models -v
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+
+      - name: Validate official source tables
+        run: python3 scripts/render_source_tables.py --validate
 
       - name: Fetch models from Hugging Face Hub
         env:

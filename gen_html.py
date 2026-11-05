@@ -243,9 +243,10 @@ def md2html(md_text):
             i += 1
             continue
 
-        # Skip the auto-generated HF daily digest markers (README §2.0.8).
-        # The content between them is plain Markdown and is rendered normally.
-        if stripped.startswith('<!-- HF_DAILY_'):
+        # Skip all HTML comment markers used as auto-generated block delimiters
+        # (§2.0.8 HF daily digest, §4.1/§4.2/§1.10 official-source tables).
+        # The Markdown content between them is rendered normally.
+        if stripped.startswith('<!--') and stripped.endswith('-->'):
             i += 1
             continue
 
