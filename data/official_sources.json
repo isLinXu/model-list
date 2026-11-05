@@ -28,7 +28,7 @@
       "title": "官方价目页索引",
       "columns": ["厂商 / 模型", "官方价目页", "计费口径", "可核实的价格示例", "核实日期", "币种", "核实状态", "备注"],
       "rows": [
-        ["OpenAI", "[OpenAI API Pricing](https://openai.com/api/pricing/)", "每百万 token；区分输入 / 输出 / 缓存输入，另有 Batch 与长上下文档", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "退役型号见 [Deprecations](https://developers.openai.com/api/docs/deprecations)"],
+        ["OpenAI", "[OpenAI API Pricing](https://developers.openai.com/api/docs/pricing)", "每百万 token；区分输入 / 输出 / 缓存输入，另有 Batch 与长上下文档", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "退役型号见 [Deprecations](https://developers.openai.com/api/docs/deprecations)"],
         ["Anthropic", "[Anthropic Pricing](https://www.anthropic.com/pricing)", "每百万 token；含缓存读写与 Batch 折扣", "不在本表固化（以官方页为准）", "2026-11-06", "USD", "✅ 链接有效", "API 与 Claude 订阅计价不同"],
         ["Google Gemini", "[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing) · [blog.google 公告](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/)", "每百万 token；分输入 / 输出 / 缓存 / grounding，另有介绍期价", "**Gemini 4 Carbon 介绍期 $2 / $10；期满 $4 / $20**（官方公告）", "2026-10-28", "USD", "✅ `[A]`", "缓存输入介绍期为输入价 95% 折扣"],
         ["DeepSeek", "[DeepSeek API Pricing](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)", "每百万 token；区分缓存命中与未命中", "不在本表固化（以官方页为准）", "2026-11-06", "CNY / USD", "✅ 链接有效", "另有 [API 更新日志](https://api-docs.deepseek.com/zh-cn/updates)"],

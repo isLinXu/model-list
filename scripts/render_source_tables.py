@@ -225,10 +225,17 @@ def verify_links(root: Path, timeout: float = 8.0) -> int:
     """联网检查官方链接可达性。403/429 视为反爬而非失效；只报告，不改文件。"""
     urls = collect_urls(root)
     print(f"[verify] {len(urls)} 个唯一官方链接", file=sys.stderr)
-    ok = redirected = blocked = failed = 0
+    ok = redirected = blocked = unreachable = failed = 0
     for url in urls:
         req = urllib.request.Request(
-            url, headers={"User-Agent": "model-list-link-check/1.0"}, method="GET"
+            url,
+            headers={
+                "User-Agent": (
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+                )
+            },
+            method="GET",
         )
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -243,14 +250,30 @@ def verify_links(root: Path, timeout: float = 8.0) -> int:
                 else:
                     failed += 1
                     print(f"  [异常] {code} {url}", file=sys.stderr)
-        except (urllib.error.URLError, OSError) as exc:
+        except urllib.error.HTTPError as exc:
+            # urlopen 对非 2xx 抛 HTTPError（URLError 子类），需单独按状态码分类，
+            # 否则 403/429 这类反爬会被误报成「链接失效」。
+            if exc.code in (401, 403, 429):
+                blocked += 1
+                print(f"  [反爬/需授权] {exc.code} {url}", file=sys.stderr)
+            else:
+                failed += 1
+                print(f"  [异常] {exc.code} {url}", file=sys.stderr)
+        except urllib.error.URLError as exc:
+            # DNS / 连接失败通常是本地网络或站点对机房 IP 的限制，不等于链接失效。
+            # 例如 ai.meta.com 与 developer.meta.com 在本机直连不通，但内容可通过其他
+            # 渠道核实存在，因此单列为「网络不可达」，不计入 failed。
+            unreachable += 1
+            print(f"  [网络不可达] {type(exc).__name__} {url}", file=sys.stderr)
+        except OSError as exc:
             failed += 1
             print(f"  [失败] {type(exc).__name__} {url}", file=sys.stderr)
     print(
-        f"[verify] 正常 {ok} / 跳转 {redirected} / 反爬 {blocked} / 失败 {failed}",
+        f"[verify] 正常 {ok} / 跳转 {redirected} / 反爬 {blocked} / "
+        f"网络不可达 {unreachable} / 失败 {failed}",
         file=sys.stderr,
     )
-    return 0  # 报告性质，不因第三方站点反爬让 CI 失败
+    return 0  # 报告性质，不因第三方站点反爬或本地网络限制让 CI 失败
 
 
 def run(cfg: Config) -> dict[str, bool]:
