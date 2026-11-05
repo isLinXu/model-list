@@ -9,7 +9,7 @@
 
 > 🎴 **最全面的大语言模型索引项目 — 模型卡牌屋 (House of Model Cards)** — 使用扑克牌花色体系对 AI 模型进行创意分类，涵盖从 GPT-1 到最新开源模型的完整调研，包含技术细节、性能指标、部署方式与官方资源。
 
-> 📋 **2026-11-05 更新**：新增 [§2.0 模型汇总核实总表](#20-模型汇总核实总表-截至-2026-11-05)，以项目现有模型汇总为基线完成 161 条核实记录（🆕 新增 114 / 🔄 更新 34 / ⚠️ 待确认 13），每项含模型名称、提供方、发布或更新时间、模型类别、核心能力、可用状态与信息来源。
+> 📋 **2026-11-05 更新**：新增 [§2.0 模型汇总核实总表](#20-模型汇总核实总表-截至-2026-11-05)，以项目现有模型汇总为基线完成 180 条核实记录（🆕 新增 133 / 🔄 更新 34 / ⚠️ 待确认 13），每项含模型名称、提供方、发布或更新时间、模型类别、核心能力、可用状态与信息来源。
 
 ---
 
@@ -26,7 +26,7 @@
 | 🛡️ 安全框架 | 6 类 | 攻击类型 + 防御体系 |
 | 🔧 微调工具 | 15+ | 从数据到部署的全链路 |
 | 🏭 行业场景 | 10+ | 真实落地应用案例 |
-| ✅ 本轮核实增量 | 161 条 | 2026-11-05（两轮）：🆕 新增 114 / 🔄 更新 34 / ⚠️ 待确认 13，详见 §2.0；覆盖边界见 §2.0.7 |
+| ✅ 本轮核实增量 | 180 条 | 2026-11-05（三轮 + 自动抓取闭环）：🆕 新增 133 / 🔄 更新 34 / ⚠️ 待确认 13，详见 §2.0；覆盖边界见 §2.0.7 |
 
 ---
 
@@ -502,6 +502,13 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | Sora 2 | OpenAI | 2025-09-30 | 视频生成 | 改进物理模拟、同步对白与音效、多镜头一致性 | **已停用**（app/web 2026-04-26；API 2026-09-24） | `[A]` 部署安全中心 Sora 2 System Card；`[B]` AI Wiki 视频生成条目 | 🆕 第二轮补查 |
 | Veo 3.1 / 3.1 Fast | Google | 2025-10-15（2026-01 更新） | 视频生成 | 原生音频、4K 放大、扩展与首尾帧控制 | 已开放（public preview 起） | `[A]` [Gemini API 更新日志](https://geminidocumentation.com/gemini-api/docs/changelog)；`[B]` AI Wiki | 🆕 第二轮补查 |
 | Voxtral TTS | Mistral AI | 2026-03（月份级） | 语音合成 | 4B，9 语言，3 秒语音克隆，约 70ms 延迟，流式 | 开源权重 · Apache 2.0 | `[B]` 单一来源：2026 Q1 开源 LLM 全景盘点（quidproquo.cc） | 🆕 第二轮补查；**单一 B 源，参数与许可须复核** |
+| google/embeddinggemma-2 | Google | 2026-09-14 | 嵌入模型 | 端侧嵌入，3.1k 赞 / 45 万下载，MTEB 系谱 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/google/embeddinggemma-2) | 🆕 第三轮：HF 组织页客观核查 |
+| AI21 Jamba2 | AI21 Labs | 2026-01-06 | 混合架构通用 | Jamba2-3B / Mini-FP8，Mamba + Attention 混合 | 开源权重 · Apache 2.0 | `[A]` HF ai21labs 组织页与模型 API | 🆕 第三轮；基线仅收录 Jamba 1.5，补齐 2026 新版 |
+| NVIDIA Nemotron 3.5 Transcribe 30B-A4B | NVIDIA | 2026-10-07 | 语音识别 | 30B / 4B 激活，ASR、语音翻译、说话人分离、时间戳，3k 赞 | 开放权重（HF 标记 license:other） | `[A]` [HF 模型 API](https://huggingface.co/api/models/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) | 🆕 第三轮：trending 榜首复核 |
+| FLUX.3 Klein | Black Forest Labs | 2026-10-13 | 图像生成 / 编辑 | flux-3 系列，diffusers，图像生成与编辑统一 | 开放权重（HF 标记 license:other） | `[A]` [HF 模型 API](https://huggingface.co/api/models/black-forest-labs/flux-3-image-klein) | 🆕 第三轮；项目原无 FLUX 系列 |
+| microsoft/Mage-VL-Cowork | Microsoft | 2026-10-30 | GUI Agent / VLM | computer-use、GUI/coding/terminal agent，LLaVA-OneVision2 系 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/microsoft/Mage-VL-Cowork) | 🆕 第三轮：长尾厂商核查（非 Phi 系列） |
+| apple/LensVLM-9B | Apple | 2026-09-21 | 多模态 VLM | 长上下文、视觉文本压缩；基于 Qwen3.5-9B | 开放权重 · Apple AMLR 许可 | `[A]` [HF 模型 API](https://huggingface.co/api/models/apple/LensVLM-9B) | 🆕 第三轮；许可非通用开源，商用前须读条款 |
+| Pika-H3-Flex | Pika Labs | 2026-10-29 | 视频生成 | 基于 MiniMax-H3 的轻量后训练，采样步数 50→6，音画视频生成 | 开放权重（HF 标记 license:other） | `[A]` [HF 模型 API](https://huggingface.co/api/models/Pika-Labs/Pika-H3-Flex)；`[B]` 行业报道 | 🆕 第三轮；属跨组织适配器，能力上限受基座约束 |
 
 **中国厂商与机构**
 
@@ -557,6 +564,18 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | 通义万相 Wan2.2 | 阿里巴巴 | 2025-07-30 | 开源视频生成 | 首个 MoE 视频生成架构；T2V-A14B、I2V-A14B、TI2V-5B；高/低噪专家分工，省约 50% 算力 | 开源权重 · Apache 2.0 | `[A]` [GitHub Wan-Video/Wan2.2](https://github.com/Wan-Video/Wan2.2) · HF Wan-AI；`[B]` 行业报道 | 🆕 第二轮补查（对应 §17 视频生成） |
 | Qwen3.8-27B | 阿里巴巴 | 2026-08-14 | 开源通用 | 27B，SWE-Bench Pro 61.7 | 开源权重 · Apache 2.0 | `[B]` Machine Brief · AINews · AI Watch（均指向 HF 仓库） | 🆕 第二轮补查；与旗舰自定义许可证形成对照 |
 | Jina Embeddings v4 / v5 | Jina AI | 2026（月份未披露） | 嵌入模型 | v4 支持文本/图像/PDF 多模态；v5 text-small 0.6B 与 nano 239M 面向轻量部署 | 已开放 | `[B]` [Zilliz 2026 嵌入模型选型](https://zilliz.com.cn/blog/2026-embedding-model-selection-qwen3-colpali-rag) · Q1 开源全景盘点 | 🆕 第二轮补查；**日期与许可证未获官方确认** |
+| 文心 ERNIE-5.5-Flash-Base | 百度 | 2026-11-05 开源（HF 仓库 10-21 建立） | 开源基座 MoE | 280B 总参 / 14B 激活，33.5T token 从零预训练，128K 训练上下文、微调推理可外扩 1M；Latent-Gated Sparse Attention + Multi-Router Latent MoE + ECHO | 开源权重（FP8 / BF16；HF 标记 license:other） | `[A]` [新华网](https://www.news.cn/info/20261105/f3bbdb6854f5441ca9fb34062f213875/c.html) · [HF 模型 API](https://huggingface.co/api/models/baidu/ERNIE-5.5-Flash-Base)；`[B]` 腾讯新闻 / 机器之心 | 🆕 **第三轮闭环**：由 §2.0.8 首期候选经人工核实迁入；仅为 Base 权重，后训练版官方称随后推出 |
+| MiniMax-M3.1-Flash | MiniMax | 2026-10-19 发布 / 10-23 开源 | 通用 / Agent | 稀疏注意力，推理近 3×、成本降 70%，200+ TPS；DeepSWE v1.1 73.7%、OSWorld V2 61.7、CyberGym 82% | 已开放 API + 开源权重 | `[A]` [minimax.io 官方博客](https://www.minimax.io/blog/minimax-m31f) · [HF 模型 API](https://huggingface.co/api/models/MiniMaxAI/MiniMax-M3.1-Flash)；`[B]` 中证网 | 🆕 第三轮闭环；官方博客发布时称权重稍后放出，10-23 已开源 |
+| MiniMax-H3 | MiniMax | 2026-07-28 | 全模态视频生成 | 文 / 图 / 视频 / 音频多组合输入到音视频输出，6.6k 赞 / 640 万下载 | 开放权重（HF 标记 license:other） | `[A]` [HF 模型 API](https://huggingface.co/api/models/MiniMaxAI/MiniMax-H3) | 🆕 第三轮：§17 视频生成补白，Pika-H3-Flex 与 Viggle-Remake 的基座 |
+| MiniMax-Music3 | MiniMax | 2026-08-07 | 音乐生成 | text-to-music，diffusers / sglang-omni | 开放权重（HF 未标许可） | `[A]` [HF 模型 API](https://huggingface.co/api/models/MiniMaxAI/MiniMax-Music3) | 🆕 第三轮；许可证未披露，不可推定 |
+| 混元 Hy-Nomas | 腾讯 | 2026-10-23 官方发布（HF 仓库 10-21） | 交互式视频世界模型 | 8B、720p、最长 60s、360K token；分段自回归 DiT，文字 + 镜头控制，世界记忆一致性；含 Hy-Nomas-Bench 280 例 | 开源权重 · Apache 2.0（含训练/标注代码） | `[A]` [腾讯官方项目页](https://hy-nomas.hy.tencent.com/) · [HF 模型 API](https://huggingface.co/api/models/tencent/Hy-Nomas)；`[B]` 多家技术媒体 | 🆕 第三轮闭环；官方未公布基准分数，技术报告标注 coming soon |
+| 混元 WeVisOne-VL-4B | 腾讯 | 2026-10-22 | 多模态 VLM | 目标检测、指代表达理解与分割、计数、点定位、OCR、抠图 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/tencent/WeVisOne-VL-4B) | 🆕 第三轮：长尾组织页核查 |
+| LiquidAI LFM3-VL-2B | Liquid AI | 2026-10-19 | 端侧多模态 VLM | 面向 edge，基于 LFM3-1.7B-Base，多语言 | 开放权重（HF 标记 license:other） | `[A]` [HF 模型 API](https://huggingface.co/api/models/LiquidAI/LFM3-VL-2B) | 🆕 第三轮闭环；首期候选迁入 |
+| MiniCPM-OCR-1.0 | 面壁智能 / OpenBMB | 2026-10-21 | 文档 / OCR | 表格与公式识别、文档解析；基于 MiniCPM-V-4.6 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/openbmb/MiniCPM-OCR-1.0) | 🆕 第三轮闭环；同时客观确认 MiniCPM-V-4.6 存在 |
+| 通义万相 Wan2.2-Animate-2 | 阿里巴巴 | 2026-07-14 | 视频生成（角色动画） | 14B，角色动画生成，附 arXiv:2608.06009 | 开源权重 · Apache 2.0 | `[A]` [HF 模型 API](https://huggingface.co/api/models/Wan-AI/Wan2.2-Animate-2-14B)；`[B]` [GitHub Wan2.2](https://github.com/Wan-Video/Wan2.2) | 🆕 第三轮：§17 补白；Wan2.2 主模型已在 §2.0.2，本行为独立衍生变体 |
+| 可灵 3.0 系列 | 快手 | 2026-02-05 全球上线（04 月原生 4K） | 视频 / 图像生成 | All-in-One 统一架构，视频 3.0 / 3.0 Omni / 图片 3.0 / 3.0 Omni；15s 连续生成、智能分镜、角色与音色一致性 | 已开放（会员先行，商业产品） | `[B]` [科技日报](https://www.stdaily.com/web/gdxw/2026-02/05/content_470802.html) · 人民论坛网 · 每日经济新闻 | 🆕 第三轮：§17 补白，三源交叉；基线 §17 仅有未标版本的 Kling 旧条目 |
+| Seedance 2.0 | 字节跳动 | 2026-02（月份级） | 视频生成 | 文本/图像/音频/视频多模态输入，最长 15s，自带音效与镜头切换 | 已开放（商业产品） | `[B]` 腾讯新闻产业报道 · 人民论坛网 | 🆕 第三轮：§17 补白；**具体发布日期未获官方确认** |
+| Vidu Q3 | 生数科技 | 2026-01-30 | 视频生成 | 声画一体，一次生成 16s 完整叙事，多角色多语种对话、智能镜头调度 | 已开放（商业产品） | `[B]` 单一来源：人民论坛网 | 🆕 第三轮：§17 补白；**单一 B 源，规格须复核** |
 
 #### 2.0.3 🔄 更新项 已收录模型的版本 / 能力 / 状态更正
 
@@ -640,12 +659,13 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 | 分类 | 条目数 | 说明 |
 |:---|:---:|:---|
-| 🆕 新增项（已核实） | 114 | 海外厂商 64 + 中国厂商与机构 50；其中 19 条为第二轮补查新增 |
+| 🆕 新增项（已核实） | 133 | 海外厂商 71 + 中国厂商与机构 62；其中 19 条为第二轮补查、19 条为第三轮闭环与定向补查 |
 | 🔄 更新项（已核实） | 34 | 时间 / 版本 / 能力 / 状态 / 许可 / 类别更正，原记录保留在基线表 |
 | ⚠️ 待确认项 | 13 | 含未发布、仅预告、来源冲突与无来源数值；**均不作为确定内容**；第二轮有 4 项已收敛移出 |
 | 引用编号反查 | 10 条记录（7 项编号核实为真实 / 1 项性质需更正 / 2 项待复核） | 见 §2.0.5 |
 | 官方退役状态 | 8 组事件 | 见 §2.0.7，均为 `[A]` 一手来源 |
-| **本轮核实合计** | **161 条模型记录** | 114 + 34 + 13，三态互斥、全局去重 |
+| HF 组织页核查 | 10 组结论 | 见 §2.0.7，均为 `[A]` 一手来源 |
+| **本轮核实合计** | **180 条模型记录** | 133 + 34 + 13，三态互斥、全局去重 |
 
 **去重规则**：
 1. 以「模型名称」为主键全局去重；同一模型只归入 🆕 / 🔄 / ⚠️ 之一，跨表不重复出现。
@@ -691,27 +711,59 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 | 2026-10-14 公告 | `gpt-4o`、`gpt-4o-mini`、`gpt-4.1`、`gpt-4.1-mini` | 2027-01-14 API 下线 | `[A]` Deprecations |
 | 2026-04-20 / 06-15 / 08-05 / 02-19 | Claude Haiku 3、Sonnet 4 / Opus 4、Opus 4.1、Sonnet 3.7 / Haiku 3.5 | Claude API 正式退役 | `[A]` Claude Platform Release Notes |
 
+**第三轮：自动抓取 → 人工核实闭环（2026-11-05）**
+
+§2.0.8 每日流水线产出首期 12 条机器候选后，逐条调用 [HF 模型 API](https://huggingface.co/docs/hub/api) 取一手元数据，并对重点条目补查官方发布页，处置如下。**这是「机器发现 → 人工核实 → 迁入三态清单」流程的首次完整跑通**：
+
+| 处置 | 条数 | 模型 |
+|:---|:---:|:---|
+| ✅ 迁入 🆕 新增项 | 5 | 文心 ERNIE-5.5-Flash-Base、MiniMax-M3.1-Flash、混元 Hy-Nomas、LiquidAI LFM3-VL-2B、MiniCPM-OCR-1.0 |
+| 🔄 已在清单，补一手来源 | 1 | moonshotai/Kimi-K3.1-Pro（HF 许可证与仓库状态） |
+| ⏸ 保留为机器候选，不迁入 | 6 | Comfy-Org/MOSS-Image、Comfy-Org/Idol、Viggle/Viggle-Remake（均为**跨组织再分发**）、ricursiveAI/Ripple-65B-Preview（信息不足）、ccore/Qwen3.5-4B-GLB-3D-Coder 与 Vxtzq/Crowd-v1（社区微调） |
+
+这个结果也暴露了抓取规则的一个盲点：原先只用仓库名匹配噪词，漏掉了「名字干净但 `base_model` 指向其他组织」的再分发仓库。第三轮已把「跨组织 base_model」加入排除规则（见 `scripts/fetch_hf_models.py`）。
+
 **明确未覆盖的范围（因此不能称「已查全」）**
 
 | 范围 | 状态 | 说明 |
 |:---|:---|:---|
-| §3.1–3.12 专项领域逐条复核 | 未做，仅抽样 | 只补了代码 / 嵌入 / 语音 / 视频各若干代表；数学、VLM、SLM、MoE、新架构、Agent、RAG、医疗科学的 2026 全量新模型未系统检索 |
-| §17 视频生成与世界模型 | 未做，仅抽样 | 只核实 Sora 2 / Veo 3.1 / Wan2.2；可灵 Kling 3.0 / O1、Runway Gen-4.5、Luma Ray3、Pika 2.x、Seedance 2.0、HunyuanVideo、Hailuo 等仅见二手且日期互相冲突，故未收录 |
-| 长尾厂商 | 未系统检索 | Amazon Nova 2、Microsoft Phi-5、Apple、Stability AI、01.AI、商汤、360、美团、Reflection AI、Thinking Machines、AI21 Jamba 新版等；无法确认是否存在 2026 新版，一律不写入 |
+| §3.1–3.12 专项领域逐条复核 | 第三轮定向补齐，**仍未穷举** | 补入嵌入（EmbeddingGemma-2）、OCR / 文档（MiniCPM-OCR-1.0）、ASR（Nemotron 3.5 Transcribe）、GUI Agent VLM（Mage-VL-Cowork）、端侧 VLM（LFM3-VL-2B）、视觉定位（WeVisOne-VL）；数学、SLM、RAG、医疗科学的 2026 全量新模型仍未系统检索 |
+| §17 视频生成与世界模型 | 第三轮定向补齐，**仍有缺口** | 补入 Hy-Nomas、MiniMax-H3、Pika-H3-Flex、Wan2.2-Animate-2、FLUX.3 Klein、可灵 3.0、Seedance 2.0、Vidu Q3；Runway Gen-4.5、Luma Ray3、HunyuanVideo、Hailuo、阿里 HappyHorse 1.0 仍无可核实的官方发布日期，保持待确认 |
+| 长尾厂商 | 第三轮已用 HF 官方 API 客观核查 | 见下方核查表。Microsoft / Apple / Amazon / Google / AI21 / Black Forest Labs / CohereLabs 确认有 2026 新仓库；01-ai、SenseTime 最新公开仓库仍停留在 2024 / 2022；部分 author 检索无结果**不代表厂商没有模型**（存在组织别名或仅闭源发布） |
 | 基线 200+ 模型逐条状态复核 | 未做 | §2.1–2.30 与 §3.x 仍为 2026-04 快照，仅更正 34 项；其余条目的日期/能力/状态未逐条验证 |
 | §4.1 基准数值 / §4.2 定价 / §1.10 SOTA 榜 | 未逐项溯源 | 保持 ⚠️ 待确认 |
 | 闭源模型参数规模 | 普遍不可得 | 厂商不披露，表内写「未披露」即不推测 |
-| 非中英语种模型、具身/机器人/世界模型、安全护栏模型 | 未纳入 | 超出本轮检索口径 |
-| 2026-11-05 之后 | 不在窗口内 | 需滚动维护 |
+| 非中英语种模型、具身/机器人、安全护栏模型 | 仍未纳入 | 世界模型已由 Hy-Nomas 补入；其余超出检索口径 |
+| 2026-11-05 之后 | 不在窗口内 | 由 §2.0.8 每日流水线滚动维护 |
+
+**HF 组织页客观核查（第三轮，一手）**
+
+方法：`GET https://huggingface.co/api/models?author=<组织>&sort=createdAt&direction=-1&limit=N&full=true`。局限：仅覆盖 HF 上以该 author 发布的仓库，不含别名组织、非 HF 发布与纯闭源模型。
+
+| 组织（HF author） | 最新公开仓库 | 日期 | 处置 |
+|:---|:---|:---|:---|
+| microsoft | Mage-VL-Cowork | 2026-10-30 | 已迁入；**并非 Phi-5**，此前对该型号的猜测未获证实 |
+| apple | LensVLM-9B | 2026-09-21 | 已迁入（Apple AMLR 许可，非通用开源） |
+| google | embeddinggemma-2 | 2026-09-14 | 已迁入 |
+| amazon | LAR-27B | 2026-10-14 | 基于 Qwen3.8-27B 的研究性微调、15 赞，未迁入；**「Nova 2」未获证实** |
+| ai21labs | AI21-Jamba2-3B | 2026-01-06 | 已迁入；纠正首轮「Jamba 新版无法确认」 |
+| black-forest-labs | flux-3-image-klein | 2026-10-13 | 已迁入 |
+| CohereLabs | tiny-aya-base-32K | 2026-09-08 | 研究小模型（CC-BY-NC-4.0），未迁入 |
+| 01-ai | Yi-Coder-9B-Chat | 2024-08-21 | 未见 2026 新版 |
+| SenseTime | deformable-detr | 2022-03-02 | 未见 2026 新版 |
+| Kuaishou / Luma / runwayml / bytedance / 360 / ReflectionAI / ThinkingMachines | 以该 author 检索无结果 | — | 可能使用别名或不开权重，**不作「厂商无模型」结论** |
 
 **残余准确性风险**
 
-- **单一 B 源条目**（日期与规格须以官方模型卡复核）：Grok 4.3 / 4.6、Olmo-core 3、Kimi K2.7-Code、MiniMax M2 / M2.1、豆包 Seed 2.1 / 2.0、Baichuan-M3 Plus、星火 X2-VL、Voxtral TTS、小米 MiMo-V2-Flash、蚂蚁 Ling-3.0-flash-VL、Jina v4/v5。
+- **单一 B 源条目**（日期与规格须以官方模型卡复核）：Grok 4.3 / 4.6、Olmo-core 3、Kimi K2.7-Code、MiniMax M2 / M2.1、豆包 Seed 2.1 / 2.0、Baichuan-M3 Plus、星火 X2-VL、Voxtral TTS、小米 MiMo-V2-Flash、蚂蚁 Ling-3.0-flash-VL、Jina v4/v5、Vidu Q3、Seedance 2.0 的具体日期。
+- **HF 元数据 ≠ 官方发布**：仓库 `createdAt` 可能远早于正式发布（ERNIE-5.5-Flash-Base 10-21 建仓、11-05 才官宣；MiniMax-M3.1-Flash 10-17 建仓、10-19 发布）。表内优先取官方公告日，并在说明中并列仓库时间。
+- **组织别名陷阱**：首轮以 `cohere` / `ai21` / `Kuaishou` 等 author 检索为空就推断「无新模型」是错的，实际分布在 `CohereLabs` / `ai21labs` 等别名下。第三轮已纠正，但其他组织仍可能存在同类问题。
+- **跨组织再分发**：`base_model` 指向其他组织的 ComfyUI / LoRA / 量化仓库，即使作者是知名组织，也不等于原厂模型发布，不迁入三态清单。
 - **聚合站可信度**：PRIMO.ai、AI Wiki、aikitapp、aiwiki.ai、theworldofai、qdna.fr 等可能含 AI 生成内容，本表一律限定为 B/C 级，不作为单一确定依据。
 - **抓取方式**：WebFetch 返回的是页面摘要而非逐字原文，个别日期或数值可能与官方原文有出入。
-- **未消解的日期冲突**：Kimi K3（7-16 vs 7-17 发布、权重 7-27 vs 7-28）、Qwen3.8-Max 权重（8-12 vs 8-13）、GLM-5.3（仅有二手日期）、Kimi K3.1 Pro（10-23 vs 10-24 时区差异）。已在相关条目按可核实来源取值，未强行统一。
+- **未消解的日期冲突**：Kimi K3（7-16 vs 7-17 发布、权重 7-27 vs 7-28）、Qwen3.8-Max 权重（8-12 vs 8-13）、GLM-5.3（仅有二手日期）、Kimi K3.1 Pro（10-23 vs 10-24 时区差异）、Hy-Nomas（官方宣布 10-23 vs 10-24，仓库 10-21）。已在相关条目按可核实来源取值，未强行统一。
 
-**结论**：查准方面，第二轮修正了 7 类错误，主线厂商的一手来源覆盖显著提升，但仍有 13 条待确认与若干单一 B 源条目；查全方面**未达成**，且在开放域无法一次性达成。本清单是「按厂商关键词批量检索 + 官方目录反查」的结果，不是全行业普查。可复现的收敛路径是：定期抓取各厂商 model directory / deprecations / Hugging Face 组织页 / arXiv 新提交，与 §2.0 做差集，再逐条升级来源等级。
+**结论**：查准方面，三轮累计修正 8 类错误，主线厂商的一手来源覆盖显著提升，但仍有 13 条待确认与若干单一 B 源条目；查全方面**仍未达成**，且在开放域无法一次性达成——第三轮把「§17 视频生成」「长尾厂商」从「完全未做」推进到「定向补齐」，但基线 200+ 模型逐条复核、§4 数值溯源等仍未做。真正可持续的收敛方式已经落地：§2.0.8 每日流水线负责发现，人工按 A/B/C 来源口径核实后再迁入三态清单，未核实的一律留在候选区。
 
 <!-- HF_DAILY_START -->
 #### 2.0.8 每日 HF 自动抓取候选
@@ -2976,6 +3028,8 @@ LLM 发展路径 (2024-2030):
 
 | 日期 | 更新内容 |
 |:---|:---|
+| **2026-11-05 (v4.3)** | **第三轮：自动抓取闭环与查全补齐**：① 首期 12 条 HF 机器候选逐条用 HF 模型 API 与官方发布页人工核实，5 条迁入 🆕、1 条补一手来源、6 条因跨组织再分发或信息不足保留候选，跑通「机器发现 → 人工核实 → 迁入三态」闭环；② 补入 ERNIE-5.5-Flash-Base、MiniMax-M3.1-Flash / H3 / Music3、混元 Hy-Nomas、MiniCPM-OCR-1.0、LFM3-VL-2B、WeVisOne-VL、EmbeddingGemma-2、Jamba2、FLUX.3 Klein、Mage-VL-Cowork、LensVLM-9B、Nemotron 3.5 Transcribe、Pika-H3-Flex、Wan2.2-Animate-2、可灵 3.0 / Seedance 2.0 / Vidu Q3 等 19 条；③ 用 HF 官方 API 客观核查 10 组长尾厂商，纠正「组织名别名陷阱」与「无公开仓库」的错误推断；④ §2.0.7 覆盖边界更新为「§17 与长尾厂商已定向补齐、仍未穷举」；⑤ 三态计数更新为 133 / 34 / 13 = **180 条**；⑥ 抓取脚本增加跨组织再分发排除、API 字段防御与 `--validate` 产物校验，日报打分明细补充许可列，CI 增加校验步骤与 push 失败 rebase 重试，离线自测扩充至 39 项 |
+| **2026-11-05 (v4.2)** | **新增 Hugging Face 每日自动抓取流水线**：`scripts/fetch_hf_models.py`（零第三方依赖，三路 HF API 榜单 + 时间窗 + 热度/官方加权 + 量化仓库排除 + 跨天去重与冷却）、`scripts/test_fetch_hf_models.py`（离线自测）、`.github/workflows/hf-daily.yml`（每日 01:17 UTC 定时 + 手动触发）；产出 `HF_DAILY.md`、`data/hf-daily/` 归档与 `latest.json`，并自动重建 `index.html`；新增 README §2.0.8，所有自动条目标注「机器抓取 · 未经人工核实」，不并入三态清单 |
 | **2026-11-05 (v4.1)** | **第二轮复核与纠偏**：① 补查 OpenAI Help Center Model Release Notes、platform.openai.com Deprecations、Deployment Safety Hub、Meta 官方博客、Google blog、Hugging Face 模型卡等一手页面，新增 19 条遗漏模型（gpt-oss / Codex 支线 / GPT-5.4 mini-nano / GPT-6 Rosalind / ChatGPT Images / Sora 2 / Gemma 4 / Veo 3.1 / Voxtral TTS / 小米 MiMo / 蚂蚁 Ling / Wan2.2 / Qwen3.8-27B / Jina v4-v5 等）；② 修正 7 类第一轮错误：GPT-5.4 mini-nano 实为已发布、Qwen3.8-Max 与 Kimi K3.1 Pro 与 Mistral Large 4 的权重均已交付且许可证均非 Apache 2.0、Llama 4 Scout 10M 有 Meta 官方来源、OpenAI 官方退役清单已找到、Gemma 4 日期与规格补齐、arXiv 反查措辞改为准确表述；③ 收敛 4 条待确认项，补充 8 组官方退役/弃用事件；④ 新增 §2.0.7 查准查全自评，列出未覆盖范围、单一来源条目与残余风险，明确「查全」不可一次性达成；⑤ 三态计数更新为 114 / 34 / 13 = **161 条**；⑥ 同步更新 index.html 与 report_final.md |
 | **2026-11-05 (v4)** | **模型汇总深度核实与增补**：① 新增 §2.0 统一模型汇总核实总表，以项目现有汇总为基线完成 146 条核实记录，统一 8 列字段（模型名称 / 提供方 / 发布或更新时间 / 模型类别 / 核心能力 / 可用状态 / 信息来源 / 标记）；② 覆盖 2025-01～2026-11-05 国内外 30+ 厂商的新模型、版本迭代与状态，含 OpenAI GPT-5.3～GPT-6.1、Anthropic Opus 4.5～Haiku 5.5、Gemini 3～4 Argon、DeepSeek V3.2～V4.1-Flash、Qwen3.5～Qwen3.8、GLM-5.1～5.3、Kimi K2.6～K3.1、MiniMax M3、混元 Hy3、豆包 Seed 2.1、讯飞星火 X2 等；③ 更正基线中 34 项时间 / 规格 / 许可 / 状态（如 GPT-5 → 2025-08-07、ERNIE 5.0 → 2026-01-22 且为闭源 API、LLaMA 4 Behemoth → 未发布）；④ 反查 10 条 arXiv 引用记录，7 项取得原文确认，未核实的不作真伪判断；⑤ 明确 A/B/C 三级来源口径与全局去重规则，§2.1–2.30 保留为 2026-04-05 基线快照 |
 | **2026-04-05 (v3.1)** | **全面审查与信息更新**：① 新增 GPT-5.4（2026-03 最新旗舰）到 GPT系列/SOTA榜/性能表/推理模型/时间线；② o4-mini 标注已退役(2026-02)，SOTA 榜重排（GPT-5.4 登顶）；③ 修复目录编号重复问题（13/14→19/20）；④ Claude 4.6 GPQA 更新为 91.3%；⑤ API 定价表新增 GPT-5.4/GPT-5.4 mini |
