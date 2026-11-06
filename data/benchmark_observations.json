@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "version": "1.0",
+    "updated": "2026-11-06",
+    "principle": "一条观测 = 一个模型 × 一个榜单/规格 × 一个指标 × 一个版本口径。长表存储，不做宽表预聚合；排名只在可比组（group）内计算，绝不跨组求总分或平均值。",
+    "missing_policy": "value=null 且 status=not_disclosed 表示官方明确未披露；看板中模型×榜单的空缺格子表示『未参与/未公布』，显示为『未披露』而非 0 分。二者都不参与任何统计与排名。",
+    "duplicate_policy": "主键 (model, benchmark, key, group) 必须唯一。official_sources.json 的 benchmarks 与 leaderboards 存在同一指标重复登记（如 AA Index 59 分、SEC-bench 三项、HealthBench 68.6），本表只保留一条。",
+    "unit_policy": "unit 与 direction 由 group 统一定义，观测不重复声明；校验器强制同组内单位一致，不同单位禁止在同一图表或排序中混用。",
+    "source_note": "数据来自 data/official_sources.json 的 22 条可核实记录，另补 3 条 README §2.0 中带 [A] 来源的对照指标（Baichuan-M3、Muse Spark），用于演示同口径与跨口径对比。"
+  },
+  "groups": [
+    {"id": "aa-index-v5", "label": "AA Intelligence Index v5.0", "unit": "score", "direction": "higher", "scope": "厂商公告引述第三方指数；仅 v5.0 版本内可比，跨版本不可比", "kind": "ranking"},
+    {"id": "cyber-noguardrails", "label": "网络安全三项（无护栏）", "unit": "percent", "direction": "higher", "scope": "官方注明为『无护栏』条件下评测；覆盖漏洞发现 / 利用验证 / 根因修复", "kind": "benchmark"},
+    {"id": "qwen37-max-selfeval", "label": "Qwen3.7-Max 官方自评", "unit": "percent", "direction": "higher", "scope": "厂商自评，harness 与采样设置见官方博客脚注；非第三方独立复测", "kind": "benchmark"},
+    {"id": "qwen37-plus-selfeval", "label": "Qwen3.7-Plus 官方自评", "unit": "percent", "direction": "higher", "scope": "厂商自评；视觉与 GUI Agent 专项", "kind": "benchmark"},
+    {"id": "healthbench", "label": "HealthBench（百川口径）", "unit": "percent", "direction": "higher", "scope": "医疗专用评测，综合 / Hard / Professional 三子集；不与通用模型横比", "kind": "benchmark"},
+    {"id": "scan-bench", "label": "SCAN-bench 与临床专项", "unit": "percent", "direction": "higher", "scope": "百川自建动态问诊、长程临床记忆与循证引用评测", "kind": "benchmark"},
+    {"id": "hallucination", "label": "事实性幻觉率", "unit": "percent", "direction": "lower", "scope": "越低越好；仅百川医疗口径内可比", "kind": "benchmark"},
+    {"id": "webdev-arena", "label": "WebDev Arena", "unit": "elo", "direction": "higher", "scope": "人类偏好 Elo，榜单快照随投票变动", "kind": "ranking"},
+    {"id": "alignment-tbench4", "label": "Terminal-Bench 4.0 对齐项", "unit": "percent", "direction": "lower", "scope": "内部安全对齐测试，非能力分数；越低越好", "kind": "safety"},
+    {"id": "hle-contemplating", "label": "HLE（Contemplating 模式）", "unit": "percent", "direction": "higher", "scope": "多 Agent 并行推理模式；与标准 HLE 自评 harness 不同，同名指标不可直接比较", "kind": "benchmark"},
+    {"id": "spec-context", "label": "上下文窗口（官方规格）", "unit": "tokens", "direction": "higher", "scope": "官方公布值；beta / 理论上限不等于默认可用，不同厂商计数口径可能不同", "kind": "spec"},
+    {"id": "spec-params", "label": "参数规模（官方规格）", "unit": "billion", "direction": "higher", "scope": "总参数与激活参数含义不同，不可混排；未披露者显式标记", "kind": "spec"}
+  ],
+  "sources": [
+    {"id": "google_carbon", "level": "A", "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/", "ref": "official_sources.json · benchmarks[0] / leaderboards[0,1,2,4]", "note": "2026-10-28 官方公告"},
+    {"id": "qwen37_max", "level": "A", "url": "https://qwen.ai/blog?id=qwen3.7", "ref": "official_sources.json · benchmarks[1]", "note": "2026-05-20 官方博客"},
+    {"id": "qwen37_plus", "level": "A", "url": "https://qwen.ai/blog?id=qwen3.7-plus", "ref": "official_sources.json · benchmarks[2]", "note": "2026-06-01 官方博客"},
+    {"id": "baichuan_m4", "level": "A", "url": "https://www.baichuan-ai.com/", "ref": "official_sources.json · benchmarks[3] / leaderboards[3]", "note": "指标为官网基准表 [A]；发布日期 2026-06-22 为三家媒体 [B] 交叉"},
+    {"id": "baichuan_m4_media", "level": "B", "url": "https://www.163.com/tech/article/L0210BJ700098IEO.html", "ref": "README §2.0.2 补注", "note": "临床记忆 86.9 / EBM 90.0 为媒体转述官方披露，等级 B，引用前须复核"},
+    {"id": "gpt5_card", "level": "A", "url": "https://arxiv.org/abs/2601.03267", "ref": "official_sources.json · benchmarks[4]", "note": "GPT-5 System Card；不存在独立 Technical Report"},
+    {"id": "claude46", "level": "A", "url": "https://www.anthropic.com/news/claude-opus-4-6", "ref": "official_sources.json · benchmarks[5]", "note": "1M 上下文为 beta"},
+    {"id": "llama4", "level": "A", "url": "https://ai.meta.com/blog/llama-4-multimodal-intelligence/", "ref": "official_sources.json · benchmarks[6]", "note": "10M 为 Scout 上限，非全系列"},
+    {"id": "xai_models", "level": "A", "url": "https://docs.x.ai/docs/models", "ref": "official_sources.json · benchmarks[7]", "note": "官方模型目录未标注日期"},
+    {"id": "muse_code", "level": "A", "url": "https://developer.meta.com/ai/resources/blog/build-with-muse-code", "ref": "official_sources.json · benchmarks[8]", "note": "2026-08-05 开发者博客"},
+    {"id": "muse_spark", "level": "A", "url": "https://ai.meta.com/blog/introducing-muse-spark-msl/", "ref": "README §2.0.2", "note": "2026-04-08 Meta MSL 官方博客"},
+    {"id": "baichuan_m3", "level": "A", "url": "https://arxiv.org/abs/2602.06570", "ref": "README §2.0.3", "note": "Baichuan-M3 技术报告，2026-01-13 开源"}
+  ],
+  "observations": [
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "Artificial Analysis Intelligence Index v5.0", "metric": "综合智能指数", "key": "aa_index", "value": 59, "group": "aa-index-v5", "rank": 1, "date": "2026-10-28", "src": "google_carbon", "note": "厂商公告引述第三方指数，第 1 名"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "SEC-bench Pro", "metric": "真实漏洞发现率", "key": "sec_bench_pro", "value": 88.2, "group": "cyber-noguardrails", "date": "2026-10-28", "src": "google_carbon", "note": "无护栏条件下评测"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "ExploitGym", "metric": "风险利用验证率", "key": "exploitgym", "value": 54.8, "group": "cyber-noguardrails", "date": "2026-10-28", "src": "google_carbon", "note": "无护栏条件下评测"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "CWE-bench", "metric": "根因修复率", "key": "cwe_bench", "value": 71.0, "group": "cyber-noguardrails", "date": "2026-10-28", "src": "google_carbon", "note": "无护栏条件下评测"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "WebDev Arena", "metric": "Elo 评分", "key": "webdev_arena_elo", "value": 1768, "group": "webdev-arena", "rank": 4, "date": "2026-10-28", "src": "google_carbon", "note": "第 4 名，较上一版 +89 Elo"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "Terminal-Bench 4.0 对齐项", "metric": "成功作弊率", "key": "cheat_success", "value": 0.0, "group": "alignment-tbench4", "date": "2026-10-28", "src": "google_carbon", "note": "内部对齐测试，非能力分数；越低越好"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "Terminal-Bench 4.0 对齐项", "metric": "尝试作弊率", "key": "cheat_attempt", "value": 0.4, "group": "alignment-tbench4", "date": "2026-10-28", "src": "google_carbon", "note": "内部对齐测试，非能力分数；越低越好"},
+    {"model": "Gemini 4 Carbon", "provider": "Google", "benchmark": "官方规格", "metric": "参数规模", "key": "params_total", "value": null, "group": "spec-params", "date": "2026-10-28", "src": "google_carbon", "status": "not_disclosed", "note": "官方公告未披露参数规模"},
+
+    {"model": "Qwen3.7-Max", "provider": "阿里巴巴", "benchmark": "GPQA Diamond", "metric": "GPQA Diamond", "key": "gpqa_diamond", "value": 92.4, "group": "qwen37-max-selfeval", "date": "2026-05-20", "src": "qwen37_max", "note": "厂商自评"},
+    {"model": "Qwen3.7-Max", "provider": "阿里巴巴", "benchmark": "MMLU-Pro", "metric": "MMLU-Pro", "key": "mmlu_pro", "value": 89.6, "group": "qwen37-max-selfeval", "date": "2026-05-20", "src": "qwen37_max", "note": "厂商自评"},
+    {"model": "Qwen3.7-Max", "provider": "阿里巴巴", "benchmark": "HLE", "metric": "HLE（标准自评）", "key": "hle", "value": 41.4, "group": "qwen37-max-selfeval", "date": "2026-05-20", "src": "qwen37_max", "note": "与 Muse Spark Contemplating 模式的同名 HLE 口径不同"},
+    {"model": "Qwen3.7-Max", "provider": "阿里巴巴", "benchmark": "Terminal Bench 2.0-Terminus", "metric": "Terminal Bench 2.0", "key": "terminal_bench2", "value": 69.7, "group": "qwen37-max-selfeval", "date": "2026-05-20", "src": "qwen37_max", "note": "厂商自评"},
+    {"model": "Qwen3.7-Max", "provider": "阿里巴巴", "benchmark": "官方规格", "metric": "参数规模", "key": "params_total", "value": null, "group": "spec-params", "date": "2026-05-20", "src": "qwen37_max", "status": "not_disclosed", "note": "官方未披露参数规模与技术报告"},
+
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "MRCR-v2 128K", "metric": "长文本理解", "key": "mrcr_v2_128k", "value": 91.7, "group": "qwen37-plus-selfeval", "date": "2026-06-01", "src": "qwen37_plus", "note": "厂商自评"},
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "BabyVision", "metric": "纯视觉推理", "key": "babyvision", "value": 64.7, "group": "qwen37-plus-selfeval", "date": "2026-06-01", "src": "qwen37_plus", "note": "厂商自评"},
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "ScreenSpot Pro", "metric": "GUI 感知", "key": "screenspot_pro", "value": 79.0, "group": "qwen37-plus-selfeval", "date": "2026-06-01", "src": "qwen37_plus", "note": "厂商自评"},
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "AndroidWorld", "metric": "移动 App 操作", "key": "androidworld", "value": 81.0, "group": "qwen37-plus-selfeval", "date": "2026-06-01", "src": "qwen37_plus", "note": "厂商自评"},
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 1000000, "group": "spec-context", "date": "2026-06-01", "src": "qwen37_plus", "note": "官方 API 配置示例 contextWindow=1000000"},
+    {"model": "Qwen3.7-Plus", "provider": "阿里巴巴", "benchmark": "官方规格", "metric": "参数规模", "key": "params_total", "value": null, "group": "spec-params", "date": "2026-06-01", "src": "qwen37_plus", "status": "not_disclosed", "note": "官方未披露参数规模"},
+
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "HealthBench", "metric": "综合", "key": "healthbench", "value": 68.6, "group": "healthbench", "rank": 1, "date": "2026-06-22", "src": "baichuan_m4", "note": "官方称三个子集均列第一；排名为 [B] 级口径"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "HealthBench Hard", "metric": "Hard 子集", "key": "healthbench_hard", "value": 49.7, "group": "healthbench", "rank": 1, "date": "2026-06-22", "src": "baichuan_m4", "note": "高难度重症与罕见病推理"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "HealthBench Professional", "metric": "Professional 子集", "key": "healthbench_pro", "value": 55.1, "group": "healthbench", "rank": 1, "date": "2026-06-22", "src": "baichuan_m4", "note": "临床专业子集"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "SCAN-bench", "metric": "初诊评分", "key": "scanbench_first", "value": 79.0, "group": "scan-bench", "date": "2026-06-22", "src": "baichuan_m4", "note": "参照 OSCE 的动态问诊评测"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "SCAN-bench", "metric": "复诊评分", "key": "scanbench_followup", "value": 74.7, "group": "scan-bench", "date": "2026-06-22", "src": "baichuan_m4", "note": "参照 OSCE 的动态问诊评测"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "长上下文临床记忆", "metric": "全病程记忆", "key": "clinical_memory", "value": 86.9, "group": "scan-bench", "date": "2026-06-22", "src": "baichuan_m4_media", "note": "[B] 媒体转述官方披露，须复核"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "Baichuan-EBM", "metric": "循证引用精度", "key": "ebm_precision", "value": 90.0, "group": "scan-bench", "date": "2026-06-22", "src": "baichuan_m4_media", "note": "[B] 媒体转述官方披露，须复核"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "事实性幻觉率", "metric": "幻觉率", "key": "hallucination_rate", "value": 3.3, "group": "hallucination", "date": "2026-06-22", "src": "baichuan_m4", "note": "越低越好"},
+    {"model": "Baichuan-M4", "provider": "百川智能 / 清华大学", "benchmark": "官方规格", "metric": "参数规模", "key": "params_total", "value": null, "group": "spec-params", "date": "2026-06-22", "src": "baichuan_m4", "status": "not_disclosed", "note": "未见官方参数披露；HF 亦未检索到权重仓库"},
+
+    {"model": "Baichuan-M3-235B", "provider": "百川智能", "benchmark": "HealthBench", "metric": "综合", "key": "healthbench", "value": 65.1, "group": "healthbench", "rank": 2, "date": "2026-01-13", "src": "baichuan_m3", "note": "与 M4 同口径，可横向对比"},
+    {"model": "Baichuan-M3-235B", "provider": "百川智能", "benchmark": "HealthBench Hard", "metric": "Hard 子集", "key": "healthbench_hard", "value": 44.4, "group": "healthbench", "rank": 2, "date": "2026-01-13", "src": "baichuan_m3", "note": "与 M4 同口径，可横向对比"},
+    {"model": "Baichuan-M3-235B", "provider": "百川智能", "benchmark": "事实性幻觉率", "metric": "幻觉率", "key": "hallucination_rate", "value": 3.5, "group": "hallucination", "date": "2026-01-13", "src": "baichuan_m3", "note": "越低越好；与 M4 同口径"},
+    {"model": "Baichuan-M3-235B", "provider": "百川智能", "benchmark": "官方规格", "metric": "总参数", "key": "params_total", "value": 235, "group": "spec-params", "date": "2026-01-13", "src": "baichuan_m3", "note": "235B，单位 billion"},
+
+    {"model": "Muse Spark", "provider": "Meta", "benchmark": "HLE", "metric": "HLE（Contemplating 模式）", "key": "hle", "value": 58.0, "group": "hle-contemplating", "date": "2026-04-08", "src": "muse_spark", "note": "多 Agent 并行推理；与 Qwen3.7-Max 标准 HLE 自评 harness 不同，同名不可直接比较"},
+    {"model": "Muse Spark", "provider": "Meta", "benchmark": "FrontierScience Research", "metric": "FrontierScience Research", "key": "frontier_science", "value": 38.0, "group": "hle-contemplating", "date": "2026-04-08", "src": "muse_spark", "note": "Contemplating 模式"},
+    {"model": "Muse Spark 1.2", "provider": "Meta", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 1000000, "group": "spec-context", "date": "2026-08-05", "src": "muse_code", "note": "编码 Agent 专用档位"},
+
+    {"model": "GPT-5", "provider": "OpenAI", "benchmark": "官方规格", "metric": "总上下文", "key": "context_total", "value": 400000, "group": "spec-context", "date": "2025-08-07", "src": "gpt5_card", "note": "272K 输入 + 128K 推理/输出；System Card 口径"},
+    {"model": "GPT-5", "provider": "OpenAI", "benchmark": "官方规格", "metric": "最大输入", "key": "context_input", "value": 272000, "group": "spec-context", "date": "2025-08-07", "src": "gpt5_card", "note": "System Card 口径"},
+    {"model": "GPT-5", "provider": "OpenAI", "benchmark": "官方规格", "metric": "推理/输出上限", "key": "context_output", "value": 128000, "group": "spec-context", "date": "2025-08-07", "src": "gpt5_card", "note": "System Card 口径"},
+
+    {"model": "Claude Opus 4.6", "provider": "Anthropic", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 1000000, "group": "spec-context", "date": "2026-02-05", "src": "claude46", "note": "1M beta，不等于默认可用"},
+
+    {"model": "Llama 4 Scout", "provider": "Meta", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 10000000, "group": "spec-context", "date": "2025-04-05", "src": "llama4", "note": "iRoPE；官方明示 Scout 上限，非全系列规格"},
+    {"model": "Llama 4 Scout", "provider": "Meta", "benchmark": "官方规格", "metric": "总参数", "key": "params_total", "value": 109, "group": "spec-params", "date": "2025-04-05", "src": "llama4", "note": "109B，单位 billion"},
+    {"model": "Llama 4 Scout", "provider": "Meta", "benchmark": "官方规格", "metric": "激活参数", "key": "params_active", "value": 17, "group": "spec-params", "date": "2025-04-05", "src": "llama4", "note": "17B 激活；与总参数含义不同，不可混排"},
+
+    {"model": "Grok 4.7", "provider": "xAI", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 500000, "group": "spec-context", "date": "", "src": "xai_models", "note": "官方模型目录未标注日期"},
+    {"model": "grok-4.3", "provider": "xAI", "benchmark": "官方规格", "metric": "上下文窗口", "key": "context_window", "value": 1000000, "group": "spec-context", "date": "", "src": "xai_models", "note": "官方模型目录未标注日期"}
+  ]
+}
