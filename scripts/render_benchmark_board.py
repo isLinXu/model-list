@@ -281,6 +281,7 @@ def build_view(data: dict) -> dict:
         lb_obs.append({
             **o,
             "_i": i,
+            "period": o.get("period", ""),
             "benchmark": b.get("label", o["board"]),
             "metric": m.get("label", o["metric_key"]),
             "key": o["metric_key"],
@@ -320,10 +321,13 @@ def build_view(data: dict) -> dict:
 
     valued = sum(1 for o in all_obs if o.get("value") is not None)
 
-    # roster：每个榜单的完整参评名单（模型 × 配置），这是「榜单里到底有哪些模型」
+    # roster：每个榜单的完整参评名单（模型 × 配置），这是「榜单里到底有哪些模型」。
+    # 一榜多期的源（如 SWE-rebench 逐月榜）额外保留 period 维度：
+    # 同一条目在不同评测期的分数是不同数据点，排名只在期内有效。
     rosters = {}
     for bid, b in lb_boards.items():
         bobs = [o for o in lb_obs if o["board"] == bid]
+        periods = sorted({str(o.get("period") or "") for o in bobs if o.get("period")})
         entries: dict[str, dict] = {}
         for o in bobs:
             eid = o["entry_id"]
@@ -337,9 +341,15 @@ def build_view(data: dict) -> dict:
                 "model_release_date": o.get("model_release_date", ""),
                 "date": o.get("date", ""),
                 "note": o.get("note", ""),
+                "rank": o.get("rank"),
                 "values": {},
+                # 期间 → {metric: value}；非多期榜为空
+                "periods": {},
             })
             e["values"][o["metric_key"]] = o["value"]
+            p = str(o.get("period") or "")
+            if p:
+                e["periods"].setdefault(p, {})[o["metric_key"]] = o["value"]
         rosters[bid] = {
             "id": bid,
             "label": b.get("label", bid),
@@ -349,6 +359,8 @@ def build_view(data: dict) -> dict:
             "entries": list(entries.values()),
             "models": b.get("models", 0),
             "declared_entries": b.get("entries", 0),
+            "periods": periods,
+            "multi_period": bool(periods),
         }
 
     return {
@@ -462,10 +474,11 @@ input[type=text]:focus,select:focus{border-color:var(--bl)}
 </head>
 <body>
 <nav class="nav"><div class="nb"><a href="index.html">🃏 <span>HOMC · Benchmark 看板</span></a></div>
-<div class="nl"><a href="index.html">← 返回主站</a><a href="#filters">筛选</a><a href="#matrix">覆盖率</a><a href="#compare">横向对比</a><a href="#caveats">口径说明</a></div></nav>
+<div class="nl"><a href="index.html">← 返回主站</a><a href="#rosters">榜单</a><a href="#glue">拼图</a><a href="#filters">筛选</a><a href="#matrix">覆盖率</a><a href="#compare">横向对比</a><a href="#caveats">口径说明</a></div></nav>
 <div class="ly">
 <aside class="sd"><div class="tot">📑 看板导航</div><ul class="tol">
 <li><a href="#overview">📊 总览</a></li><li><a href="#rosters">🏁 榜单全貌</a></li>
+<li><a href="#glue">🧱 跨榜拼图</a></li>
 <li><a href="#filters">🔍 筛选与排序</a></li>
 <li><a href="#detail">📋 观测明细</a></li><li><a href="#matrix">🧩 覆盖矩阵</a></li>
 <li><a href="#compare">⚖️ 横向对比</a></li><li><a href="#caveats">⚠️ 口径与缺失</a></li>
@@ -499,6 +512,13 @@ input[type=text]:focus,select:focus{border-color:var(--bl)}
 <div class="tw"><table class="mx" id="covTable"></table></div>
 <div class="cd"><div class="ch">📈 各模型指标覆盖率</div><div class="cb" id="covBars"></div></div>
 
+<h2 id="glue">🧱 跨榜拼图：同一模型在不同榜单的表现</h2>
+<div class="tip">把<b>同一个模型</b>在各榜单的分数并排呈现，跨榜单拼出完整画像。
+<b>各榜口径不同（任务集、harness、调用模式、评测期都不同），因此这些数值只能并列查看，不能直接相减或跨榜排名</b>；
+单元格内的名次仅在本榜本期内有效。空白表示该模型未出现在该榜。</div>
+<div class="fl" id="gluePick"></div>
+<div class="tw"><table class="mx" id="glueTable"></table></div>
+
 <h2 id="compare">⚖️ 模型横向对比</h2>
 <div class="tip">勾选 2–4 个模型。对比表只列出<strong>至少两个所选模型都有数值</strong>的行，缺失显示「未披露」；同名但跨口径的指标分行展示并标注不可比较。</div>
 <div id="cmpChips"></div><div id="cmpWarn"></div>
@@ -523,7 +543,7 @@ const OBS = DATA.observations.map((o,i)=>{
   const s = isLb?LB_S[o.src]:S[o.src];
   return Object.assign({},o,{_i:i,unit:g.unit,direction:g.direction,
     group_label:g.label,group_scope:g.scope,kind:g.kind||'benchmark',
-    level:s.level,url:s.url,ref:s.ref});
+    level:s.level,url:s.url,ref:s.ref,period:o.period||''});
 });
 const MODELS = [...new Set(OBS.map(o=>o.model))].sort();
 const BENCHS = [...new Set(OBS.map(o=>o.benchmark))].sort();
@@ -533,7 +553,7 @@ const BOARDS = DATA.rosters;
 const BOARD_IDS = Object.keys(BOARDS);
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const st = {q:'',provider:'',benchmark:'',group:'',level:'',kind:'',onlyValued:false,onlyLeaderboard:false,
-  sort:'model',dir:1,compare:[],matrix:'group',board:BOARD_IDS[0]||'',rosterQ:'',rosterModel:''};
+  sort:'model',dir:1,compare:[],matrix:'group',board:BOARD_IDS[0]||'',rosterQ:'',period:'',glue:[]};
 
 function fmt(o){
   if(o.value==null) return '<span class="miss">未披露</span>';
@@ -620,33 +640,63 @@ function renderStats(){
 
 /* ---------- 榜单全貌与 roster 浏览器 ---------- */
 function renderBoardPicker(){
-  const opts=BOARD_IDS.map(b=>[b,BOARDS[b].label+'（'+BOARDS[b].entries.length+' 条）']);
+  const opts=BOARD_IDS.map(b=>[b,BOARDS[b].label+'（'+BOARDS[b].entries.length+' 条'+
+    (BOARDS[b].multi_period?' × '+BOARDS[b].periods.length+' 期':'')+'）']);
   document.getElementById('boardPicker').innerHTML=
     '<div><label>选择榜单</label><select id="boardSel">'+opts.map(o=>
       '<option value="'+esc(o[0])+'"'+(o[0]===st.board?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select></div>'+
-    '<div><label>榜单内搜索（模型 / agent）</label><input type="text" id="rosterQ" placeholder="如 Claude、mini-SWE-agent…" value="'+esc(st.rosterQ)+'"></div>';
-  document.getElementById('boardSel').addEventListener('change',e=>{st.board=e.target.value;renderRoster();});
+    '<div><label>榜单内搜索（模型 / agent）</label><input type="text" id="rosterQ" placeholder="如 Claude、mini-SWE-agent…" value="'+esc(st.rosterQ)+'"></div>'+
+    '<div><label>评测期</label><select id="periodSel"><option value="">全部期</option></select></div>';
+  document.getElementById('boardSel').addEventListener('change',e=>{st.board=e.target.value;st.period='';renderRoster();});
   document.getElementById('rosterQ').addEventListener('input',e=>{st.rosterQ=e.target.value;renderRoster();});
+  document.getElementById('periodSel').addEventListener('change',e=>{st.period=e.target.value;renderRoster();});
 }
 function renderRoster(){
   const b=BOARDS[st.board];
   if(!b){document.getElementById('rosterBody').innerHTML='';return;}
+
+  // 期间下拉：一榜多期的源才有
+  const psel=document.getElementById('periodSel');
+  if(psel){
+    const cur=st.period;
+    psel.innerHTML='<option value="">全部期</option>'+
+      b.periods.map(p=>'<option value="'+esc(p)+'"'+(p===cur?' selected':'')+'>'+esc(p)+'</option>').join('');
+    psel.style.display=b.multi_period?'':'none';
+  }
+
   const q=st.rosterQ.toLowerCase();
   let entries=b.entries.slice();
   if(q) entries=entries.filter(e=>(e.model+' '+e.agent+' '+e.reasoning_effort+' '+e.provider).toLowerCase().includes(q));
-  // 排序：有数值的按主指标降序，无值排后
+  if(st.period) entries=entries.filter(e=>e.periods && Object.keys(e.periods).includes(st.period));
+
   const mk=b.metrics[0];
+  // 排序：指定期时按该期分数降序，否则按模型名
   entries.sort((x,y)=>{
+    if(st.period){
+      const xv=x.periods[st.period]?x.periods[st.period][mk]:null;
+      const yv=y.periods[st.period]?y.periods[st.period][mk]:null;
+      if(xv==null&&yv==null) return x.model.localeCompare(y.model);
+      if(xv==null) return 1;
+      if(yv==null) return -1;
+      return yv-xv;
+    }
     const xv=x.values[mk], yv=y.values[mk];
     if(xv==null&&yv==null) return x.model.localeCompare(y.model);
     if(xv==null) return 1;
     if(yv==null) return -1;
     return yv-xv;
   });
+
   const heads=['#','模型','提供方','配置（agent / 推理档位）','发布日期'];
-  b.metrics.forEach(m=>heads.push(LB_M[m]?LB_M[m].label:m));
+  if(b.multi_period){
+    heads.push('评测期');
+    b.periods.forEach(p=>heads.push(p));
+  }else{
+    b.metrics.forEach(m=>heads.push(LB_M[m]?LB_M[m].label:m));
+  }
   heads.push('来源');
   document.getElementById('rosterHead').innerHTML=heads.map(h=>'<th>'+esc(h)+'</th>').join('');
+
   const src=b.source||{};
   let h='';
   entries.forEach((e,i)=>{
@@ -656,16 +706,28 @@ function renderRoster(){
       '<td style="font-size:12px">'+esc(e.agent||'—')+
       (e.reasoning_effort?' <span class="chip" style="margin:0">'+esc(e.reasoning_effort)+'</span>':'')+
       (e.note?'<br><span class="none">'+esc(e.note)+'</span>':'')+'</td>'+
-      '<td>'+esc(e.date||e.model_release_date||'未标注')+'</td>';
-    b.metrics.forEach(m=>{h+='<td><b>'+fmtVal(e.values[m],m)+'</b></td>';});
+      '<td>'+esc(e.date||'未标注')+'</td>';
+    if(b.multi_period){
+      const ps=Object.keys(e.periods||{});
+      h+='<td style="font-size:12px">'+(ps.length?esc(ps.join('、')):'<span class="none">—</span>')+'</td>';
+      b.periods.forEach(p=>{
+        const v=e.periods&&e.periods[p]?e.periods[p][mk]:null;
+        h+='<td>'+(v==null?'<span class="none">—</span>':'<b>'+fmtVal(v,mk)+'</b>')+'</td>';
+      });
+    }else{
+      b.metrics.forEach(m=>{h+='<td><b>'+fmtVal(e.values[m],m)+'</b></td>';});
+    }
     h+='<td><a href="'+esc(src.url||'')+'" target="_blank" title="'+esc(src.ref||'')+'">官方 ↗</a></td></tr>';
   });
   document.getElementById('rosterBody').innerHTML=h;
+
+  const curPeriod=st.period?('（当前筛选：'+esc(st.period)+'）'):'';
   document.getElementById('boardSummary').innerHTML=
     '<p><b>'+esc(b.label)+'</b>：官方公布 <b>'+b.declared_entries+'</b> 个参评条目，涉及 <b>'+b.models+'</b> 个模型；'
-    +'当前显示 <b>'+entries.length+'</b> 条。口径：'+esc(b.scope)+'</p>'
+    +'当前显示 <b>'+entries.length+'</b> 条。'+curPeriod+' 口径：'+esc(b.scope)+'</p>'
     +'<p style="margin-top:6px">同一模型出现多条表示<b>不同配置</b>（agent 脚手架 / 推理档位 / 编辑格式不同），'
-    +'分数不可互相替代；跨条目比较前请确认配置一致。</p>';
+    +'分数不可互相替代；跨条目比较前请确认配置一致。'
+    +(b.multi_period?'<br><b>本榜为一榜多期</b>：各评测期的任务集不同，<b>分数不可跨期直接比较</b>，名次仅在期内有效。':'')+'</p>';
 }
 
 function sel(id,label,opts,val){
@@ -801,6 +863,88 @@ function toggleCmp(m){
   renderCompare();
 }
 
+/* ---------- 跨榜拼图 ---------- */
+const GLUE_MAX=12;
+function glueCandidates(){
+  // 出现在 ≥2 个榜单的模型才值得拼图；按出现榜数与观测数排序
+  const cnt={};
+  OBS.forEach(o=>{ (cnt[o.model]=cnt[o.model]||{boards:new Set(),obs:0}); 
+    cnt[o.model].boards.add(o.group); cnt[o.model].obs++; });
+  return Object.entries(cnt)
+    .filter(([,v])=>v.boards.size>=2)
+    .sort((a,b)=>(b[1].boards.size-a[1].boards.size)||(b[1].obs-a[1].obs))
+    .map(([m,v])=>({model:m,boards:v.boards.size,obs:v.obs}));
+}
+function renderGluePick(){
+  const cands=glueCandidates();
+  const sel=cands.filter(c=>st.glue.includes(c.model)).slice(0,GLUE_MAX);
+  st.glue=sel.map(c=>c.model);
+  document.getElementById('gluePick').innerHTML=
+    '<div style="grid-column:1/-1"><label>选择要拼合的模型（最多 '+GLUE_MAX+' 个，按覆盖榜数排序）</label>'+
+    '<div style="max-height:220px;overflow-y:auto;border:1px solid var(--bd);border-radius:8px;padding:8px">'+
+    cands.slice(0,120).map(c=>'<span class="chip'+(st.glue.includes(c.model)?' on':'')+
+      '" onclick="toggleGlue(\''+esc(c.model).replace(/'/g,"\\'")+'\')" title="出现在 '+c.boards+' 个榜">'+
+      (st.glue.includes(c.model)?'✓ ':'+ ')+esc(c.model)+
+      ' <span class="none">('+c.boards+')</span></span>').join('')+'</div></div>';
+  renderGlue();
+}
+function toggleGlue(m){
+  const i=st.glue.indexOf(m);
+  if(i>=0) st.glue.splice(i,1);
+  else if(st.glue.length<GLUE_MAX) st.glue.push(m);
+  renderGluePick();
+}
+function renderGlue(){
+  const sel=st.glue;
+  if(!sel.length){
+    document.getElementById('glueTable').innerHTML=
+      '<tbody><tr><td style="text-align:center;color:var(--tx3);padding:24px">'+
+      '请从上方选择至少 1 个模型（出现在 2 个以上榜单的模型会排在前面）。</td></tr></tbody>';
+    return;
+  }
+  // 每列 = 一个 (榜单, 指标)；值取该模型在该榜的最佳条目（多期榜取指定期，否则取最新期）
+  const cols=[];
+  OBS.forEach(o=>{
+    const k=o.group+'|'+o.key;
+    if(!cols.some(c=>c.k===k)) cols.push({k:k,group:o.group,key:o.key,
+      label:o.benchmark+' · '+(LB_M[o.key]?LB_M[o.key].label:o.metric),
+      unit:o.unit,board:o.group});
+  });
+  cols.sort((a,b)=>a.label.localeCompare(b.label,'zh'));
+
+  // 为每个 (模型, 列) 取值
+  const cell={};
+  OBS.forEach(o=>{
+    if(!sel.includes(o.model)) return;
+    const k=o.group+'|'+o.key;
+    const prev=cell[o.model+'|'+k];
+    // 多期榜：优先用户指定期；否则取日期最新的一条
+    if(!prev || (o.get_rank==null && prev.rank!=null) ||
+       (st.period && o.period===st.period) ||
+       (!st.period && (o.date||'')>(prev.date||''))){
+      cell[o.model+'|'+k]=o;
+    }
+  });
+
+  let h='<thead><tr><th>模型</th>'+cols.map(c=>
+    '<th title="'+esc(c.label+'（'+c.unit+'）')+'">'+esc(c.label.length>22?c.label.slice(0,21)+'…':c.label)+'</th>').join('')+
+    '<th>覆盖榜数</th></tr></thead><tbody>';
+  sel.forEach(m=>{
+    const mine=OBS.filter(o=>o.model===m);
+    const covered=new Set(mine.map(o=>o.group)).size;
+    h+='<tr><td><b>'+esc(m)+'</b></td>';
+    cols.forEach(c=>{
+      const o=cell[m+'|'+c.k];
+      if(!o) h+='<td class="none">—</td>';
+      else h+='<td><b>'+fmtVal(o.value,c.key)+'</b>'+(o.rank!=null?
+        ' <span class="none" title="本榜本期名次">#'+o.rank+'</span>':'')+'</td>';
+    });
+    h+='<td><span class="hv">'+covered+'</span></td></tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('glueTable').innerHTML=h;
+}
+
 function renderCaveats(){
   const byKey={};
   OBS.forEach(o=>{(byKey[o.key]=byKey[o.key]||new Set()).add(o.group);});
@@ -828,7 +972,7 @@ function renderCaveats(){
 }
 
 function refresh(){renderTable();renderMatrix();renderCompare();}
-renderStats();renderFilters();renderBoardPicker();renderRoster();renderCaveats();refresh();
+renderStats();renderFilters();renderBoardPicker();renderRoster();renderCaveats();renderGluePick();refresh();
 window.addEventListener('scroll',()=>document.getElementById('bt').classList.toggle('vis',window.scrollY>400));
 </script>
 </body></html>

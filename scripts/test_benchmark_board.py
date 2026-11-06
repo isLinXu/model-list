@@ -277,13 +277,18 @@ class TestJavascript(unittest.TestCase):
     def _run(self, probe: str) -> str:
         stub = (
             "const store={};const mk=id=>({_id:id,innerHTML:'',textContent:'',checked:false,"
-            "value:'',classList:{toggle(){},add(){},remove(){}},addEventListener(){}});"
+            "value:'',style:{},classList:{toggle(){},add(){},remove(){}},addEventListener(){}});"
             "global.document={getElementById(id){return store[id]||(store[id]=mk(id));}};"
             "global.window={addEventListener(){},scrollY:0};"
         )
         script = stub + self.js + "\n" + probe
-        r = subprocess.run([self.NODE, "-e", script], capture_output=True,
-                           text=True, timeout=30)
+        # 页面内联数据已达 MB 级，不能用 `node -e` 传参（会触发
+        # E2BIG / Argument list too long），改为写临时脚本文件执行。
+        with tempfile.TemporaryDirectory() as td:
+            js_path = Path(td) / "board_test.js"
+            js_path.write_text(script, encoding="utf-8")
+            r = subprocess.run([self.NODE, str(js_path)], capture_output=True,
+                               text=True, timeout=60)
         if r.returncode != 0:
             self.fail(f"JS 执行失败: {r.stderr[:600]}")
         return r.stdout.strip()

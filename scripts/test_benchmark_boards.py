@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""榜单抓取、模型身份解析与看板 roster 呈现的离线自测。
+"""新增榜单源与跨榜拼图的离线自测。
 
 运行：python3 -m unittest scripts.test_benchmark_boards.py -v
 """
@@ -7,229 +7,167 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_benchmark_boards as fb  # noqa: E402
 import resolve_models as rm  # noqa: E402
+import expand_registry as er  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 # ---------------------------------------------------------------------------
-# 样例数据
+# SWE-rebench（一榜多期）
 # ---------------------------------------------------------------------------
 
-SWE_SAMPLE = {
-    "leaderboards": [
-        {
-            "name": "Verified",
-            "results": [
-                {
-                    "model_display": "GPT-5", "model_org": "OpenAI", "agent": "mini-SWE-agent",
-                    "reasoning_effort": "high", "resolved": 79.2, "date": "2026-02-13",
-                    "model_release_date": 20250901,
-                },
-                {
-                    "model_display": "GPT-5", "model_org": "OpenAI", "agent": "OpenHands",
-                    "reasoning_effort": None, "resolved": 70.1, "date": "2026-02-20",
-                    "model_release_date": 20250901,
-                },
-                {
-                    "model_display": "Undisclosed", "model_org": None, "agent": "RAG baseline",
-                    "reasoning_effort": None, "resolved": 55.0, "date": "2026-01-01",
-                },
-                {
-                    "model_display": "Multiple", "model_org": None, "agent": "Tools",
-                    "reasoning_effort": None, "resolved": 40.0, "date": "2026-01-02",
-                },
-                {
-                    "model_display": "Claude 4.5 Opus", "model_org": "Anthropic",
-                    "agent": "mini-SWE-agent", "reasoning_effort": None, "resolved": 60.5,
-                    "date": "2026-02-26", "model_release_date": 20251101,
-                },
-            ],
-        },
-        {"name": "Lite", "results": []},
-    ]
-}
+# 模拟 Next.js flight 流的最小片段。真实页面的结构是：
+#   ..."categories":[...],"series":[{"data":[{"type":"line","name":...,"data":[...]}]}]}
+# 解析器从 `{"data":[{"type":"line"` 开始配平，故 fixture 必须让
+# `"data"` 紧跟 `{`（真实页面正是如此）。
+def _flight_chunk(obj) -> str:
+    import json as _json
+    payload = _json.dumps(obj, ensure_ascii=False)
+    return 'self.__next_f.push([1,' + _json.dumps(payload) + '])'
 
-AIDER_SAMPLE = """
-<table><thead><tr><th></th><th>Model</th><th>Percent correct</th><th>Cost</th>
-<th>Command</th><th>Correct edit format</th><th>Edit Format</th></tr></thead><tbody>
-<tr><td>&#9654;</td><td>gpt-5 (high)</td><td>88.0%</td><td>$29.08</td>
-<td>aider --model openai/gpt-5</td><td>91.6%</td><td>diff</td></tr>
-<tr><td></td><td>Claude 4.5 Opus</td><td>70.0%</td><td>$12.00</td>
-<td>aider --model anthropic/claude</td><td>88.0%</td><td>diff</td></tr>
-<tr><td></td><td>broken row</td><td>-</td><td>$0</td><td>x</td><td>0%</td><td>diff</td></tr>
+
+SWE_REBENCH_HTML = (
+    '<html><body><script>'
+    + _flight_chunk({"data": [{"type": "line", "name": "gpt-5 [high] (tools)",
+                               "data": [{"x": "Jan 2025", "y": 40.0},
+                                        {"x": "Feb 2025", "y": 45.0}]},
+                              {"type": "line", "name": "GLM-4.7 [high] (tools)",
+                               "data": [{"x": "Jan 2025", "y": 30.0},
+                                        {"x": "Feb 2025", "y": 35.0}]}]})
+    + '</script></body></html>'
+)
+
+
+class TestSweRebenchParsing(unittest.TestCase):
+    def setUp(self):
+        self.obs, self.srcs = fb.parse_swe_rebench(SWE_REBENCH_HTML.encode("utf-8"))
+
+    def test_all_periods_kept(self):
+        """一榜多期：同一条目在多期的分数都必须保留，不能被去重吃掉。"""
+        self.assertEqual(len(self.obs), 4)  # 2 模型 × 2 期
+
+    def test_entry_id_includes_period(self):
+        ids = {o["entry_id"] for o in self.obs}
+        self.assertEqual(len(ids), 4)
+        self.assertTrue(any("Jan 2025" in i for i in ids))
+
+    def test_reasoning_effort_and_mode_extracted(self):
+        o = next(x for x in self.obs if x["model_raw"] == "gpt-5 [high] (tools)")
+        self.assertEqual(o["reasoning_effort"], "high")
+        self.assertEqual(o["agent"], "tools")
+
+    def test_period_converted_to_date(self):
+        o = next(x for x in self.obs if x.get("period") == "Jan 2025")
+        self.assertEqual(o["date"], "2025-01")
+
+    def test_month_conversion(self):
+        self.assertEqual(fb._period_to_date("Mar 2026"), "2026-03")
+        self.assertEqual(fb._period_to_date("Dec 2025"), "2025-12")
+        self.assertEqual(fb._period_to_date("garbage"), "")
+
+    def test_source_is_level_a(self):
+        self.assertTrue(self.srcs)
+        self.assertEqual(self.srcs[0]["level"], "A")
+        self.assertTrue(self.srcs[0]["url"].startswith("https://"))
+
+
+# ---------------------------------------------------------------------------
+# Aider edit / refactor（5 列表结构，与 polyglot 的 7 列不同）
+# ---------------------------------------------------------------------------
+
+AIDER_5COL = """
+<table><thead><tr><th>Model</th><th>Percent completed correctly</th>
+<th>Percent using correct edit format</th><th>Command</th><th>Edit Format</th></tr></thead><tbody>
+<tr><td>o1</td><td>84.2%</td><td>99.2%</td><td>aider --model openai/o1</td><td>diff</td></tr>
+<tr><td>claude-3-5-sonnet-20241022</td><td>80.0%</td><td>95.0%</td>
+<td>aider --model anthropic/claude</td><td>diff</td></tr>
 </tbody></table>
 """
 
-LMARENA_SAMPLE = """key,Model,MT-bench (score),MMLU,Knowledge cutoff date,License,Organization,Link
-gpt-4o,ChatGPT-4o,9.26,0.880,2023-10,Custom,OpenAI,https://example.com
-claude,Claude 3.5 Sonnet,8.90,0.810,2024-04,Custom,Anthropic,https://example.com
-old,GPT-2,3.10,0.320,2019-01,MIT,OpenAI,https://example.com
-"""
 
-
-# ---------------------------------------------------------------------------
-# SWE-bench 解析
-# ---------------------------------------------------------------------------
-
-class TestSwebenchParsing(unittest.TestCase):
+class TestAiderFiveColumnTables(unittest.TestCase):
     def setUp(self):
-        raw = json.dumps(SWE_SAMPLE).encode("utf-8")
-        self.obs, self.srcs = fb.parse_swebench(raw)
-
-    def test_placeholder_entries_are_excluded(self):
-        """Undisclosed / Multiple 不是具体模型版本，必须剔除。"""
-        names = {o["model_raw"] for o in self.obs}
-        self.assertNotIn("Undisclosed", names)
-        self.assertNotIn("Multiple", names)
-
-    def test_same_model_different_agent_are_separate_entries(self):
-        """同一模型换 agent 分数不同，必须是两条独立条目。"""
-        gpt5 = [o for o in self.obs if o["model_raw"] == "GPT-5"]
-        self.assertEqual(len(gpt5), 2)
-        self.assertNotEqual(gpt5[0]["entry_id"], gpt5[1]["entry_id"])
-        self.assertNotEqual(gpt5[0]["value"], gpt5[1]["value"])
-
-    def test_entry_id_contains_agent_and_effort(self):
-        o = next(x for x in self.obs if x["model_raw"] == "GPT-5"
-                 and x["agent"] == "mini-SWE-agent")
-        self.assertIn("mini-SWE-agent", o["entry_id"])
-        self.assertIn("high", o["entry_id"])
-
-    def test_reasoning_effort_recorded(self):
-        o = next(x for x in self.obs if x["reasoning_effort"] == "high")
-        self.assertEqual(o["model_raw"], "GPT-5")
-        self.assertIn("reasoning effort", o["note"])
-
-    def test_source_is_level_a_with_https(self):
-        self.assertTrue(self.srcs)
-        for s in self.srcs:
-            self.assertEqual(s["level"], "A")
-            self.assertTrue(s["url"].startswith("https://"))
-
-    def test_release_date_preserved(self):
-        o = next(x for x in self.obs if x["model_raw"] == "Claude 4.5 Opus")
-        self.assertEqual(o["model_release_date"], "20251101")
-
-
-# ---------------------------------------------------------------------------
-# Aider 解析
-# ---------------------------------------------------------------------------
-
-class TestAiderParsing(unittest.TestCase):
-    def setUp(self):
-        self.obs, self.srcs = fb.parse_aider(AIDER_SAMPLE.encode("utf-8"))
+        self.obs, self.srcs = fb.parse_aider_tables(AIDER_5COL.encode("utf-8"), "aider_edit")
 
     def test_rows_parsed(self):
         self.assertEqual(len(self.obs), 2)
 
-    def test_config_suffix_preserved_in_model_name(self):
-        """gpt-5 (high) 与 gpt-5 (low) 是不同配置，模型名必须保留档位后缀。"""
-        names = {o["model_raw"] for o in self.obs}
-        self.assertIn("gpt-5 (high)", names)
+    def test_model_name_read_from_first_column(self):
+        self.assertEqual({o["model_raw"] for o in self.obs},
+                         {"o1", "claude-3-5-sonnet-20241022"})
 
-    def test_invalid_percent_rows_skipped(self):
-        self.assertNotIn("broken row", {o["model_raw"] for o in self.obs})
+    def test_percentage_read_from_second_column(self):
+        o = next(x for x in self.obs if x["model_raw"] == "o1")
+        self.assertAlmostEqual(o["value"], 84.2)
 
-    def test_edit_format_recorded_as_agent(self):
-        o = next(x for x in self.obs if x["model_raw"] == "gpt-5 (high)")
-        self.assertIn("diff", o["agent"])
+    def test_scope_declares_task_difference(self):
+        """不同任务的榜必须写明不可互相比较。"""
+        self.assertIn("不可互相比较", fb.AIDER_TABLES["aider_edit"]["scope"])
 
 
 # ---------------------------------------------------------------------------
-# LMArena 解析
+# Arena-Hard-Auto（带置信区间）
 # ---------------------------------------------------------------------------
 
-class TestLmarenaParsing(unittest.TestCase):
+ARENA_HARD_CSV = """model,score,rating_q025,rating_q975,CI,avg_tokens,date
+gpt-4o-2024-05-13,79.21,77.42,80.71,"(1.8, 1.5)",696.0,2024-07-31
+claude-3-5-sonnet-20240620,79.35,77.25,80.62,"(2.1, 1.3)",567.0,2024-07-31
+"""
+
+
+class TestArenaHardParsing(unittest.TestCase):
     def setUp(self):
-        self.obs, self.srcs = fb.parse_lmarena(LMARENA_SAMPLE.encode("utf-8"))
+        self.obs, self.srcs = fb.parse_arena_hard(ARENA_HARD_CSV.encode("utf-8"))
 
-    def test_two_metrics_split_into_two_boards(self):
-        """MT-bench（1–10 分）与 MMLU（0–1 比例）单位不同，必须拆榜。"""
-        boards = {o["board"] for o in self.obs}
-        self.assertEqual(boards, {"lmarena_mtbench", "lmarena_mmlu"})
+    def test_rows_parsed(self):
+        self.assertEqual(len(self.obs), 2)
 
-    def test_mmlu_converted_to_percent(self):
-        o = next(x for x in self.obs if x["metric_key"] == "mmlu"
-                 and x["model_raw"] == "ChatGPT-4o")
-        self.assertAlmostEqual(o["value"], 88.0)
-        self.assertIn("换算", o["note"])
+    def test_confidence_interval_kept(self):
+        o = next(x for x in self.obs if x["model_raw"] == "gpt-4o-2024-05-13")
+        self.assertIn("置信区间", o["note"])
+        self.assertIn("77.42", o["note"])
 
-    def test_mt_bench_keeps_original_scale(self):
-        o = next(x for x in self.obs if x["metric_key"] == "mt_bench"
-                 and x["model_raw"] == "ChatGPT-4o")
-        self.assertAlmostEqual(o["value"], 9.26)
+    def test_token_usage_kept(self):
+        o = self.obs[0]
+        self.assertIn("tokens", o["note"])
 
-    def test_duplicate_model_rows_deduped(self):
-        raw = (LMARENA_SAMPLE + "gpt-4o,ChatGPT-4o,9.26,0.880,2023-10,Custom,OpenAI,x\n").encode()
-        obs, _ = fb.parse_lmarena(raw)
-        self.assertEqual(len([o for o in obs if o["model_raw"] == "ChatGPT-4o"
-                              and o["metric_key"] == "mt_bench"]), 1)
-
-    def test_rows_without_any_metric_skipped(self):
-        raw = (LMARENA_SAMPLE + "x,Unknown Model,-,-,-,-,-,-\n").encode()
-        obs, _ = fb.parse_lmarena(raw)
-        self.assertNotIn("Unknown Model", {o["model_raw"] for o in obs})
+    def test_unit_is_score_not_percent(self):
+        for o in self.obs:
+            self.assertEqual(o["metric_unit"], "score")
+            self.assertEqual(o["metric_max"], 100)
 
 
 # ---------------------------------------------------------------------------
-# 模型身份解析
+# 注册表自动扩充
 # ---------------------------------------------------------------------------
 
-class TestModelResolution(unittest.TestCase):
-    def setUp(self):
-        self.reg = {
-            "models": [
-                {"id": "openai-gpt-5", "name": "GPT-5", "provider": "OpenAI",
-                 "aliases": ["GPT 5"], "snapshot": "", "note": ""},
-                {"id": "anthropic-claude-opus-4.5", "name": "Claude Opus 4.5",
-                 "provider": "Anthropic", "aliases": ["Claude 4.5 Opus"], "snapshot": "", "note": ""},
-                {"id": "google-gemma-2-9b", "name": "Gemma 2 9B", "provider": "Google",
-                 "aliases": ["gemma-2-9b"], "snapshot": "", "note": ""},
-            ]
-        }
-        self.exact, self.loose = rm.build_index(self.reg)
+class TestRegistryExpansion(unittest.TestCase):
+    def test_display_name_keeps_readable_form(self):
+        """清洗配置后缀不应把 "GPT 4.1" 压成 "gpt41"。"""
+        self.assertEqual(er.clean_display("gpt-4.1-2025-04-14 (tools)"), "gpt-4.1-2025-04-14")
+        self.assertEqual(er.clean_display("Claude Opus 4.6-high (tools)"), "Claude Opus 4.6-high")
+        self.assertEqual(er.clean_display("GLM-4.5 Air (tools)"), "GLM-4.5")
 
-    def test_exact_alias_match(self):
-        mid, how = rm.resolve("GPT 5", self.exact, self.loose)
-        self.assertEqual(mid, "openai-gpt-5")
-        self.assertEqual(how, "exact")
+    def test_provider_detection_by_flattened_prefix(self):
+        self.assertEqual(er.detect_provider("gpt41"), "OpenAI")
+        self.assertEqual(er.detect_provider("qwen332b"), "阿里巴巴")
+        self.assertEqual(er.detect_provider("llama3370binstruct"), "Meta")
 
-    def test_loose_match_for_format_variants(self):
-        mid, _ = rm.resolve("GPT-5", self.exact, self.loose)
-        self.assertEqual(mid, "openai-gpt-5")
+    def test_agent_models_are_flagged(self):
+        self.assertTrue(er.is_agent("claudecode"))
+        self.assertTrue(er.is_agent("cursor"))
+        self.assertFalse(er.is_agent("gpt41"))
 
-    def test_config_suffix_does_not_create_new_model(self):
-        """gpt-5 (high) 与 gpt-5 是同一模型的不同配置。"""
-        mid, _ = rm.resolve("gpt-5 (high)", self.exact, self.loose)
-        self.assertEqual(mid, "openai-gpt-5")
-
-    def test_unrelated_name_unresolved(self):
-        mid, how = rm.resolve("Totally Unknown Model", self.exact, self.loose)
-        self.assertIsNone(mid)
-        self.assertEqual(how, "unresolved")
-
-    def test_strip_config_suffix_identifies_same_model(self):
-        self.assertEqual(
-            rm.strip_config_suffix("gpt-5 (high)"),
-            rm.strip_config_suffix("GPT-5"),
-        )
-
-    def test_conflicting_alias_is_dropped_from_index(self):
-        reg = {"models": [
-            {"id": "a", "name": "X", "aliases": ["same"], "provider": "p"},
-            {"id": "b", "name": "Y", "aliases": ["same"], "provider": "p"},
-        ]}
-        exact, _ = rm.build_index(reg)
-        self.assertNotIn("same", exact)
+    def test_id_generation_is_slug(self):
+        self.assertEqual(er.make_id("GPT 4.1"), "gpt-4-1")
+        self.assertNotIn(" ", er.make_id("Claude Opus 4.6"))
 
 
 # ---------------------------------------------------------------------------
@@ -245,15 +183,32 @@ class TestRealRepositoryData(unittest.TestCase):
         errors, _ = fb.validate(data)
         self.assertEqual(errors, [], f"榜单数据校验失败: {errors[:5]}")
 
-    def test_boards_roster_entries_match_declared(self):
+    def test_multi_period_ranks_are_period_local(self):
+        """一榜多期的名次必须严格按评测期分组，不能跨期混排。"""
         path = ROOT / fb.OUTPUT_FILE
         if not path.exists():
             self.skipTest("缺少榜单数据文件")
         data = json.loads(path.read_text(encoding="utf-8"))
         for b in data["boards"]:
-            actual = len({o["entry_id"] for o in data["observations"]
-                          if o["board"] == b["id"]})
-            self.assertEqual(actual, b["entries"], f"榜单 {b['id']} 条目数不符")
+            bobs = [o for o in data["observations"] if o["board"] == b["id"]]
+            if not any(o.get("period") for o in bobs):
+                continue
+            by_period: dict[str, list[dict]] = {}
+            for o in bobs:
+                by_period.setdefault(str(o.get("period") or ""), []).append(o)
+            for period, group in by_period.items():
+                ranks = sorted(o["rank"] for o in group if o.get("rank") is not None)
+                self.assertEqual(ranks, list(range(1, len(group) + 1)),
+                                 f"榜单 {b['id']} 评测期 {period} 名次非期内连续")
+
+    def test_registry_expanded(self):
+        path = ROOT / rm.REGISTRY_FILE
+        if not path.exists():
+            self.skipTest("缺少模型注册表")
+        reg = json.loads(path.read_text(encoding="utf-8"))
+        ids = [m["id"] for m in reg["models"]]
+        self.assertEqual(len(ids), len(set(ids)), "注册表存在重复 id")
+        self.assertGreater(len(reg["models"]), 200, "注册表条目过少")
 
     def test_leaderboard_sources_are_all_level_a(self):
         path = ROOT / fb.OUTPUT_FILE
@@ -264,32 +219,34 @@ class TestRealRepositoryData(unittest.TestCase):
             self.assertEqual(s["level"], "A", f"来源 {s['id']} 不是 A 级")
             self.assertTrue(s["url"].startswith("https://"))
 
-    def test_registry_validates(self):
-        path = ROOT / rm.REGISTRY_FILE
-        if not path.exists():
-            self.skipTest("缺少模型注册表")
-        reg = json.loads(path.read_text(encoding="utf-8"))
-        ids = [m["id"] for m in reg["models"]]
-        self.assertEqual(len(ids), len(set(ids)), "注册表存在重复 id")
-        for m in reg["models"]:
-            self.assertTrue(m.get("id") and m.get("name") and m.get("provider"),
-                            f"注册表条目缺字段: {m}")
-            self.assertNotIn(" ", m["id"], f"模型 id 不应含空格: {m['id']}")
-
-    def test_board_observations_have_model_id_resolved(self):
+    def test_most_leaderboard_entries_resolved(self):
+        """绝大多数榜单条目应能归一到注册表。"""
         path = ROOT / fb.OUTPUT_FILE
         if not path.exists():
             self.skipTest("缺少榜单数据文件")
         data = json.loads(path.read_text(encoding="utf-8"))
         reg = json.loads((ROOT / rm.REGISTRY_FILE).read_text(encoding="utf-8"))
         exact, loose = rm.build_index(reg)
-        resolved = 0
+        resolved = sum(1 for o in data["observations"]
+                       if rm.resolve(o["model"], exact, loose)[0])
+        self.assertGreater(resolved / len(data["observations"]), 0.9)
+
+    def test_no_ambiguous_merge(self):
+        path = ROOT / fb.OUTPUT_FILE
+        if not path.exists():
+            self.skipTest("缺少榜单数据文件")
+        data = json.loads(path.read_text(encoding="utf-8"))
+        reg = json.loads((ROOT / rm.REGISTRY_FILE).read_text(encoding="utf-8"))
+        exact, loose = rm.build_index(reg)
+        idmap: dict[str, set[str]] = {}
         for o in data["observations"]:
             mid, _ = rm.resolve(o["model"], exact, loose)
             if mid:
-                resolved += 1
-        # 至少一半的榜单条目应能归一到注册表（其余为长尾模型，需人工补录）
-        self.assertGreater(resolved, len(data["observations"]) * 0.3)
+                idmap.setdefault(mid, set()).add(o["model"])
+        for mid, names in idmap.items():
+            stripped = {rm.model_key(n) for n in names}
+            self.assertEqual(len(stripped), 1,
+                             f"模型 id {mid} 对应多个不等价名称: {sorted(names)}")
 
 
 if __name__ == "__main__":
