@@ -1328,6 +1328,7 @@ docker run --gpus all -p 8080:80 \
 
 |日期|更新内容|
 |:---|:---|
+|2026-11-06 (v4.9)|新增**完整榜单参评名单**抓取流水线：`scripts/fetch_benchmark_boards.py` 从 SWE-bench 官方 `leaderboards.json`、Aider polyglot、LMArena 官方 CSV 抓取 8 个一手榜单共 **464 条参评条目 / 272 个模型**（此前看板仅 12 个模型、且每个「榜单」只有 1–2 条记录，不构成榜单）；新增 `data/model_registry.json`（197 个模型条目）统一模型身份，区分「同一模型的不同配置」与「不同模型」；看板新增**榜单全貌与完整参评名单**浏览器、配置列（agent / 推理档位）、榜上模型数与覆盖率口径修正（分母改为模型实际出现过的口径组）；CI 增至 10 步并接入榜单与模型身份校验；自测 89 → **115 项** |
 |2026-11-06 (v4.8)|站点导航锚点对齐：生成器 24 处硬编码锚点批量修正为实际标题 id（27/27 直接命中）；FOOTER 增加运行时唯一映射兼容层，解决 README 目录 GitHub slug 与站点 id 规则差异（53 个站内链接 0 未解决）；侧栏点击改用 getElementById；新增 9 项锚点回归自测，全量 89 项；同步修正 README 目录 1.10 链接|
 |2026-11-06 (v4.7)|新增多榜单 Benchmark 可视化看板：观测长表 44 条（12 模型 / 23 榜单 / 12 可比组）、独立页面 `benchmarks.html`（筛选 / 排序 / 覆盖矩阵 / 横向对比 / 口径与缺失标记）、24 项自测（全量 80 项）；跨组数值排序禁用、单位隔离、同名跨口径分行、未披露显式标记；CI 增加校验与重生成，导航加入看板入口并修正 1.10 旧锚点|
 |2026-11-06 (v4.6)|第六轮：§4.1 / §4.2 / §1.10 三张无来源数值表结构性替换为官方链接索引动态表（22 条可核实记录）；新增 `data/official_sources.json`、`scripts/render_source_tables.py` 与 14 项离线自测；CI 自测改为 discover 全量（56 项）并新增来源表校验，阻止旧数值回填；`gen_html.py` 泛化跳过 HTML 注释；待确认 4 → 0 条，累计关闭 18 项；三态 150 / 40 / 0 = 190 条|
@@ -1411,6 +1412,21 @@ docker run --gpus all -p 8080:80 \
 **✅ 截至 2026-11-06，待确认清单已清空（0 条）。** 最后 4 条并非「查不到」，而是 2026-04 基线快照里无来源、无版本、无 harness 的历史数值；第六轮没有继续给它们挂警示，而是把承载它们的三张表**结构性替换**：§4.1 → 官方评测来源索引（9 条 `[A]`）、§4.2 → 官方价目页索引（8 家厂商入口）、§1.10 → 可核实的官方榜单口径（5 条）。三张新表由 `data/official_sources.json` 驱动，`scripts/render_source_tables.py` 渲染，CI 的 `--validate` 校验列数 / 去重 / HTTPS / marker 一致性并阻止旧数值回填。历史数值仅存于 Git 记录，不再是本项目的确定内容。QwQ 与 Step-3.5-Flash 的日期/规格在 README §2.0.3 中仍标注为待核实。
 
 **第六轮已关闭（4 项）**：基线 2M/4M 上下文数值、§4.1 基准数值、§4.2 定价数值、§1.10 SOTA 榜单。**第五轮已收敛（5 项）**：LLaMA 4 Behemoth（未发布）、GPT-5 独立 Technical Report（证伪）、Grok 5（官方目录无此型号）、Hailuo 2.3 日期（官方 2025-10-28）、xLSTM 7B 引用错配。**第二轮（4 项）与第四轮（5 项）** 的收敛清单见前版日志。累计关闭 18 项。
+
+### 10.6 完整榜单参评名单（自动抓取）
+
+> 本节对应 README.md §1.11 与看板 [benchmarks.html](benchmarks.html)。**§1.10 登记的是「厂商公告里提到的名次与分数」，只覆盖项目主动核实过的少数模型；真正的 benchmark 榜单包含成百上千个参评条目**，只收录其中几个会让榜单失去意义。因此项目另行从一手公开榜单抓取完整参评名单（roster）。
+
+| 榜单 | 来源 | 参评条目 | 涉及模型 |
+|:---|:---|---:|---:|
+| SWE-bench Verified / Lite / Test / Multilingual / Multimodal | [swebench.com](https://www.swebench.com/) 官方 `leaderboards.json` | 230 | 87 |
+| Aider polyglot（exercism） | [aider.chat/docs/leaderboards](https://aider.chat/docs/leaderboards/) | 68 | 68 |
+| LMArena · MT-bench / MMLU | [lmarena.ai/leaderboard](https://lmarena.ai/leaderboard) 官方 Space 导出 CSV | 166 | 109 |
+| **合计** | 8 个榜单 | **464** | **272** |
+
+**条目 ≠ 模型**：一个模型在榜上往往有多条记录——不同 agent 脚手架、reasoning effort、编辑格式。SWE-bench Verified 榜上 GPT-4o 有 19 种配置、Claude 3.5 Sonnet 有 21 种，分数互不可替代。条目身份由 `模型 × 配置` 共同确定，不合并成单一「模型分」。
+
+**关键处理**：`Undisclosed` / `Multiple` 占位条目剔除；LMArena 的 MT-bench（1–10 分）与 MMLU（0–1 比例）因单位不同拆成两榜；模型身份经 `data/model_registry.json`（197 条）归一，无法唯一归一的保持「未归一」标记而不猜测合并。
 
 ### 10.5 覆盖边界（摘要）
 

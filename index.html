@@ -263,6 +263,7 @@ img{max-width:100%;border-radius:6px}
 <li><a href="#18-按部署场景分类新增" target="_blank">1.8 按部署场景分类（⭐ 新增）</a></li>
 <li><a href="#19-按训练对齐方法分类新增" target="_blank">1.9 按训练对齐方法分类（⭐ 新增）</a></li>
 <li><a href="#110-官方榜单口径" target="_blank">1.10 🏆 官方榜单口径（动态表）</a></li>
+<li><a href="#111-📊-完整榜单参评名单自动抓取一手来源" target="_blank">1.11 📊 完整榜单参评名单（自动抓取）</a></li>
 <li><a href="benchmarks.html" target="_blank">📊 Benchmark 可视化看板（独立页面）</a></li>
 <li><a href="#2-通用基础模型" target="_blank">2. 通用基础模型</a></li>
 <li><a href="#20-模型汇总核实总表-截至-2026-11-05" target="_blank">2.0 模型汇总核实总表（2026-11-05）</a></li>
@@ -587,6 +588,39 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 
 </p></blockquote>
 
+
+<h4 id="111-📊-完整榜单参评名单（自动抓取，一手来源）">1.11 📊 完整榜单参评名单（自动抓取，一手来源）</h4>
+
+<blockquote>
+<p>
+上一张表登记的是「<strong>厂商公告里提到的名次与分数</strong>」，只覆盖项目主动核实过的那部分模型。真正的 benchmark 榜单包含<strong>成百上千个参评条目</strong>，只收录其中几个会让榜单失去意义。因此本项目另行从一手公开榜单自动抓取<strong>完整参评名单（roster）</strong>，并汇总到 <a href="benchmarks.html" target="_blank">📊 Benchmark 可视化看板</a>。
+
+</p></blockquote>
+
+<div class="tw"><table><thead>
+<tr><td>榜单</td><td>来源</td><td>官方参评条目</td><td>涉及模型</td><td>抓取方式</td></tr>
+</thead><tbody>
+<tr><td>SWE-bench Verified</td><td><a href="https://www.swebench.com/" target="_blank">swebench.com</a> · 官方 <code>leaderboards.json</code></td><td>128</td><td>87</td><td><code>scripts/fetch_benchmark_boards.py</code></td></tr>
+<tr><td>SWE-bench Lite</td><td>同上</td><td>53</td><td>25</td><td>同上</td></tr>
+<tr><td>SWE-bench Test</td><td>同上</td><td>16</td><td>12</td><td>同上</td></tr>
+<tr><td>SWE-bench Multilingual</td><td>同上</td><td>13</td><td>13</td><td>同上</td></tr>
+<tr><td>SWE-bench Multimodal</td><td>同上</td><td>20</td><td>9</td><td>同上</td></tr>
+<tr><td>Aider polyglot（exercism）</td><td><a href="https://aider.chat/docs/leaderboards/" target="_blank">aider.chat/docs/leaderboards</a></td><td>68</td><td>68</td><td>同上</td></tr>
+<tr><td>LMArena · MT-bench</td><td><a href="https://lmarena.ai/leaderboard" target="_blank">lmarena.ai/leaderboard</a> · 官方 Space 导出 CSV</td><td>67</td><td>67</td><td>同上</td></tr>
+<tr><td>LMArena · MMLU</td><td>同上</td><td>99</td><td>99</td><td>同上</td></tr>
+<tr><td><strong>合计</strong></td><td>8 个榜单</td><td><strong>464</strong></td><td><strong>272</strong></td><td>—</td></tr>
+</tbody></table></div>
+
+<strong>为什么必须区分「条目」与「模型」</strong>：榜单里的一个模型往往有多条记录——不同 agent 脚手架、不同 reasoning effort、不同编辑格式。SWE-bench Verified 榜上 GPT-4o 有 <strong>19 种配置</strong>，Claude 3.5 Sonnet 有 <strong>21 种</strong>。这些分数<strong>互不可替代</strong>（同一模型换 agent 差距可达 10 个百分点以上），因此条目身份由 <code>模型 × 配置</code> 共同确定，绝不合并成一个「模型分」。
+
+<strong>处理原则</strong>：
+
+<li>榜单中的 <code>Undisclosed</code> / <code>Multiple</code> 是占位条目（模型未公开或多模型组合），<strong>不是具体模型版本</strong>，已剔除而非硬凑成一条记录。</li>
+<li>LMArena 的 MT-bench（1–10 分）与 MMLU（0–1 比例）<strong>单位不同</strong>，已拆成两个独立榜单；MMLU 由比例换算为百分比并在备注注明。</li>
+<li>同一模型在不同榜单的分数<strong>不可横向比较</strong>——SWE-bench 考真实仓库修复，Aider 考代码编辑，MT-bench 考多轮对话。</li>
+<li>模型身份通过 <code>data/model_registry.json</code> 统一（197 个模型条目，含别名），使「榜单里的写法」与「项目收录的写法」能对齐；无法唯一归一的<strong>保持未归一标记，不猜测合并</strong>。</li>
+
+原始响应缓存在 <code>data/benchmarks/</code>，抓取结果落在 <code>data/benchmark_boards.json</code>，看板数据与 §2.0 核实清单<strong>分文件存放、互不覆盖</strong>。
 
 <hr/>
 
@@ -3659,6 +3693,7 @@ LLM 发展路径 (2024-2030):
 <div class="tw"><table><thead>
 <tr><td>日期</td><td>更新内容</td></tr>
 </thead><tbody>
+<tr><td><strong>2026-11-06 (v4.9)</strong></td><td><strong>新增完整榜单参评名单抓取</strong>：此前看板只收录 12 个模型、每个「榜单」仅 1–2 条记录，不构成榜单。新增 <code>scripts/fetch_benchmark_boards.py</code>，从 SWE-bench 官方 <code>leaderboards.json</code>（5 个子榜）、Aider polyglot、LMArena 官方 CSV 抓取 <strong>8 个一手榜单 / 464 条参评条目 / 272 个模型</strong>；新增 <code>data/model_registry.json</code>（197 个模型条目）统一模型身份，明确区分「同一模型的不同 agent / 推理档位配置」与「不同模型」，避免错误合并；看板新增<strong>榜单全貌与完整参评名单</strong>浏览器（可按榜查看完整排名、配置列、发布日期）、榜上模型数统计与覆盖率口径修正；CI 增至 10 步，接入榜单数据与模型身份校验；离线自测 89 → <strong>115 项</strong></td></tr>
 <tr><td><strong>2026-11-06 (v4.8)</strong></td><td><strong>站点导航锚点对齐（第七轮遗留问题收尾）</strong>：① <code>gen_html.py</code> HEADER 中 24 处硬编码简写锚点批量对齐为生成器实际产出的标题 id（如 <code>#快速索引</code> → <code>#1-快速索引</code>），两处歧义按侧栏语义人工指定；27 个导航链接现 <strong>100% 直接命中</strong>；② 新增 FOOTER 运行时兼容层：README 目录按 GitHub slug 规则书写、站点 id 规则不同，运行时把失效链接<strong>唯一映射</strong>到真实 id（53 个站内链接中 18 个由此修正，0 歧义、0 未解决），并把侧栏点击处理改用 <code>getElementById</code> 避免含 emoji / 全角括号的 id 触发 CSS 选择器异常；③ 修正 README 目录 1.10 链接为 GitHub 风格；④ 新增 <code>scripts/test_nav_anchors.py</code>（9 项回归自测，含 Node 执行兼容层验证 href 改写），全量自测增至 <strong>89 项</strong></td></tr>
 <tr><td><strong>2026-11-06 (v4.7)</strong></td><td><strong>新增多榜单 Benchmark 可视化看板</strong>：① 新建 <code>data/benchmark_observations.json</code> 观测长表（44 条 / 12 模型 / 23 榜单 / 12 可比组），把 §4.1 与 §1.10 的官方指标拆为「模型 × 榜单 × 指标 × 口径组」四元组，主键唯一并合并跨表重复登记；② 新建 <code>scripts/render_benchmark_board.py</code> 生成自包含页面 <code>benchmarks.html</code>，沿用站点暗色 CSS 变量，提供筛选、排序、覆盖矩阵、指标覆盖率、2–4 模型横向对比、口径差异与缺失清单；③ 防错：跨组数值排序禁用、单位隔离、越低越好方向标注、同名跨口径指标分行、未披露显式标记、无跨单位聚合；④ 新建 <code>scripts/test_benchmark_board.py</code>（24 项自测，含 Node DOM stub 执行内联 JS），全量自测增至 <strong>80 项</strong>；⑤ CI 增加看板数据校验与重生成步骤，提交白名单纳入 <code>benchmarks.html</code> 与两份数据文件；⑥ <code>gen_html.py</code> 导航与侧栏加入看板入口，并修正第六轮遗留的 1.10 旧锚点</td></tr>
 <tr><td><strong>2026-11-06 (v4.6)</strong></td><td><strong>第六轮：三张历史数值表结构性替换，待确认清单清空</strong>：① §4.1 性能基准表 → <strong>官方评测来源索引</strong>（9 条 <code>[A]</code>）、§4.2 API 定价表 → <strong>官方价目页索引</strong>（8 家厂商入口）、§1.10 SOTA 双赛道榜 → <strong>可核实的官方榜单口径</strong>（5 条），删除全部无来源分数、价格与排名；② 新增 <code>data/official_sources.json</code>（22 条可核实记录）与 <code>scripts/render_source_tables.py</code>（渲染 / <code>--validate</code> / <code>--verify</code> / <code>--dry-run</code>）、<code>scripts/test_render_source_tables.py</code>（14 项离线自测）；③ CI 自测改为 discover 全量（56 项）并新增「Validate official source tables」步骤，校验列数 / 去重 / HTTPS / marker 一致性并<strong>阻止旧数值回填</strong>；④ <code>gen_html.py</code> 泛化跳过所有 HTML 注释标记，目录锚点与三处标题同步；⑤ §2.0.4 待确认 4 → <strong>0</strong> 条，累计关闭 18 项；三态更新至 <strong>150 / 40 / 0 = 190 条</strong>；⑥ §2.0.7 增加第六轮表并更新覆盖边界与结论</td></tr>

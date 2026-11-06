@@ -110,6 +110,7 @@
 - [1.8 按部署场景分类（⭐ 新增）](#18-按部署场景分类新增)
 - [1.9 按训练对齐方法分类（⭐ 新增）](#19-按训练对齐方法分类新增)
 - [1.10 🏆 官方榜单口径（动态表）](#110-官方榜单口径)
+- [1.11 📊 完整榜单参评名单（自动抓取）](#111-📊-完整榜单参评名单自动抓取一手来源)
 - [📊 Benchmark 可视化看板（独立页面）](benchmarks.html)
 - [2. 通用基础模型](#2-通用基础模型)
   - [2.0 模型汇总核实总表（2026-11-05）](#20-模型汇总核实总表-截至-2026-11-05)
@@ -386,6 +387,33 @@ SFT (2022) → RLHF (2023) → DPO (2023) → GRPO/Muon (2025)
 > 🔎 共 5 条可核实来源；`✅ [A]` 为一手，`[B]` 为二手交叉。需要更新时编辑 JSON 后重跑本脚本，不要直接改表格。
 
 <!-- SOURCES_LEADERBOARDS_END -->
+
+### 1.11 📊 完整榜单参评名单（自动抓取，一手来源）
+
+> 上一张表登记的是「**厂商公告里提到的名次与分数**」，只覆盖项目主动核实过的那部分模型。真正的 benchmark 榜单包含**成百上千个参评条目**，只收录其中几个会让榜单失去意义。因此本项目另行从一手公开榜单自动抓取**完整参评名单（roster）**，并汇总到 [📊 Benchmark 可视化看板](benchmarks.html)。
+
+| 榜单 | 来源 | 官方参评条目 | 涉及模型 | 抓取方式 |
+|:---|:---|---:|---:|:---|
+| SWE-bench Verified | [swebench.com](https://www.swebench.com/) · 官方 `leaderboards.json` | 128 | 87 | `scripts/fetch_benchmark_boards.py` |
+| SWE-bench Lite | 同上 | 53 | 25 | 同上 |
+| SWE-bench Test | 同上 | 16 | 12 | 同上 |
+| SWE-bench Multilingual | 同上 | 13 | 13 | 同上 |
+| SWE-bench Multimodal | 同上 | 20 | 9 | 同上 |
+| Aider polyglot（exercism） | [aider.chat/docs/leaderboards](https://aider.chat/docs/leaderboards/) | 68 | 68 | 同上 |
+| LMArena · MT-bench | [lmarena.ai/leaderboard](https://lmarena.ai/leaderboard) · 官方 Space 导出 CSV | 67 | 67 | 同上 |
+| LMArena · MMLU | 同上 | 99 | 99 | 同上 |
+| **合计** | 8 个榜单 | **464** | **272** | — |
+
+**为什么必须区分「条目」与「模型」**：榜单里的一个模型往往有多条记录——不同 agent 脚手架、不同 reasoning effort、不同编辑格式。SWE-bench Verified 榜上 GPT-4o 有 **19 种配置**，Claude 3.5 Sonnet 有 **21 种**。这些分数**互不可替代**（同一模型换 agent 差距可达 10 个百分点以上），因此条目身份由 `模型 × 配置` 共同确定，绝不合并成一个「模型分」。
+
+**处理原则**：
+
+- 榜单中的 `Undisclosed` / `Multiple` 是占位条目（模型未公开或多模型组合），**不是具体模型版本**，已剔除而非硬凑成一条记录。
+- LMArena 的 MT-bench（1–10 分）与 MMLU（0–1 比例）**单位不同**，已拆成两个独立榜单；MMLU 由比例换算为百分比并在备注注明。
+- 同一模型在不同榜单的分数**不可横向比较**——SWE-bench 考真实仓库修复，Aider 考代码编辑，MT-bench 考多轮对话。
+- 模型身份通过 `data/model_registry.json` 统一（197 个模型条目，含别名），使「榜单里的写法」与「项目收录的写法」能对齐；无法唯一归一的**保持未归一标记，不猜测合并**。
+
+原始响应缓存在 `data/benchmarks/`，抓取结果落在 `data/benchmark_boards.json`，看板数据与 §2.0 核实清单**分文件存放、互不覆盖**。
 
 ---
 
@@ -3145,6 +3173,7 @@ LLM 发展路径 (2024-2030):
 
 | 日期 | 更新内容 |
 |:---|:---|
+| **2026-11-06 (v4.9)** | **新增完整榜单参评名单抓取**：此前看板只收录 12 个模型、每个「榜单」仅 1–2 条记录，不构成榜单。新增 `scripts/fetch_benchmark_boards.py`，从 SWE-bench 官方 `leaderboards.json`（5 个子榜）、Aider polyglot、LMArena 官方 CSV 抓取 **8 个一手榜单 / 464 条参评条目 / 272 个模型**；新增 `data/model_registry.json`（197 个模型条目）统一模型身份，明确区分「同一模型的不同 agent / 推理档位配置」与「不同模型」，避免错误合并；看板新增**榜单全貌与完整参评名单**浏览器（可按榜查看完整排名、配置列、发布日期）、榜上模型数统计与覆盖率口径修正；CI 增至 10 步，接入榜单数据与模型身份校验；离线自测 89 → **115 项** |
 | **2026-11-06 (v4.8)** | **站点导航锚点对齐（第七轮遗留问题收尾）**：① `gen_html.py` HEADER 中 24 处硬编码简写锚点批量对齐为生成器实际产出的标题 id（如 `#快速索引` → `#1-快速索引`），两处歧义按侧栏语义人工指定；27 个导航链接现 **100% 直接命中**；② 新增 FOOTER 运行时兼容层：README 目录按 GitHub slug 规则书写、站点 id 规则不同，运行时把失效链接**唯一映射**到真实 id（53 个站内链接中 18 个由此修正，0 歧义、0 未解决），并把侧栏点击处理改用 `getElementById` 避免含 emoji / 全角括号的 id 触发 CSS 选择器异常；③ 修正 README 目录 1.10 链接为 GitHub 风格；④ 新增 `scripts/test_nav_anchors.py`（9 项回归自测，含 Node 执行兼容层验证 href 改写），全量自测增至 **89 项** |
 | **2026-11-06 (v4.7)** | **新增多榜单 Benchmark 可视化看板**：① 新建 `data/benchmark_observations.json` 观测长表（44 条 / 12 模型 / 23 榜单 / 12 可比组），把 §4.1 与 §1.10 的官方指标拆为「模型 × 榜单 × 指标 × 口径组」四元组，主键唯一并合并跨表重复登记；② 新建 `scripts/render_benchmark_board.py` 生成自包含页面 `benchmarks.html`，沿用站点暗色 CSS 变量，提供筛选、排序、覆盖矩阵、指标覆盖率、2–4 模型横向对比、口径差异与缺失清单；③ 防错：跨组数值排序禁用、单位隔离、越低越好方向标注、同名跨口径指标分行、未披露显式标记、无跨单位聚合；④ 新建 `scripts/test_benchmark_board.py`（24 项自测，含 Node DOM stub 执行内联 JS），全量自测增至 **80 项**；⑤ CI 增加看板数据校验与重生成步骤，提交白名单纳入 `benchmarks.html` 与两份数据文件；⑥ `gen_html.py` 导航与侧栏加入看板入口，并修正第六轮遗留的 1.10 旧锚点 |
 | **2026-11-06 (v4.6)** | **第六轮：三张历史数值表结构性替换，待确认清单清空**：① §4.1 性能基准表 → **官方评测来源索引**（9 条 `[A]`）、§4.2 API 定价表 → **官方价目页索引**（8 家厂商入口）、§1.10 SOTA 双赛道榜 → **可核实的官方榜单口径**（5 条），删除全部无来源分数、价格与排名；② 新增 `data/official_sources.json`（22 条可核实记录）与 `scripts/render_source_tables.py`（渲染 / `--validate` / `--verify` / `--dry-run`）、`scripts/test_render_source_tables.py`（14 项离线自测）；③ CI 自测改为 discover 全量（56 项）并新增「Validate official source tables」步骤，校验列数 / 去重 / HTTPS / marker 一致性并**阻止旧数值回填**；④ `gen_html.py` 泛化跳过所有 HTML 注释标记，目录锚点与三处标题同步；⑤ §2.0.4 待确认 4 → **0** 条，累计关闭 18 项；三态更新至 **150 / 40 / 0 = 190 条**；⑥ §2.0.7 增加第六轮表并更新覆盖边界与结论 |
