@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-"""从 data/benchmark_observations.json 生成多榜单可视化看板 benchmarks.html。
+"""从 data/benchmark_observations.json + data/benchmark_boards.json 生成多榜单可视化看板 benchmarks.html。
+
+两个数据源的分工：
+  * benchmark_observations.json —— 官方公告中给出的单项指标（如厂商自报某 benchmark 成绩、
+    官方规格参数、安全评测）。口径由「可比组」定义。
+  * benchmark_boards.json      —— 从一手公开榜单抓取的**完整参评名单**（roster）。
+    一个榜单里的每个条目 = 模型 × 配置（agent 脚手架 / reasoning effort / 编辑格式）。
 
 设计要点（对应「避免重复或错误聚合」）：
   * 观测长表：一条 = 模型 × 榜单 × 指标 × 口径组，主键唯一。
-  * 单位与方向由可比组统一定义，不同单位/方向不进入同一次排序或求和。
+  * roster 概念：榜单类数据必须能回答「这个榜上到底有哪些模型」，
+    而不是只显示项目自己收录的那几个。
+  * 单位与方向由口径组 / 指标统一定义，不同单位/方向不进入同一次排序或求和。
   * 排名只在组内有效；跨组数值排序在界面上被禁用并给出提示。
   * 同名指标出现在不同口径组时（如 HLE）分行展示并标注「不可直接比较」。
   * value=null 必须标记 not_disclosed；覆盖矩阵的空缺显示「未披露」而非 0。
@@ -27,6 +35,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DATA_FILE = Path("data/benchmark_observations.json")
+BOARDS_FILE = Path("data/benchmark_boards.json")
+REGISTRY_FILE = Path("data/model_registry.json")
 OUTPUT_FILE = Path("benchmarks.html")
 
 VALID_UNITS = {"percent", "score", "elo", "tokens", "billion"}
@@ -47,10 +57,37 @@ class Config:
 # ---------------------------------------------------------------------------
 
 def load_data(root: Path) -> dict:
+    """加载并合并两个数据源。
+
+    合并后的 observations 里，榜单类观测带 board 字段与 roster 语义；
+    公告类观测保持原有 group 口径。两者用 kind 区分，不可跨口径比较。
+    """
     path = root / DATA_FILE
     if not path.exists():
         raise FileNotFoundError(f"缺少数据文件: {path}")
-    return json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
+
+    boards_path = root / BOARDS_FILE
+    if boards_path.exists():
+        boards = json.loads(boards_path.read_text(encoding="utf-8"))
+        data["leaderboards"] = boards.get("boards", [])
+        data["leaderboard_metrics"] = boards.get("metrics", [])
+        data["leaderboard_sources"] = boards.get("sources", [])
+        data["leaderboard_observations"] = boards.get("observations", [])
+        data["leaderboard_meta"] = boards.get("meta", {})
+    else:
+        data["leaderboards"] = []
+        data["leaderboard_metrics"] = []
+        data["leaderboard_sources"] = []
+        data["leaderboard_observations"] = []
+        data["leaderboard_meta"] = {}
+
+    reg_path = root / REGISTRY_FILE
+    data["registry"] = (
+        json.loads(reg_path.read_text(encoding="utf-8")).get("models", [])
+        if reg_path.exists() else []
+    )
+    return data
 
 
 def validate(data: dict) -> tuple[list[str], list[str]]:
@@ -135,7 +172,79 @@ def validate(data: dict) -> tuple[list[str], list[str]]:
     for key, gids in by_key.items():
         if len(gids) > 1:
             warnings.append(f"指标 {key} 出现在 {len(gids)} 个不同口径组（{', '.join(sorted(gids))}），禁止直接比较")
+
+    errors.extend(_validate_leaderboards(data))
     return errors, warnings
+
+
+def _validate_leaderboards(data: dict) -> list[str]:
+    """校验榜单数据：来源等级、主键唯一、条目数自洽、单位与值域。"""
+    errors: list[str] = []
+    boards = {b.get("id"): b for b in data.get("leaderboards", [])}
+    metrics = {m.get("key"): m for m in data.get("leaderboard_metrics", [])}
+    sources = {s.get("id"): s for s in data.get("leaderboard_sources", [])}
+    obs = data.get("leaderboard_observations", [])
+
+    if not boards:
+        # 榜单数据是可选增强层：缺失时看板退化为「仅公告指标」，不应阻断渲染
+        warnings.append("缺少 leaderboards（榜单 roster 数据），看板将只展示公告类指标")
+        return errors
+
+    for bid, b in boards.items():
+        if not b.get("scope"):
+            errors.append(f"榜单 {bid}: 缺少口径说明 scope")
+        # 来源既可能与榜单同 id，也可能嵌套在 board["source"] 里
+        sid = (b.get("source") or {}).get("id") or bid
+        if sid not in sources:
+            errors.append(f"榜单 {bid}: 缺少对应来源 {sid}")
+        for mk in b.get("metrics", []):
+            if mk not in metrics:
+                errors.append(f"榜单 {bid}: 引用未知指标 {mk}")
+
+    for sid, s in sources.items():
+        if not str(s.get("url", "")).startswith("https://"):
+            errors.append(f"榜单来源 {sid}: 非 HTTPS 链接")
+        if s.get("level") != "A":
+            errors.append(f"榜单来源 {sid}: 必须为 A 级一手来源")
+
+    seen: set[tuple] = set()
+    for i, o in enumerate(obs, 1):
+        for f in ("board", "model", "provider", "metric_key", "src", "entry_id"):
+            if not o.get(f):
+                errors.append(f"榜单观测 {i}: 缺少字段 {f}")
+        if o.get("board") not in boards:
+            errors.append(f"榜单观测 {i}: 未知榜单 {o.get('board')}")
+        if o.get("metric_key") not in metrics:
+            errors.append(f"榜单观测 {i}: 未知指标 {o.get('metric_key')}")
+        if o.get("src") not in sources:
+            errors.append(f"榜单观测 {i}: 未知来源 {o.get('src')}")
+        v = o.get("value")
+        if not isinstance(v, (int, float)) or isinstance(v, bool):
+            errors.append(f"榜单观测 {i}: value 必须是数值")
+        else:
+            mk = metrics.get(o.get("metric_key"), {})
+            unit, vmax = mk.get("unit"), mk.get("max")
+            if unit == "percent" and not (0 <= v <= 100):
+                errors.append(f"榜单观测 {i}: percent 越界 {v}")
+            elif unit == "score" and vmax and not (0 <= v <= vmax):
+                errors.append(f"榜单观测 {i}: score 越界 {v}（上限 {vmax}）")
+        pk = (o.get("board"), o.get("entry_id"), o.get("metric_key"))
+        if pk in seen:
+            errors.append(f"榜单观测 {i}: 主键重复 {pk}")
+        seen.add(pk)
+
+    # 榜单声明的条目数必须与实际一致（roster 完整性）
+    for bid, b in boards.items():
+        bobs = [o for o in obs if o["board"] == bid]
+        actual = len({o["entry_id"] for o in bobs})
+        if actual != b.get("entries"):
+            errors.append(
+                f"榜单 {bid}: 声明 entries={b.get('entries')} 但实际 {actual}"
+            )
+        if len({o["model"] for o in bobs}) != b.get("models"):
+            errors.append(f"榜单 {bid}: 声明 models 数与实际不符")
+
+    return errors
 
 
 def build_view(data: dict) -> dict:
@@ -157,27 +266,102 @@ def build_view(data: dict) -> dict:
             "level": s["level"],
             "url": s["url"],
             "ref": s["ref"],
+            "origin": "announcement",
         })
-    models = sorted({o["model"] for o in enriched})
-    benchmarks = sorted({o["benchmark"] for o in enriched})
+
+    # 榜单观测：口径来自 board + metric
+    lb_metrics = {m["key"]: m for m in data.get("leaderboard_metrics", [])}
+    lb_sources = {s["id"]: s for s in data.get("leaderboard_sources", [])}
+    lb_boards = {b["id"]: b for b in data.get("leaderboards", [])}
+    lb_obs = []
+    for i, o in enumerate(data.get("leaderboard_observations", [])):
+        b = lb_boards.get(o["board"], {})
+        m = lb_metrics.get(o["metric_key"], {})
+        s = lb_sources.get(o["src"], {})
+        lb_obs.append({
+            **o,
+            "_i": i,
+            "benchmark": b.get("label", o["board"]),
+            "metric": m.get("label", o["metric_key"]),
+            "key": o["metric_key"],
+            "group": o["board"],
+            "group_label": b.get("label", o["board"]),
+            "group_scope": b.get("scope", ""),
+            "kind": b.get("kind", "leaderboard"),
+            "unit": m.get("unit", "percent"),
+            "direction": "higher",
+            "level": s.get("level", "A"),
+            "url": s.get("url", ""),
+            "ref": s.get("ref", ""),
+            "origin": "leaderboard",
+        })
+
+    all_obs = enriched + lb_obs
+    models = sorted({o["model"] for o in all_obs})
+    benchmarks = sorted({o["benchmark"] for o in all_obs})
     group_ids = [g["id"] for g in data["groups"]]
 
-    # 覆盖率：只统计「有数值的观测」落在多少个可比组里。
+    # 覆盖率分母 = 该模型**实际出现过**的口径组数（而非全部口径组数）。
+    # 否则只在 1 个榜出现过的模型会被算成极低覆盖率，产生误导：
+    # 「这个模型只被收录过一次」与「这个模型覆盖很差」是两回事。
     coverage = {}
     for m in models:
-        covered = {o["group"] for o in enriched if o["model"] == m and o.get("value") is not None}
+        mine = [o for o in all_obs if o["model"] == m]
+        covered = {o["group"] for o in mine if o.get("value") is not None}
+        appeared = {o["group"] for o in mine}
         coverage[m] = {
             "groups": len(covered),
-            "total": len(group_ids),
-            "ratio": round(len(covered) / len(group_ids), 4) if group_ids else 0.0,
-            "observations": sum(1 for o in enriched if o["model"] == m),
-            "valued": sum(1 for o in enriched if o["model"] == m and o.get("value") is not None),
+            "total": len(appeared),
+            "ratio": round(len(covered) / len(appeared), 4) if appeared else 0.0,
+            "observations": len(mine),
+            "valued": sum(1 for o in mine if o.get("value") is not None),
+            "boards": len({o["group"] for o in mine if o.get("origin") == "leaderboard"}),
         }
-    valued = sum(1 for o in enriched if o.get("value") is not None)
+
+    valued = sum(1 for o in all_obs if o.get("value") is not None)
+
+    # roster：每个榜单的完整参评名单（模型 × 配置），这是「榜单里到底有哪些模型」
+    rosters = {}
+    for bid, b in lb_boards.items():
+        bobs = [o for o in lb_obs if o["board"] == bid]
+        entries: dict[str, dict] = {}
+        for o in bobs:
+            eid = o["entry_id"]
+            e = entries.setdefault(eid, {
+                "entry_id": eid,
+                "model": o["model"],
+                "model_id": o.get("model_id"),
+                "provider": o["provider"],
+                "agent": o.get("agent", ""),
+                "reasoning_effort": o.get("reasoning_effort", ""),
+                "model_release_date": o.get("model_release_date", ""),
+                "date": o.get("date", ""),
+                "note": o.get("note", ""),
+                "values": {},
+            })
+            e["values"][o["metric_key"]] = o["value"]
+        rosters[bid] = {
+            "id": bid,
+            "label": b.get("label", bid),
+            "scope": b.get("scope", ""),
+            "metrics": b.get("metrics", []),
+            "source": lb_sources.get((b.get("source") or {}).get("id") or bid, {}),
+            "entries": list(entries.values()),
+            "models": b.get("models", 0),
+            "declared_entries": b.get("entries", 0),
+        }
+
     return {
-        "observations": enriched,
+        "observations": all_obs,
+        "announcement_observations": enriched,
+        "leaderboard_observations": lb_obs,
         "groups": data["groups"],
         "sources": data["sources"],
+        "leaderboards": data.get("leaderboards", []),
+        "leaderboard_metrics": data.get("leaderboard_metrics", []),
+        "leaderboard_sources": data.get("leaderboard_sources", []),
+        "registry": data.get("registry", []),
+        "rosters": rosters,
         "models": models,
         "benchmarks": benchmarks,
         "coverage": coverage,
@@ -185,14 +369,17 @@ def build_view(data: dict) -> dict:
             "models": len(models),
             "benchmarks": len(benchmarks),
             "groups": len(group_ids),
-            "metrics": len({o["key"] for o in enriched}),
-            "observations": len(enriched),
+            "leaderboards": len(data.get("leaderboards", [])),
+            "metrics": len({o["key"] for o in all_obs}),
+            "observations": len(all_obs),
             "valued": valued,
-            "not_disclosed": len(enriched) - valued,
-            "level_a": sum(1 for o in enriched if o["level"] == "A"),
+            "not_disclosed": len(all_obs) - valued,
+            "level_a": sum(1 for o in all_obs if o["level"] == "A"),
+            "roster_models": len({e["model"] for r in rosters.values() for e in r["entries"]}),
+            "roster_entries": sum(len(r["entries"]) for r in rosters.values()),
             "overall_coverage": round(
-                sum(c["groups"] for c in coverage.values()) / (len(models) * len(group_ids)), 4
-            ) if models and group_ids else 0.0,
+                sum(c["ratio"] for c in coverage.values()) / len(models), 4
+            ) if models else 0.0,
         },
     }
 
@@ -278,19 +465,27 @@ input[type=text]:focus,select:focus{border-color:var(--bl)}
 <div class="nl"><a href="index.html">← 返回主站</a><a href="#filters">筛选</a><a href="#matrix">覆盖率</a><a href="#compare">横向对比</a><a href="#caveats">口径说明</a></div></nav>
 <div class="ly">
 <aside class="sd"><div class="tot">📑 看板导航</div><ul class="tol">
-<li><a href="#overview">📊 总览</a></li><li><a href="#filters">🔍 筛选与排序</a></li>
+<li><a href="#overview">📊 总览</a></li><li><a href="#rosters">🏁 榜单全貌</a></li>
+<li><a href="#filters">🔍 筛选与排序</a></li>
 <li><a href="#detail">📋 观测明细</a></li><li><a href="#matrix">🧩 覆盖矩阵</a></li>
 <li><a href="#compare">⚖️ 横向对比</a></li><li><a href="#caveats">⚠️ 口径与缺失</a></li>
 <li><a href="index.html">← HOMC 主站</a></li></ul></aside>
 <main class="mc">
 <div class="hero" id="overview"><h1>📊 多榜单 Benchmark 可视化看板</h1>
-<p>统一收录项目内全部可核实的模型指标。每条观测绑定模型、榜单、指标与口径组；排名只在同组内有效，不同单位、方向或 harness 的指标不参与混算。缺失指标显式标注，不做补零或跨口径平均。</p></div>
+<p>统一收录项目内全部可核实的模型指标，<b>并给出每个榜单的完整参评名单</b>。榜单条目 = 模型 × 配置（agent 脚手架 / reasoning effort / 编辑格式），同一模型换配置分数不同，因此分开记录；排名只在同口径内有效，不同单位、方向或 harness 的指标不参与混算。缺失指标显式标注，不做补零或跨口径平均。</p></div>
 <div class="sts" id="stats"></div>
 <div class="cd"><div class="ch">📐 数据口径（先看这里）</div><div class="cb" id="principle"></div></div>
+
+<h2 id="rosters">🏁 榜单全貌与完整参评名单</h2>
+<div class="tip">下面是每个榜单<b>官方公布的全部参评条目</b>，而不是项目已收录的模型。选择榜单可查看该榜完整排名、每个条目的配置（agent / 推理档位）与分数；<b>同一模型出现多条是不同配置，不是重复</b>。</div>
+<div class="fl" id="boardPicker"></div>
+<div class="tw"><table id="rosterTable"><thead><tr id="rosterHead"></tr></thead><tbody id="rosterBody"></tbody></table></div>
+<div class="cd"><div class="ch">📌 榜单覆盖对照</div><div class="cb" id="boardSummary"></div></div>
 
 <h2 id="filters">🔍 筛选与排序</h2>
 <div class="fl" id="filtersBox"></div>
 <label class="chk"><input type="checkbox" id="onlyValued"> 仅显示有数值的观测（隐藏「官方未披露」）</label>
+<label class="chk"><input type="checkbox" id="onlyLeaderboard"> 仅显示榜单数据（一手完整名单）</label>
 <div class="tip" id="filterTip"></div>
 <div id="sortWarn"></div>
 
@@ -300,7 +495,7 @@ input[type=text]:focus,select:focus{border-color:var(--bl)}
 
 <h2 id="matrix">🧩 模型 × 榜单 覆盖矩阵与指标覆盖率</h2>
 <div class="tip" id="covTip"></div>
-<div style="margin:10px 0"><button class="chip on" id="btnGroup" onclick="setMatrix('group')">按可比组（12）</button><button class="chip" id="btnBench" onclick="setMatrix('benchmark')">按榜单（23）</button></div>
+<div style="margin:10px 0"><button class="chip on" id="btnGroup" onclick="setMatrix('group')">按口径组</button><button class="chip" id="btnBench" onclick="setMatrix('benchmark')">按榜单 / 规格</button></div>
 <div class="tw"><table class="mx" id="covTable"></table></div>
 <div class="cd"><div class="ch">📈 各模型指标覆盖率</div><div class="cb" id="covBars"></div></div>
 
@@ -313,23 +508,32 @@ input[type=text]:focus,select:focus{border-color:var(--bl)}
 <div id="caveatsBox"></div>
 
 <div class="ft">🃏 <strong>House of Model Cards (HOMC)</strong> · Benchmark 看板 |
-<a href="index.html">返回主站</a> | 数据截至 __UPDATED__ · 自 <code>data/benchmark_observations.json</code> 生成</div>
+<a href="index.html">返回主站</a> | 数据截至 __UPDATED__ · 自 <code>data/benchmark_observations.json</code> + <code>data/benchmark_boards.json</code> 生成</div>
 </main></div>
 <div class="btt" id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 <script>
 const DATA = __DATA__;
 const G = Object.fromEntries(DATA.groups.map(g=>[g.id,g]));
 const S = Object.fromEntries(DATA.sources.map(s=>[s.id,s]));
-const OBS = DATA.observations.map((o,i)=>Object.assign({},o,{_i:i,unit:G[o.group].unit,direction:G[o.group].direction,
-  group_label:G[o.group].label,group_scope:G[o.group].scope,kind:G[o.group].kind||'benchmark',
-  level:S[o.src].level,url:S[o.src].url,ref:S[o.src].ref}));
+const LB_M = Object.fromEntries(DATA.leaderboard_metrics.map(m=>[m.key,m]));
+const LB_S = Object.fromEntries(DATA.leaderboard_sources.map(s=>[s.id,s]));
+const OBS = DATA.observations.map((o,i)=>{
+  const isLb = o.origin==='leaderboard';
+  const g = isLb?{unit:o.unit,direction:'higher',label:o.group_label,scope:o.group_scope,kind:'leaderboard'}:G[o.group];
+  const s = isLb?LB_S[o.src]:S[o.src];
+  return Object.assign({},o,{_i:i,unit:g.unit,direction:g.direction,
+    group_label:g.label,group_scope:g.scope,kind:g.kind||'benchmark',
+    level:s.level,url:s.url,ref:s.ref});
+});
 const MODELS = [...new Set(OBS.map(o=>o.model))].sort();
 const BENCHS = [...new Set(OBS.map(o=>o.benchmark))].sort();
 const PROVIDERS = [...new Set(OBS.map(o=>o.provider))].sort();
 const GROUPS = DATA.groups;
+const BOARDS = DATA.rosters;
+const BOARD_IDS = Object.keys(BOARDS);
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const st = {q:'',provider:'',benchmark:'',group:'',level:'',kind:'',onlyValued:false,
-  sort:'model',dir:1,compare:[],matrix:'group'};
+const st = {q:'',provider:'',benchmark:'',group:'',level:'',kind:'',onlyValued:false,onlyLeaderboard:false,
+  sort:'model',dir:1,compare:[],matrix:'group',board:BOARD_IDS[0]||'',rosterQ:'',rosterModel:''};
 
 function fmt(o){
   if(o.value==null) return '<span class="miss">未披露</span>';
@@ -338,6 +542,13 @@ function fmt(o){
   if(o.unit==='elo') return Number(v).toLocaleString();
   if(o.unit==='tokens') return v>=1000000 ? (v/1000000)+'M' : (v>=1000 ? (v/1000)+'K' : String(v));
   if(o.unit==='billion') return v+'B';
+  return String(v);
+}
+function fmtVal(v,key){
+  const m=LB_M[key]||{};
+  if(v==null) return '<span class="miss">未披露</span>';
+  if(m.unit==='percent') return Number(v).toFixed(1)+'%';
+  if(m.unit==='score') return String(v);
   return String(v);
 }
 function unitCn(u){return {percent:'百分比',score:'指数分',elo:'Elo',tokens:'Token',billion:'十亿参数'}[u]||u;}
@@ -353,12 +564,13 @@ function filtered(){
     if(st.level && o.level!==st.level) return false;
     if(st.kind && o.kind!==st.kind) return false;
     if(st.onlyValued && o.value==null) return false;
+    if(st.onlyLeaderboard && o.origin!=='leaderboard') return false;
     return true;
   });
   const groupsInResult=new Set(r.map(o=>o.group));
   const crossGroupValueSort = st.sort==='value' && groupsInResult.size>1;
   document.getElementById('sortWarn').innerHTML = crossGroupValueSort
-    ? '<div class="warn">⚠️ 当前结果包含 '+groupsInResult.size+' 个可比组，<b>跨组按数值排序已禁用</b>（单位 / 方向 / harness 不同）。请先在「可比组」下拉中选定单个组。</div>' : '';
+    ? '<div class="warn">⚠️ 当前结果包含 '+groupsInResult.size+' 个口径组，<b>跨组按数值排序已禁用</b>（单位 / 方向 / harness 不同）。请先在「可比组」下拉中选定单个组。</div>' : '';
   const key=st.sort;
   r.sort((a,b)=>{
     let x,y;
@@ -370,8 +582,6 @@ function filtered(){
     if(typeof x==='string') return x.localeCompare(y,'zh')*st.dir;
     return (x-y)*st.dir;
   });
-  // direction 只作为「表现方向」标注，不自动反转排序：升序恒为数值从小到大，
-  // 对 lower-is-better 的指标而言这恰好把最优值排在前面，行为可预期。
   return r;
 }
 
@@ -379,18 +589,83 @@ function renderStats(){
   const valued=OBS.filter(o=>o.value!=null).length;
   const cov={};
   MODELS.forEach(m=>{cov[m]=new Set(OBS.filter(o=>o.model===m&&o.value!=null).map(o=>o.group)).size;});
-  const overall=(Object.values(cov).reduce((a,b)=>a+b,0)/(MODELS.length*GROUPS.length)*100).toFixed(1);
+  // 整体覆盖率 = 各模型「已覆盖 / 出现过」比值的均值（分母只算该模型实际出现过的口径组）
+  const perModel=MODELS.map(m=>{
+    const appeared=new Set(OBS.filter(o=>o.model===m).map(o=>o.group)).size;
+    return appeared? cov[m]/appeared : 0;
+  });
+  const overall=(perModel.reduce((a,b)=>a+b,0)/perModel.length*100).toFixed(1);
+  const rosterModels=new Set();
+  BOARD_IDS.forEach(b=>BOARDS[b].entries.forEach(e=>rosterModels.add(e.model)));
+  const rosterEntries=BOARD_IDS.reduce((a,b)=>a+BOARDS[b].entries.length,0);
   const cards=[
-    ['🤖',MODELS.length,'模型'],['🏁',BENCHS.length,'榜单 / 规格'],['🧪',new Set(OBS.map(o=>o.key)).size,'指标'],
+    ['🤖',MODELS.length,'模型'],['🏁',BOARD_IDS.length,'完整榜单'],
+    ['🧪',new Set(OBS.map(o=>o.key)).size,'指标'],
     ['📌',OBS.length,'观测'],['✅',valued,'有数值'],['⚠️',OBS.length-valued,'未披露'],
-    ['🔬',GROUPS.length,'可比组'],['🧩',overall+'%','整体覆盖率']
+    ['👥',rosterModels.size,'榜上模型'],
+    ['📋',rosterEntries,'榜上条目'],
+    ['🧩',overall+'%','整体覆盖率']
   ];
   document.getElementById('stats').innerHTML=cards.map(c=>
     '<div class="st"><div class="sn">'+c[1]+'</div><div class="sl">'+c[0]+' '+c[2]+'</div></div>').join('');
   document.getElementById('principle').innerHTML=
     '<p>'+esc(DATA.meta.principle)+'</p><p style="margin-top:8px">'+esc(DATA.meta.missing_policy)+'</p>'+
     '<p style="margin-top:8px">'+esc(DATA.meta.unit_policy)+'</p>'+
+    (DATA.leaderboard_meta&&DATA.leaderboard_meta.principle?
+      '<p style="margin-top:8px">'+esc(DATA.leaderboard_meta.principle)+'</p>':'')+
+    (DATA.leaderboard_meta&&DATA.leaderboard_meta.roster_note?
+      '<blockquote style="margin-top:10px">'+esc(DATA.leaderboard_meta.roster_note)+'</blockquote>':'')+
     '<blockquote style="margin-top:10px">'+esc(DATA.meta.duplicate_policy)+'</blockquote>';
+}
+
+/* ---------- 榜单全貌与 roster 浏览器 ---------- */
+function renderBoardPicker(){
+  const opts=BOARD_IDS.map(b=>[b,BOARDS[b].label+'（'+BOARDS[b].entries.length+' 条）']);
+  document.getElementById('boardPicker').innerHTML=
+    '<div><label>选择榜单</label><select id="boardSel">'+opts.map(o=>
+      '<option value="'+esc(o[0])+'"'+(o[0]===st.board?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select></div>'+
+    '<div><label>榜单内搜索（模型 / agent）</label><input type="text" id="rosterQ" placeholder="如 Claude、mini-SWE-agent…" value="'+esc(st.rosterQ)+'"></div>';
+  document.getElementById('boardSel').addEventListener('change',e=>{st.board=e.target.value;renderRoster();});
+  document.getElementById('rosterQ').addEventListener('input',e=>{st.rosterQ=e.target.value;renderRoster();});
+}
+function renderRoster(){
+  const b=BOARDS[st.board];
+  if(!b){document.getElementById('rosterBody').innerHTML='';return;}
+  const q=st.rosterQ.toLowerCase();
+  let entries=b.entries.slice();
+  if(q) entries=entries.filter(e=>(e.model+' '+e.agent+' '+e.reasoning_effort+' '+e.provider).toLowerCase().includes(q));
+  // 排序：有数值的按主指标降序，无值排后
+  const mk=b.metrics[0];
+  entries.sort((x,y)=>{
+    const xv=x.values[mk], yv=y.values[mk];
+    if(xv==null&&yv==null) return x.model.localeCompare(y.model);
+    if(xv==null) return 1;
+    if(yv==null) return -1;
+    return yv-xv;
+  });
+  const heads=['#','模型','提供方','配置（agent / 推理档位）','发布日期'];
+  b.metrics.forEach(m=>heads.push(LB_M[m]?LB_M[m].label:m));
+  heads.push('来源');
+  document.getElementById('rosterHead').innerHTML=heads.map(h=>'<th>'+esc(h)+'</th>').join('');
+  const src=b.source||{};
+  let h='';
+  entries.forEach((e,i)=>{
+    h+='<tr><td>'+(i+1)+'</td><td><b>'+esc(e.model)+'</b>'+
+      (e.model_id?'':' <span class="none" title="该模型名未匹配到项目模型注册表">·未归一</span>')+'</td>'+
+      '<td>'+esc(e.provider)+'</td>'+
+      '<td style="font-size:12px">'+esc(e.agent||'—')+
+      (e.reasoning_effort?' <span class="chip" style="margin:0">'+esc(e.reasoning_effort)+'</span>':'')+
+      (e.note?'<br><span class="none">'+esc(e.note)+'</span>':'')+'</td>'+
+      '<td>'+esc(e.date||e.model_release_date||'未标注')+'</td>';
+    b.metrics.forEach(m=>{h+='<td><b>'+fmtVal(e.values[m],m)+'</b></td>';});
+    h+='<td><a href="'+esc(src.url||'')+'" target="_blank" title="'+esc(src.ref||'')+'">官方 ↗</a></td></tr>';
+  });
+  document.getElementById('rosterBody').innerHTML=h;
+  document.getElementById('boardSummary').innerHTML=
+    '<p><b>'+esc(b.label)+'</b>：官方公布 <b>'+b.declared_entries+'</b> 个参评条目，涉及 <b>'+b.models+'</b> 个模型；'
+    +'当前显示 <b>'+entries.length+'</b> 条。口径：'+esc(b.scope)+'</p>'
+    +'<p style="margin-top:6px">同一模型出现多条表示<b>不同配置</b>（agent 脚手架 / 推理档位 / 编辑格式不同），'
+    +'分数不可互相替代；跨条目比较前请确认配置一致。</p>';
 }
 
 function sel(id,label,opts,val){
@@ -404,7 +679,7 @@ function renderFilters(){
     sel('fbenchmark','榜单',BENCHS.map(x=>[x,x]),st.benchmark)+
     sel('fgroup','可比组（决定排序口径）',GROUPS.map(g=>[g.id,g.label]),st.group)+
     sel('flevel','来源等级',[['A','A · 一手'],['B','B · 二手交叉']],st.level)+
-    sel('fkind','类型',[['benchmark','评测'],['ranking','榜单'],['safety','安全对齐'],['spec','官方规格']],st.kind)+
+    sel('fkind','类型',[['benchmark','评测'],['ranking','榜单'],['safety','安全对齐'],['spec','官方规格'],['leaderboard','完整榜单']],st.kind)+
     '<div><label>排序字段</label><select id="fsort">'+
       [['model','模型名'],['benchmark','榜单'],['value','数值（仅同组）'],['rank','组内排名'],['date','日期'],['level','来源等级']]
       .map(o=>'<option value="'+o[0]+'"'+(o[0]===st.sort?' selected':'')+'>'+o[1]+'</option>').join('')+'</select></div>'+
@@ -415,6 +690,8 @@ function renderFilters(){
     .forEach(([id,k])=>bind(id,['change',v=>{st[k]=(k==='dir')?Number(v):v;refresh();}]));
   document.getElementById('onlyValued').checked=st.onlyValued;
   document.getElementById('onlyValued').addEventListener('change',e=>{st.onlyValued=e.target.checked;refresh();});
+  document.getElementById('onlyLeaderboard').checked=st.onlyLeaderboard;
+  document.getElementById('onlyLeaderboard').addEventListener('change',e=>{st.onlyLeaderboard=e.target.checked;refresh();});
 }
 
 const HEADS=[['model','模型'],['provider','提供方'],['benchmark','榜单 / 规格'],['metric','指标'],['value','数值'],
@@ -424,12 +701,14 @@ function renderTable(){
     '<th class="s'+(st.sort===h[0]?' act':'')+'" onclick="setSort(\''+h[0]+'\')">'+h[1]+(st.sort===h[0]?(st.dir===1?' ↑':' ↓'):'')+'</th>').join('');
   const r=filtered();
   document.getElementById('obsBody').innerHTML=r.map(o=>
-    '<tr><td><b>'+esc(o.model)+'</b></td><td>'+esc(o.provider)+'</td><td>'+esc(o.benchmark)+'</td><td>'+esc(o.metric)+
+    '<tr><td><b>'+esc(o.model)+'</b>'+(o.entry_id&&o.entry_id!==o.model?' <span class="none">·'+esc(o.entry_id)+'</span>':'')+'</td>'+
+    '<td>'+esc(o.provider)+'</td><td>'+esc(o.benchmark)+'</td><td>'+esc(o.metric)+
     '</td><td><b>'+fmt(o)+'</b></td><td>'+unitCn(o.unit)+'</td><td>'+dirTag(o)+'</td><td>'+
     (o.rank!=null?'#'+o.rank:'<span class="none">—</span>')+'</td><td>'+esc(o.group_label)+'</td>'+
     '<td><span class="lv'+o.level+'">['+o.level+']</span> <a href="'+esc(o.url)+'" target="_blank" title="'+esc(o.ref)+'">来源 ↗</a></td>'+
     '<td>'+esc(o.date||'未标注')+'</td><td style="font-size:12px">'+esc(o.group_scope)+'</td></tr>').join('');
-  document.getElementById('filterTip').textContent='显示 '+r.length+' / '+OBS.length+' 条观测';
+  document.getElementById('filterTip').textContent='显示 '+r.length+' / '+OBS.length+' 条观测'
+    +'（其中榜单数据 '+r.filter(o=>o.origin==='leaderboard').length+' 条）';
 }
 function setSort(k){ if(st.sort===k) st.dir=-st.dir; else {st.sort=k;st.dir=1;} refresh(); }
 
@@ -440,13 +719,16 @@ function setMatrix(mode){
   renderMatrix();
 }
 function renderMatrix(){
-  const cols = st.matrix==='group' ? GROUPS.map(g=>[g.id,g.label]) : BENCHS.map(b=>[b,b]);
+  const cols = st.matrix==='group'
+    ? GROUPS.map(g=>[g.id,g.label]).concat(BOARD_IDS.map(b=>[b,'▸ '+BOARDS[b].label]))
+    : BENCHS.map(b=>[b,b]);
   const idx = st.matrix==='group' ? (o=>o.group) : (o=>o.benchmark);
   let h='<thead><tr><th>模型</th>'+cols.map(c=>'<th title="'+esc(c[1])+'">'+esc(c[1].length>12?c[1].slice(0,11)+'…':c[1])+'</th>').join('')+'<th>覆盖率</th></tr></thead><tbody>';
   MODELS.forEach(m=>{
     const mine=OBS.filter(o=>o.model===m);
     const covered=new Set(mine.filter(o=>o.value!=null).map(idx)).size;
-    const ratio=covered/cols.length;
+    const appeared=new Set(mine.map(idx)).size;
+    const ratio=appeared? covered/appeared : 0;
     h+='<tr><td><b>'+esc(m)+'</b></td>';
     cols.forEach(c=>{
       const cell=mine.filter(o=>idx(o)===c[0]&&o.value!=null);
@@ -455,19 +737,24 @@ function renderMatrix(){
       else if(nd.length) h+='<td><span class="hv0" title="官方明确未披露">未披露</span></td>';
       else h+='<td class="none">—</td>';
     });
-    h+='<td><span class="bar"><i style="width:'+Math.round(ratio*100)+'%"></i></span> '+(ratio*100).toFixed(0)+'%</td></tr>';
+    h+='<td><span class="bar"><i style="width:'+Math.round(ratio*100)+'%"></i></span> '+(ratio*100).toFixed(0)+'%'
+      +'<br><span class="none" style="font-size:11px">'+covered+' / '+appeared+'</span></td></tr>';
   });
   h+='</tbody>';
   document.getElementById('covTable').innerHTML=h;
-  document.getElementById('covTip').innerHTML='列为'+(st.matrix==='group'?'<b>可比组</b>':'<b>榜单 / 规格</b>')+
+  document.getElementById('covTip').innerHTML='列为'+(st.matrix==='group'?'<b>口径组 + 完整榜单（▸ 前缀）</b>':'<b>榜单 / 规格</b>')+
     '。绿色 = 有数值（悬停看明细），红色「未披露」= 官方明确未公布，灰色「—」= 该模型未参与该评测。'+
-    '<b>「—」不等于 0 分，也不代表能力不足</b>；覆盖率只按有数值的格子计算。';
-  const cov=MODELS.map(m=>({m,n:new Set(OBS.filter(o=>o.model===m&&o.value!=null).map(idx)).size}))
-    .sort((a,b)=>b.n-a.n);
+    '<b>「—」不等于 0 分，也不代表能力不足</b>；覆盖率分母只算该模型<b>实际出现过</b>的口径组，'+
+    '因此「只被收录过 1 个榜」不会被误判为覆盖差。';
+  const cov=MODELS.map(m=>{
+    const mine=OBS.filter(o=>o.model===m);
+    return {m,n:new Set(mine.filter(o=>o.value!=null).map(idx)).size,
+            a:new Set(mine.map(idx)).size};
+  }).sort((x,y)=>(y.n/y.a)-(x.n/x.a));
   document.getElementById('covBars').innerHTML=cov.map(c=>
     '<div style="display:flex;align-items:center;gap:10px;margin:5px 0;font-size:13px">'+
     '<span style="min-width:170px">'+esc(c.m)+'</span><span class="bar" style="flex:1"><i style="width:'+
-    Math.round(c.n/cols.length*100)+'%"></i></span><span style="min-width:74px;text-align:right">'+c.n+' / '+cols.length+'</span></div>').join('');
+    Math.round(c.a? c.n/c.a*100 : 0)+'%"></i></span><span style="min-width:88px;text-align:right">'+c.n+' / '+c.a+'</span></div>').join('');
 }
 
 function renderCompare(){
@@ -541,7 +828,7 @@ function renderCaveats(){
 }
 
 function refresh(){renderTable();renderMatrix();renderCompare();}
-renderStats();renderFilters();renderCaveats();refresh();
+renderStats();renderFilters();renderBoardPicker();renderRoster();renderCaveats();refresh();
 window.addEventListener('scroll',()=>document.getElementById('bt').classList.toggle('vis',window.scrollY>400));
 </script>
 </body></html>
@@ -553,7 +840,13 @@ def render_html(data: dict, view: dict) -> str:
         "meta": data["meta"],
         "groups": data["groups"],
         "sources": data["sources"],
-        "observations": data["observations"],
+        "observations": view["observations"],
+        "leaderboards": view["leaderboards"],
+        "leaderboard_metrics": view["leaderboard_metrics"],
+        "leaderboard_sources": view["leaderboard_sources"],
+        "leaderboard_meta": data.get("leaderboard_meta", {}),
+        "registry": view["registry"],
+        "rosters": view["rosters"],
     }, ensure_ascii=False, separators=(",", ":"))
     # 把内联数据里的尖括号与 & 全部转成 Unicode 转义，确保数据中的
     # <script> / </script> / HTML 注释都不会被浏览器当作标记解析。

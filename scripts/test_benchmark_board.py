@@ -56,6 +56,37 @@ def make_data() -> dict:
             obs(model="M3", benchmark="B3", key="k3", value=None, group="g1",
                 status="not_disclosed", note="官方未披露"),
         ],
+        "leaderboards": [
+            {"id": "lb1", "label": "榜单一", "scope": "口径：官方榜", "kind": "leaderboard",
+             "metrics": ["rk1"], "entries": 2, "observations": 2, "models": 1,
+             "source": {"id": "lbs1", "level": "A", "url": "https://example.com/lb",
+                        "ref": "fixture", "captured": "2026-11-06"}},
+        ],
+        "leaderboard_metrics": [
+            {"key": "rk1", "label": "榜内指标", "unit": "percent", "max": 100,
+             "boards": ["lb1"]},
+        ],
+        "leaderboard_sources": [
+            {"id": "lbs1", "level": "A", "url": "https://example.com/lb",
+             "ref": "fixture", "captured": "2026-11-06", "note": ""},
+        ],
+        "leaderboard_meta": {"principle": "榜单原则", "roster_note": "roster 说明"},
+        "leaderboard_observations": [
+            {"board": "lb1", "board_label": "榜单一", "model_raw": "M1", "model": "M1",
+             "provider_raw": "P1", "provider": "P1", "metric_key": "rk1",
+             "metric_label": "榜内指标", "value": 75.0, "rank": 1, "date": "2026-11-06",
+             "entry_id": "M1|agentA", "agent": "agentA", "reasoning_effort": "",
+             "model_release_date": "", "note": "agent: agentA", "src": "lbs1"},
+            {"board": "lb1", "board_label": "榜单一", "model_raw": "M1", "model": "M1",
+             "provider_raw": "P1", "provider": "P1", "metric_key": "rk1",
+             "metric_label": "榜内指标", "value": 68.0, "rank": 2, "date": "2026-11-06",
+             "entry_id": "M1|agentB", "agent": "agentB", "reasoning_effort": "",
+             "model_release_date": "", "note": "agent: agentB", "src": "lbs1"},
+        ],
+        "registry": [
+            {"id": "p1-m1", "name": "M1", "provider": "P1", "aliases": ["M1"],
+             "snapshot": "", "note": ""},
+        ],
     }
 
 
@@ -64,6 +95,17 @@ def fixture(root: Path, data: dict | None = None) -> dict:
     payload = data if data is not None else make_data()
     (root / m.DATA_FILE).write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    # 榜单数据单独成文件，fixture 同步写出，使合并路径被真实覆盖
+    boards = {
+        "meta": {"principle": "榜单原则", "roster_note": "roster 说明"},
+        "boards": payload.get("leaderboards", []),
+        "metrics": payload.get("leaderboard_metrics", []),
+        "sources": payload.get("leaderboard_sources", []),
+        "observations": payload.get("leaderboard_observations", []),
+    }
+    (root / m.BOARDS_FILE).write_text(
+        json.dumps(boards, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     return payload
 
@@ -136,8 +178,8 @@ class TestViewModel(unittest.TestCase):
     def test_build_view_enriches_and_counts(self):
         v = m.build_view(make_data())
         self.assertEqual(v["stats"]["models"], 3)
-        self.assertEqual(v["stats"]["observations"], 4)
-        self.assertEqual(v["stats"]["valued"], 3)
+        self.assertEqual(v["stats"]["observations"], 6)  # 4 条公告 + 2 条榜单
+        self.assertEqual(v["stats"]["valued"], 5)   # 3 条公告 + 2 条榜单
         self.assertEqual(v["stats"]["not_disclosed"], 1)
         self.assertEqual(v["observations"][2]["direction"], "lower")
         self.assertEqual(v["observations"][2]["level"], "B")
@@ -145,7 +187,7 @@ class TestViewModel(unittest.TestCase):
     def test_coverage_excludes_disclosed_nulls(self):
         v = m.build_view(make_data())
         self.assertEqual(v["coverage"]["M3"]["groups"], 0)
-        self.assertEqual(v["coverage"]["M1"]["groups"], 2)
+        self.assertEqual(v["coverage"]["M1"]["groups"], 3)  # g1 / g2 / lb1
         self.assertEqual(v["coverage"]["M1"]["ratio"], 1.0)
 
     def test_real_repository_data_valid(self):
@@ -255,7 +297,9 @@ class TestJavascript(unittest.TestCase):
             "console.log('rows='+(store.obsBody.innerHTML.match(/<tr>/g)||[]).length);"
         )
         self.assertIn("OK", out)
-        self.assertIn("rows=44", out)
+        # 真实仓库数据会随榜单扩充而增长，这里断言下限而非固定值
+        rows = int(out.split("rows=")[1].split()[0])
+        self.assertGreater(rows, 40)
 
     def test_cross_group_value_sort_blocked(self):
         out = self._run(

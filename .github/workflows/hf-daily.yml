@@ -73,6 +73,11 @@ jobs:
       - name: Validate benchmark board data
         run: python3 scripts/render_benchmark_board.py --validate
 
+      - name: Validate benchmark leaderboard roster
+        run: |
+          python3 scripts/fetch_benchmark_boards.py --validate
+          python3 scripts/resolve_models.py --validate
+
       - name: Fetch models from Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -112,7 +117,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- README.md HF_DAILY.md index.html benchmarks.html data/hf-daily/ data/official_sources.json data/benchmark_observations.json
+          git add -- README.md HF_DAILY.md index.html benchmarks.html data/hf-daily/ data/official_sources.json data/benchmark_observations.json data/benchmark_boards.json data/model_registry.json data/benchmarks/
           if git diff --cached --quiet; then
             echo "No changes since last run; skipping commit."
             exit 0
