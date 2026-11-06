@@ -112,42 +112,42 @@ img{max-width:100%;border-radius:6px}
 
 <nav class="nav"><div class="nb"><a href="#">🃏 <span>HOMC Model List</span></a></div>
 <div class="nl">
-<a href="#快速索引">📑 索引</a><a href="#通用基础模型">🤖 模型</a><a href="#110-🏆-官方榜单口径">🏆 榜单</a><a href="benchmarks.html">📊 看板</a>
-<a href="#评测基准详解">📏 评测</a><a href="#微调工具链与实战">🔧 微调</a><a href="#安全与对齐">🛡️ 安全</a>
+<a href="#1-快速索引">📑 索引</a><a href="#2-通用基础模型">🤖 模型</a><a href="#110-🏆-官方榜单口径">🏆 榜单</a><a href="benchmarks.html">📊 看板</a>
+<a href="#13-📏-评测基准详解">📏 评测</a><a href="#14-🔧-微调工具链与实战">🔧 微调</a><a href="#12-🛡️-安全与对齐">🛡️ 安全</a>
 </div></nav>
 
 <div class="ly">
 <aside class="sd" id="sd">
 <div class="tot">📑 目录导航</div>
 <ul class="tol">
-<li><a href="#核心统计">📊 核心统计</a></li>
-<li><a href="#项目特色">🌟 项目特色</a></li>
-<li><a href="#house-of-model-cards">🎴 扑克牌分类体系</a></li>
-<li><a href="#快速索引">1️⃣ 快速索引</a></li>
-<li><a href="#17-按推理能力等级分类新增">🧠 推理能力等级</a></li>
-<li><a href="#18-按部署场景分类新增">🖥️ 部署场景分类</a></li>
-<li><a href="#19-按训练对齐方法分类新增">🎯 训练对齐方法</a></li>
+<li><a href="#📊-核心统计">📊 核心统计</a></li>
+<li><a href="#🌟-项目特色">🌟 项目特色</a></li>
+<li><a href="#🎴-house-of-model-cards-—-扑克牌分类体系说明">🎴 扑克牌分类体系</a></li>
+<li><a href="#1-快速索引">1️⃣ 快速索引</a></li>
+<li><a href="#17-按推理能力等级分类（⭐-新增）">🧠 推理能力等级</a></li>
+<li><a href="#18-按部署场景分类（⭐-新增）">🖥️ 部署场景分类</a></li>
+<li><a href="#19-按训练对齐方法分类（⭐-新增）">🎯 训练对齐方法</a></li>
 <li><a href="#110-🏆-官方榜单口径">🏆 官方榜单口径</a></li>
 <li><a href="benchmarks.html">📊 Benchmark 看板</a></li>
-<li><a href="#通用基础模型">2️⃣ 通用基础模型</a></li>
+<li><a href="#2-通用基础模型">2️⃣ 通用基础模型</a></li>
 <li><a href="#20-模型汇总核实总表-截至-2026-11-05">📋 核实总表 2026-11-05</a></li>
 <li><a href="#208-每日-hf-自动抓取候选">🤗 每日 HF 候选</a></li>
-<li><a href="#专项领域模型">3️⃣ 专项领域模型</a></li>
-<li><a href="#技术对比">4️⃣ 技术对比</a></li>
-<li><a href="#部署指南">5️⃣ 部署指南</a></li>
-<li><a href="#llm-发展时间线">6️⃣ 发展时间线</a></li>
-<li><a href="#训练方法与对齐技术">7️⃣ 训练与对齐</a></li>
-<li><a href="#场景化模型选择指南">8️⃣ 选型指南</a></li>
-<li><a href="#开源生态地图">9️⃣ 开源生态</a></li>
-<li><a href="#2026-技术趋势展望">🔮 趋势展望</a></li>
-<li><a href="#faq-常见问题">❓ FAQ</a></li>
-<li><a href="#安全与对齐">🛡️ 安全与对齐</a></li>
-<li><a href="#评测基准详解">📏 评测基准</a></li>
-<li><a href="#微调工具链与实战">🔧 微调工具链</a></li>
-<li><a href="#行业应用案例">🏭 行业案例</a></li>
-<li><a href="#prompt-engineering-指南">💡 Prompt工程</a></li>
-<li><a href="#视频生成与世界模型">🎬 视频与世界模型</a></li>
-<li><a href="#参考文献">📚 参考文献</a></li>
+<li><a href="#3-专项领域模型">3️⃣ 专项领域模型</a></li>
+<li><a href="#4-技术对比">4️⃣ 技术对比</a></li>
+<li><a href="#5-部署指南">5️⃣ 部署指南</a></li>
+<li><a href="#6-📈-llm-发展时间线">6️⃣ 发展时间线</a></li>
+<li><a href="#7-🔬-训练方法与对齐技术">7️⃣ 训练与对齐</a></li>
+<li><a href="#8-⚡-场景化模型选择指南">8️⃣ 选型指南</a></li>
+<li><a href="#9-🌍-开源生态地图">9️⃣ 开源生态</a></li>
+<li><a href="#10-🔮-2026-技术趋势展望">🔮 趋势展望</a></li>
+<li><a href="#11-❓-faq-常见问题">❓ FAQ</a></li>
+<li><a href="#12-🛡️-安全与对齐">🛡️ 安全与对齐</a></li>
+<li><a href="#13-📏-评测基准详解">📏 评测基准</a></li>
+<li><a href="#14-🔧-微调工具链与实战">🔧 微调工具链</a></li>
+<li><a href="#15-🏭-行业应用案例">🏭 行业案例</a></li>
+<li><a href="#16-💡-prompt-engineering-指南">💡 Prompt工程</a></li>
+<li><a href="#17-🎬-视频生成与世界模型">🎬 视频与世界模型</a></li>
+<li><a href="#18-参考文献">📚 参考文献</a></li>
 </ul></aside>
 
 <main class="mc"
@@ -174,8 +174,25 @@ const ob=new IntersectionObserver(es=>{es.forEach(e=>{
     const ac=document.querySelector(`.tol a[href="#${id}"]`);if(ac)ac.classList.add('on');
   }});},{threshold:.15,rootMargin:"-80px 0 -70% 0"});
 hs.forEach(h=>ob.observe(h));
+// README 目录链接按 GitHub Markdown 的 slug 规则书写，而本生成器生成的标题 id
+// 保留 emoji / 全角括号并带章节编号，两套规则不同。运行时把失效的站内链接
+// 唯一映射到真实 id；只在能唯一匹配时改写，避免误配。
+(function(){
+  const ids=[...document.querySelectorAll('h1[id],h2[id],h3[id],h4[id]')].map(e=>e.id);
+  const norm=s=>String(s).replace(/^[0-9]+[-.]+/,'')
+    .replace(/[\u{1F000}-\u{1FAFF}\u2600-\u27BF\uFE0F]/gu,'')
+    .replace(/[^0-9a-z\u4e00-\u9fff]+/gi,'').toLowerCase();
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    let cur;try{cur=decodeURIComponent(a.getAttribute('href').slice(1));}catch(e){return;}
+    if(!cur||ids.includes(cur))return;
+    const n=norm(cur);if(!n)return;
+    let hit=ids.filter(i=>norm(i)===n);
+    if(hit.length!==1)hit=ids.filter(i=>n.length>2&&norm(i).includes(n));
+    if(hit.length===1)a.setAttribute('href','#'+hit[0]);
+  });
+})();
 document.querySelectorAll('.tol a').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();
-  const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});
+  const t=document.getElementById(a.getAttribute('href').slice(1));if(t)t.scrollIntoView({behavior:'smooth'});});
 });
 </script></body></html>'''
 
