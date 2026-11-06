@@ -40,14 +40,36 @@ README_FILE = Path("README.md")
 # 归一化时剥掉的噪声：推理档位、快照标记、量化后缀等。
 # 注意：这里只剥**可判定为配置**的部分，模型版本号中的小数点必须保留。
 _CONFIG_SUFFIXES = [
-    r"\((?:high|medium|low|minimal|xhigh|think|thinking|32k think|default think|reasoner)\)",
-    r"\s*[-–]?\s*\((?:high|medium|low|minimal)\)\s*",
-    r"\s*\[(?:high|medium|low|minimal)\]\s*",
+    # 方括号推理档位：[high] / [medium] / [low] / [xhigh] / [minimal]
+    r"\[[a-z0-9 _-]{1,12}\]",
+    # 圆括号内的配置：括号在末尾（如 "(tools)" / "(text)" / "(Reasoner)"）
+    r"\((?:high|medium|low|minimal|xhigh|think|thinking|text|tools|reasoner|chat|base|preview|none|diff|whole)\)",
+    # 圆括号内是纯日期快照：如 "(20241022)" / "(2025-02-15)"
+    r"\(\s*\d{4}[-_.]?\d{2}[-_.]?\d{2}\s*\)",
+    # 空格分隔的配置后缀：" no-thinking" / " thinking" / " Air"
+    r"\s+(?:no-?thinking|no-?think|thinking|think|reasoner|air)\s*$",
+    # 更新批次标注：-June-24 / -Apr-25 / -Sept2025（月份-日期，非模型版本）
+    r"[-_](?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
+    r"jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)"
+    r"[-_]?\d{2}\b",
+    # 快照日期后缀：-2025-04-14 / -20241022 / -0905 / -2025_04_14
+    # 注意必须按「长格式优先」排列，否则 [-_]\d{4} 会把 8 位日期
+    # -20241022 切成 2024 + 残留 1022。
+    r"[-_]\d{4}[-_]\d{2}[-_]\d{2}",
+    r"[-_]\d{8}",
+    r"[-_]\d{4}",
+    r"[-_]\d{4}_\d{2}_\d{2}",
 ]
 _QUANT_SUFFIXES = [
     r"[-_](?:awq|gptq|gguf|mlx|onnx|fp8|fp16|int8|int4|4bit|8bit|nf4|nvfp4|ggml|exl2|hqq)\b",
     r"[-_]?(?:bnb|bitsandbytes)[-_]?\d*",
 ]
+# 量化标记（用于 model_key 时整体剥离，避免把 fp8 之类算进身份）
+_QUANT_PAT = re.compile(
+    r"[-_](?:awq|gptq|gguf|mlx|onnx|fp8|fp16|int8|int4|4bit|8bit|nf4|nvfp4|ggml|exl2|hqq)\b"
+    r"|[-_]?(?:bnb|bitsandbytes)[-_]?\d*",
+    re.I,
+)
 
 # 归一化时丢弃的纯装饰字符
 _STRIP_CHARS = re.compile(r"[\s\-_.,:;()\[\]{}'\"`|/\\+*#@!~^&]")
@@ -75,6 +97,7 @@ def strip_config_suffix(text: str) -> str:
     """去掉推理档位等**配置**后缀，返回模型本体名。
 
     用于判断「同一模型的不同配置」是否可以合并到同一个 model id。
+    注意只去配置，不做词序归一——词序差异由 model_key 比较处理。
     """
     s = text.strip()
     for pat in _CONFIG_SUFFIXES:
@@ -83,6 +106,37 @@ def strip_config_suffix(text: str) -> str:
     for pat in _QUANT_SUFFIXES:
         s = re.sub(pat, "", s, flags=re.I)
     return s
+
+
+def model_key(text: str) -> str:
+    """模型身份键：剥离配置后，再按「词集合」排序，消除词序与数字切分差异。
+
+    "Claude Opus 4.5" 与 "Claude 4.5 Opus" 是同一模型的两种写法，
+    词集合相同 → 键相同 → 允许合并到同一 model id。
+
+    这里**不**复用 strip_config_suffix（它会把小数点也去掉，
+    "Opus 4.5" 变成 "opus45"），而是只去配置后缀，保留小数点。
+    """
+    s = text.strip()
+    for pat in _CONFIG_SUFFIXES:
+        s = re.sub(pat, " ", s, flags=re.I)
+    s = _QUANT_PAT.sub(" ", s)
+    s = s.lower()
+    # 去掉厂商前缀（meta-llama / google-gemma / openai-gpt 等只是写法差异）
+    s = re.sub(
+        r"^(?:meta|google|openai|microsoft|amazon|anthropic|nvidia|alibaba|tencent|"
+        r"baidu|bytedance|xiaomi|zhipu|moonshot|deepseek|mistral|cohere|ai2|nxai)"
+        r"[-_\s]+",
+        "", s,
+    )
+    # 日期先归一：20241022 / 2024-10-22 / 2024_10_22 → 统一为 20241022
+    s = re.sub(r"(\d{4})[-_.](\d{2})[-_.](\d{2})", r"\1\2\3", s)
+    # 版本号的连字符写法与小数点写法归一：claude-3-5 → claude.3.5
+    # 仅在两个「单数字」之间转换，避免把 qwen3-235b 误改成 3.235b。
+    s = re.sub(r"(?<!\d)(\d)[-_](\d)(?!\d)", r"\1.\2", s)
+    # 数字（含小数）作为整体 token
+    tokens = sorted(t for t in re.findall(r"\d+(?:\.\d+)*|[a-z]+", s) if t)
+    return "|".join(tokens)
 
 
 def build_index(registry: dict) -> tuple[dict[str, str], dict[str, str]]:
@@ -137,7 +191,7 @@ def resolve(name: str, exact: dict[str, str], loose: dict[str, str]) -> tuple[st
         base = name.strip()[: m.start()].strip()
         lb = loose_key(base)
         if lb and lb in loose:
-            return loose[lk], "snapshot-stripped"
+            return loose[lb], "snapshot-stripped"
     return None, "unresolved"
 
 
@@ -257,8 +311,8 @@ def main(argv: list[str] | None = None) -> int:
     reg_by_id = {m["id"]: m for m in reg.get("models", [])}
     unexplained = []
     for mid, names in multi.items():
-        # 合法合并：同一模型的不同写法，或推理档位后缀（配置维度）
-        stripped = {strip_config_suffix(n) for n in names}
+        # 合法合并：同一模型的不同写法（词序可不同），或推理档位后缀（配置维度）
+        stripped = {model_key(n) for n in names}
         if len(stripped) == 1:
             continue
         if mid not in reg_by_id:

@@ -5,14 +5,20 @@
     "purpose": "模型注册表：给跨来源的模型名提供统一身份。榜单与项目清单的写法差异很大（GPT 5.2 / GPT-5.2、Claude 4.5 Opus / claude-4-5-opus），没有这张表就无法判断「榜单里的这条」与「项目收录的那条」是不是同一个模型。",
     "id_policy": "id 采用「提供方-家族-版本」的稳定小写形式；同一模型的不同推理档位（high/medium/low）、不同 agent 脚手架、不同快照日期属于**不同条目**，由 entry_id 区分，不在这里拆成不同 id。",
     "alias_policy": "aliases 只登记公开可查的等价写法。不确定是否等价的写法宁可留空，也不要错误合并——错误合并会直接制造虚假的高分。",
-    "snapshot_policy": "snapshot 用于区分带日期后缀的快照版本（如 gpt-4-0613、gemini-1.5-pro-001），与滚动版本号是不同实体。"
+    "snapshot_policy": "snapshot 用于区分带日期后缀的快照版本（如 gpt-4-0613、gemini-1.5-pro-001），与滚动版本号是不同实体。",
+    "auto_expanded": "部分条目由 scripts/expand_registry.py 依据榜单抓取结果自动登记，provider 可能为「未标注」，引用前建议核对官方模型卡。"
   },
   "models": [
     {
       "id": "openai-gpt-5",
       "name": "GPT-5",
       "provider": "OpenAI",
-      "aliases": ["gpt-5", "GPT 5", "GPT-5", "gpt5"],
+      "aliases": [
+        "gpt-5",
+        "GPT 5",
+        "GPT-5",
+        "gpt5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -20,7 +26,10 @@
       "id": "openai-gpt-5.1",
       "name": "GPT-5.1",
       "provider": "OpenAI",
-      "aliases": ["gpt-5.1", "GPT 5.1"],
+      "aliases": [
+        "gpt-5.1",
+        "GPT 5.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -28,7 +37,10 @@
       "id": "openai-gpt-5.2",
       "name": "GPT-5.2",
       "provider": "OpenAI",
-      "aliases": ["gpt-5.2", "GPT 5.2"],
+      "aliases": [
+        "gpt-5.2",
+        "GPT 5.2"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -36,7 +48,10 @@
       "id": "openai-gpt-5.2-codex",
       "name": "GPT-5.2-Codex",
       "provider": "OpenAI",
-      "aliases": ["gpt-5.2-codex", "GPT 5.2 Codex"],
+      "aliases": [
+        "gpt-5.2-codex",
+        "GPT 5.2 Codex"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -44,7 +59,10 @@
       "id": "openai-gpt-5-mini",
       "name": "GPT-5 mini",
       "provider": "OpenAI",
-      "aliases": ["gpt-5-mini", "GPT 5 mini"],
+      "aliases": [
+        "gpt-5-mini",
+        "GPT 5 mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -52,7 +70,12 @@
       "id": "openai-gpt-4o",
       "name": "GPT-4o",
       "provider": "OpenAI",
-      "aliases": ["gpt-4o", "GPT-4o", "GPT 4o", "gpt4o"],
+      "aliases": [
+        "gpt-4o",
+        "GPT-4o",
+        "GPT 4o",
+        "gpt4o"
+      ],
       "snapshot": "",
       "note": "滚动版本；带日期后缀的快照另立条目"
     },
@@ -60,7 +83,9 @@
       "id": "openai-gpt-4o-2024-05-13",
       "name": "GPT-4o (2024-05-13)",
       "provider": "OpenAI",
-      "aliases": ["gpt-4o-2024-05-13"],
+      "aliases": [
+        "gpt-4o-2024-05-13"
+      ],
       "snapshot": "2024-05-13",
       "note": ""
     },
@@ -68,7 +93,9 @@
       "id": "openai-gpt-4o-2024-08-06",
       "name": "GPT-4o (2024-08-06)",
       "provider": "OpenAI",
-      "aliases": ["gpt-4o-2024-08-06"],
+      "aliases": [
+        "gpt-4o-2024-08-06"
+      ],
       "snapshot": "2024-08-06",
       "note": ""
     },
@@ -76,7 +103,9 @@
       "id": "openai-gpt-4o-2024-11-20",
       "name": "GPT-4o (2024-11-20)",
       "provider": "OpenAI",
-      "aliases": ["gpt-4o-2024-11-20"],
+      "aliases": [
+        "gpt-4o-2024-11-20"
+      ],
       "snapshot": "2024-11-20",
       "note": ""
     },
@@ -84,7 +113,10 @@
       "id": "openai-gpt-4",
       "name": "GPT-4",
       "provider": "OpenAI",
-      "aliases": ["gpt-4", "GPT-4"],
+      "aliases": [
+        "gpt-4",
+        "GPT-4"
+      ],
       "snapshot": "1106",
       "note": "榜单条目写作 GPT-4 (1106)，为 2023-11-06 快照"
     },
@@ -92,7 +124,10 @@
       "id": "openai-chatgpt-4o-latest",
       "name": "ChatGPT-4o-latest",
       "provider": "OpenAI",
-      "aliases": ["chatgpt-4o-latest", "ChatGPT-4o-latest (2024-08-08)"],
+      "aliases": [
+        "chatgpt-4o-latest",
+        "ChatGPT-4o-latest (2024-08-08)"
+      ],
       "snapshot": "2024-08-08",
       "note": ""
     },
@@ -100,7 +135,9 @@
       "id": "openai-o3",
       "name": "o3",
       "provider": "OpenAI",
-      "aliases": ["o3"],
+      "aliases": [
+        "o3"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -108,7 +145,9 @@
       "id": "openai-o3-pro",
       "name": "o3-pro",
       "provider": "OpenAI",
-      "aliases": ["o3-pro"],
+      "aliases": [
+        "o3-pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -116,7 +155,9 @@
       "id": "openai-o4-mini",
       "name": "o4-mini",
       "provider": "OpenAI",
-      "aliases": ["o4-mini"],
+      "aliases": [
+        "o4-mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -124,7 +165,11 @@
       "id": "anthropic-claude-4.5-opus",
       "name": "Claude Opus 4.5",
       "provider": "Anthropic",
-      "aliases": ["Claude 4.5 Opus", "Claude Opus 4.5", "claude-4-5-opus"],
+      "aliases": [
+        "Claude 4.5 Opus",
+        "Claude Opus 4.5",
+        "claude-4-5-opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -132,7 +177,10 @@
       "id": "anthropic-claude-4.5-sonnet",
       "name": "Claude Sonnet 4.5",
       "provider": "Anthropic",
-      "aliases": ["Claude 4.5 Sonnet", "Claude Sonnet 4.5"],
+      "aliases": [
+        "Claude 4.5 Sonnet",
+        "Claude Sonnet 4.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -140,7 +188,11 @@
       "id": "anthropic-claude-4-sonnet",
       "name": "Claude Sonnet 4",
       "provider": "Anthropic",
-      "aliases": ["Claude 4 Sonnet", "Claude Sonnet 4", "claude-4-sonnet"],
+      "aliases": [
+        "Claude 4 Sonnet",
+        "Claude Sonnet 4",
+        "claude-4-sonnet"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -148,7 +200,10 @@
       "id": "anthropic-claude-4-opus",
       "name": "Claude Opus 4",
       "provider": "Anthropic",
-      "aliases": ["Claude 4 Opus", "Claude Opus 4"],
+      "aliases": [
+        "Claude 4 Opus",
+        "Claude Opus 4"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -156,15 +211,21 @@
       "id": "anthropic-claude-3.5-sonnet",
       "name": "Claude 3.5 Sonnet",
       "provider": "Anthropic",
-      "aliases": ["Claude 3.5 Sonnet", "claude-3-5-sonnet"],
+      "aliases": [
+        "Claude 3.5 Sonnet"
+      ],
       "snapshot": "",
-      "note": ""
+      "note": "基础版；带日期的快照另立条目"
     },
     {
       "id": "anthropic-claude-3.5-sonnet-20241022",
       "name": "Claude 3.5 Sonnet (2024-10-22)",
       "provider": "Anthropic",
-      "aliases": ["Claude 3.5-Sonnet-20241022", "claude-3-5-sonnet-20241022"],
+      "aliases": [
+        "Claude 3.5 Sonnet (20241022)",
+        "Claude 3.5-Sonnet-20241022",
+        "claude-3-5-sonnet-20241022"
+      ],
       "snapshot": "20241022",
       "note": ""
     },
@@ -172,7 +233,9 @@
       "id": "anthropic-claude-3.7-sonnet",
       "name": "Claude 3.7 Sonnet",
       "provider": "Anthropic",
-      "aliases": ["Claude 3.7 Sonnet"],
+      "aliases": [
+        "Claude 3.7 Sonnet"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -180,7 +243,9 @@
       "id": "anthropic-claude-3-opus",
       "name": "Claude 3 Opus",
       "provider": "Anthropic",
-      "aliases": ["Claude 3 Opus"],
+      "aliases": [
+        "Claude 3 Opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -188,7 +253,10 @@
       "id": "google-gemini-3-pro",
       "name": "Gemini 3 Pro",
       "provider": "Google",
-      "aliases": ["Gemini 3 Pro", "gemini-3-pro"],
+      "aliases": [
+        "Gemini 3 Pro",
+        "gemini-3-pro"
+      ],
       "snapshot": "",
       "note": "正式版；与 Preview 版在 SWE-bench 上分数不同，为不同条目"
     },
@@ -196,7 +264,10 @@
       "id": "google-gemini-3-pro-preview",
       "name": "Gemini 3 Pro Preview",
       "provider": "Google",
-      "aliases": ["Gemini 3 Pro Preview", "gemini-3-pro-preview"],
+      "aliases": [
+        "Gemini 3 Pro Preview",
+        "gemini-3-pro-preview"
+      ],
       "snapshot": "",
       "note": "预览版，与正式版为不同条目"
     },
@@ -204,7 +275,10 @@
       "id": "google-gemini-3-flash",
       "name": "Gemini 3 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 3 Flash", "gemini-3-flash"],
+      "aliases": [
+        "Gemini 3 Flash",
+        "gemini-3-flash"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -212,7 +286,10 @@
       "id": "google-gemini-2.5-pro",
       "name": "Gemini 2.5 Pro",
       "provider": "Google",
-      "aliases": ["Gemini 2.5 Pro", "gemini-2.5-pro"],
+      "aliases": [
+        "Gemini 2.5 Pro",
+        "gemini-2.5-pro"
+      ],
       "snapshot": "",
       "note": "正式版"
     },
@@ -220,7 +297,10 @@
       "id": "google-gemini-2.5-pro-preview-05-06",
       "name": "Gemini 2.5 Pro Preview 05-06",
       "provider": "Google",
-      "aliases": ["Gemini 2.5 Pro Preview 05-06", "gemini-2.5-pro-preview-05-06"],
+      "aliases": [
+        "Gemini 2.5 Pro Preview 05-06",
+        "gemini-2.5-pro-preview-05-06"
+      ],
       "snapshot": "2025-05-06",
       "note": "预览快照，与正式版为不同条目"
     },
@@ -228,7 +308,10 @@
       "id": "google-gemini-2.5-pro-preview-06-05",
       "name": "Gemini 2.5 Pro Preview 06-05",
       "provider": "Google",
-      "aliases": ["gemini-2.5-pro-preview-06-05", "gemini-2.5-pro-preview-06-05 (default think)"],
+      "aliases": [
+        "gemini-2.5-pro-preview-06-05",
+        "gemini-2.5-pro-preview-06-05 (default think)"
+      ],
       "snapshot": "2025-06-05",
       "note": "预览快照，默认思考预算；与 32k think 档为不同条目"
     },
@@ -236,7 +319,9 @@
       "id": "google-gemini-2.5-pro-preview-06-05-32k",
       "name": "Gemini 2.5 Pro Preview 06-05 (32k think)",
       "provider": "Google",
-      "aliases": ["gemini-2.5-pro-preview-06-05 (32k think)"],
+      "aliases": [
+        "gemini-2.5-pro-preview-06-05 (32k think)"
+      ],
       "snapshot": "2025-06-05",
       "note": "预览快照，32k 思考预算档位，与默认档分数不同，为不同条目"
     },
@@ -244,26 +329,39 @@
       "id": "google-gemini-1.5-pro",
       "name": "Gemini 1.5 Pro",
       "provider": "Google",
-      "aliases": ["Gemini 1.5 Pro", "Gemini-1.5-Pro-001", "gemini-1.5-pro-001",
-                  "gemini-1.5-pro-api-0514"],
+      "aliases": [
+        "Gemini 1.5 Pro",
+        "Gemini-1.5-Pro-001",
+        "gemini-1.5-pro-001",
+        "gemini-1.5-pro-002",
+        "Gemini-1.5-Pro-002"
+      ],
       "snapshot": "",
-      "note": ""
+      "note": "基础版本；-api-0514 快照另立条目"
     },
     {
       "id": "google-gemini-1.5-flash",
       "name": "Gemini 1.5 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 1.5 Flash", "Gemini-1.5-Flash-001", "gemini-1.5-flash-001",
-                  "gemini-1.5-flash-api-0514"],
+      "aliases": [
+        "Gemini 1.5 Flash",
+        "Gemini-1.5-Flash-001",
+        "gemini-1.5-flash-001",
+        "gemini-1.5-flash-002"
+      ],
       "snapshot": "",
-      "note": ""
+      "note": "基础版本；-api-0514 快照另立条目"
     },
     {
       "id": "google-gemini-2.0-flash",
       "name": "Gemini 2.0 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 2.0 Flash", "Gemini-2.0-Flash-001", "gemini-2.0-flash",
-                  "gemini-2.0-flash-001"],
+      "aliases": [
+        "Gemini 2.0 Flash",
+        "Gemini-2.0-Flash-001",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-001"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -271,7 +369,10 @@
       "id": "meta-llama-4-scout",
       "name": "Llama 4 Scout",
       "provider": "Meta",
-      "aliases": ["Llama 4 Scout", "Llama-4-Scout-17B-16E"],
+      "aliases": [
+        "Llama 4 Scout",
+        "Llama-4-Scout-17B-16E"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -279,7 +380,10 @@
       "id": "meta-llama-4-maverick",
       "name": "Llama 4 Maverick",
       "provider": "Meta",
-      "aliases": ["Llama 4 Maverick", "Llama-4-Maverick-17B-128E"],
+      "aliases": [
+        "Llama 4 Maverick",
+        "Llama-4-Maverick-17B-128E"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -287,8 +391,12 @@
       "id": "meta-llama-3.1-405b",
       "name": "Llama 3.1 405B",
       "provider": "Meta",
-      "aliases": ["Llama 3.1 405B", "Meta-Llama-3.1-405B-Instruct",
-                  "llama-3.1-405b-instruct", "Meta-Llama-3.1-405B-Instruct-fp8"],
+      "aliases": [
+        "Llama 3.1 405B",
+        "Meta-Llama-3.1-405B-Instruct",
+        "llama-3.1-405b-instruct",
+        "Meta-Llama-3.1-405B-Instruct-fp8"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -296,7 +404,10 @@
       "id": "meta-llama-3.1-70b",
       "name": "Llama 3.1 70B",
       "provider": "Meta",
-      "aliases": ["Llama 3.1 70B", "Meta-Llama-3.1-70B-Instruct"],
+      "aliases": [
+        "Llama 3.1 70B",
+        "Meta-Llama-3.1-70B-Instruct"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -304,7 +415,10 @@
       "id": "alibaba-qwen3-235b",
       "name": "Qwen3-235B",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3-235B", "Qwen3-235B-A22B"],
+      "aliases": [
+        "Qwen3-235B",
+        "Qwen3-235B-A22B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -312,7 +426,10 @@
       "id": "alibaba-qwen2.5-72b",
       "name": "Qwen2.5-72B",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen2.5-72B", "Qwen2.5-72B-Instruct"],
+      "aliases": [
+        "Qwen2.5-72B",
+        "Qwen2.5-72B-Instruct"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -320,7 +437,10 @@
       "id": "alibaba-qwen3-coder-30b",
       "name": "Qwen3-Coder-30B-A3B",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3-Coder-30B-A3B", "Qwen3-Coder-30B-A3B-Instruct"],
+      "aliases": [
+        "Qwen3-Coder-30B-A3B",
+        "Qwen3-Coder-30B-A3B-Instruct"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -328,7 +448,11 @@
       "id": "deepseek-v3.2",
       "name": "DeepSeek-V3.2",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek V3.2", "DeepSeek-V3.2", "deepseek-v3.2"],
+      "aliases": [
+        "DeepSeek V3.2",
+        "DeepSeek-V3.2",
+        "deepseek-v3.2"
+      ],
       "snapshot": "",
       "note": "非推理版"
     },
@@ -336,7 +460,10 @@
       "id": "deepseek-v3.2-reasoner",
       "name": "DeepSeek-V3.2 Reasoner",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek V3.2 Reasoner", "DeepSeek-V3.2-Reasoner"],
+      "aliases": [
+        "DeepSeek V3.2 Reasoner",
+        "DeepSeek-V3.2-Reasoner"
+      ],
       "snapshot": "",
       "note": "推理版，与非推理版分数不同，为不同条目"
     },
@@ -344,7 +471,9 @@
       "id": "deepseek-v3.2-exp-reasoner",
       "name": "DeepSeek-V3.2-Exp (Reasoner)",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek-V3.2-Exp (Reasoner)"],
+      "aliases": [
+        "DeepSeek-V3.2-Exp (Reasoner)"
+      ],
       "snapshot": "",
       "note": "实验版推理模型，与正式版为不同条目"
     },
@@ -352,7 +481,9 @@
       "id": "deepseek-v3.2-exp-chat",
       "name": "DeepSeek-V3.2-Exp (Chat)",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek-V3.2-Exp (Chat)"],
+      "aliases": [
+        "DeepSeek-V3.2-Exp (Chat)"
+      ],
       "snapshot": "",
       "note": "实验版对话模型，与正式版为不同条目"
     },
@@ -360,7 +491,10 @@
       "id": "deepseek-v3",
       "name": "DeepSeek-V3",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek-V3", "DeepSeek V3"],
+      "aliases": [
+        "DeepSeek-V3",
+        "DeepSeek V3"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -368,7 +502,10 @@
       "id": "deepseek-r1",
       "name": "DeepSeek-R1",
       "provider": "DeepSeek",
-      "aliases": ["DeepSeek-R1", "DeepSeek R1"],
+      "aliases": [
+        "DeepSeek-R1",
+        "DeepSeek R1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -376,7 +513,10 @@
       "id": "moonshot-kimi-k2",
       "name": "Kimi K2",
       "provider": "月之暗面",
-      "aliases": ["Kimi K2", "kimi-k2"],
+      "aliases": [
+        "Kimi K2",
+        "kimi-k2"
+      ],
       "snapshot": "",
       "note": "基座版本"
     },
@@ -384,7 +524,10 @@
       "id": "moonshot-kimi-k2-instruct",
       "name": "Kimi K2 Instruct",
       "provider": "月之暗面",
-      "aliases": ["Kimi K2 Instruct", "kimi-k2-instruct"],
+      "aliases": [
+        "Kimi K2 Instruct",
+        "kimi-k2-instruct"
+      ],
       "snapshot": "",
       "note": "指令微调版，与基座 K2 为不同条目"
     },
@@ -392,7 +535,10 @@
       "id": "moonshot-kimi-k2.5",
       "name": "Kimi K2.5",
       "provider": "月之暗面",
-      "aliases": ["Kimi K2.5", "kimi-k2.5"],
+      "aliases": [
+        "Kimi K2.5",
+        "kimi-k2.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -400,7 +546,10 @@
       "id": "moonshot-kimi-k2-thinking",
       "name": "Kimi K2 Thinking",
       "provider": "月之暗面",
-      "aliases": ["Kimi K2 Thinking", "kimi-k2-thinking"],
+      "aliases": [
+        "Kimi K2 Thinking",
+        "kimi-k2-thinking"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -408,7 +557,11 @@
       "id": "zhipu-glm-4.5",
       "name": "GLM-4.5",
       "provider": "智谱 AI",
-      "aliases": ["GLM-4.5", "GLM 4.5", "glm-4.5"],
+      "aliases": [
+        "GLM-4.5",
+        "GLM 4.5",
+        "glm-4.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -416,7 +569,10 @@
       "id": "zhipu-glm-4.6",
       "name": "GLM-4.6",
       "provider": "智谱 AI",
-      "aliases": ["GLM-4.6", "GLM 4.6"],
+      "aliases": [
+        "GLM-4.6",
+        "GLM 4.6"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -424,7 +580,11 @@
       "id": "minimax-m2.5",
       "name": "MiniMax-M2.5",
       "provider": "MiniMax",
-      "aliases": ["MiniMax-M2.5", "MiniMax M2.5", "minimax-m2.5"],
+      "aliases": [
+        "MiniMax-M2.5",
+        "MiniMax M2.5",
+        "minimax-m2.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -432,7 +592,10 @@
       "id": "xai-grok-4",
       "name": "Grok 4",
       "provider": "xAI",
-      "aliases": ["grok-4", "Grok 4"],
+      "aliases": [
+        "grok-4",
+        "Grok 4"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -440,7 +603,10 @@
       "id": "xai-grok-4.1",
       "name": "Grok 4.1",
       "provider": "xAI",
-      "aliases": ["grok-4.1", "Grok 4.1"],
+      "aliases": [
+        "grok-4.1",
+        "Grok 4.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -448,7 +614,10 @@
       "id": "xai-grok-4.7",
       "name": "Grok 4.7",
       "provider": "xAI",
-      "aliases": ["grok-4.7", "Grok 4.7"],
+      "aliases": [
+        "grok-4.7",
+        "Grok 4.7"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -456,7 +625,10 @@
       "id": "mistral-devstral-2505",
       "name": "Devstral Small 2505",
       "provider": "Mistral AI",
-      "aliases": ["Devstral Small 2505", "DevStral Small 2505"],
+      "aliases": [
+        "Devstral Small 2505",
+        "DevStral Small 2505"
+      ],
       "snapshot": "2505",
       "note": ""
     },
@@ -464,7 +636,10 @@
       "id": "mistral-devstral-2507",
       "name": "Devstral Small 2507",
       "provider": "Mistral AI",
-      "aliases": ["Devstral Small 2507", "DevStral Small 2507"],
+      "aliases": [
+        "Devstral Small 2507",
+        "DevStral Small 2507"
+      ],
       "snapshot": "2507",
       "note": ""
     },
@@ -472,7 +647,10 @@
       "id": "mistral-devstral-2512",
       "name": "Devstral Small (2512)",
       "provider": "Mistral AI",
-      "aliases": ["Devstral Small (2512)", "DevStral Small (2512)"],
+      "aliases": [
+        "Devstral Small (2512)",
+        "DevStral Small (2512)"
+      ],
       "snapshot": "2512",
       "note": ""
     },
@@ -480,7 +658,10 @@
       "id": "mistral-devstral-2512-full",
       "name": "Devstral (2512)",
       "provider": "Mistral AI",
-      "aliases": ["Devstral (2512)", "DevStral (2512)"],
+      "aliases": [
+        "Devstral (2512)",
+        "DevStral (2512)"
+      ],
       "snapshot": "2512",
       "note": "非 Small 档位，与 Devstral Small (2512) 为不同条目"
     },
@@ -488,7 +669,10 @@
       "id": "cohere-command-a",
       "name": "Command A",
       "provider": "Cohere",
-      "aliases": ["command-a-03-2025-quality", "Command A"],
+      "aliases": [
+        "command-a-03-2025-quality",
+        "Command A"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -496,7 +680,9 @@
       "id": "ai21-jamba-1.5-large",
       "name": "Jamba 1.5 Large",
       "provider": "AI21 Labs",
-      "aliases": ["Jamba-1.5-Large"],
+      "aliases": [
+        "Jamba-1.5-Large"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -504,7 +690,9 @@
       "id": "ai21-jamba-1.5-mini",
       "name": "Jamba 1.5 Mini",
       "provider": "AI21 Labs",
-      "aliases": ["Jamba-1.5-Mini"],
+      "aliases": [
+        "Jamba-1.5-Mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -512,7 +700,11 @@
       "id": "01ai-yi-34b",
       "name": "Yi-34B",
       "provider": "零一万物",
-      "aliases": ["Yi-34B", "Yi-34B-Chat", "yi-34b-chat"],
+      "aliases": [
+        "Yi-34B",
+        "Yi-34B-Chat",
+        "yi-34b-chat"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -520,7 +712,10 @@
       "id": "microsoft-phi-3-mini",
       "name": "Phi-3-mini",
       "provider": "Microsoft",
-      "aliases": ["Phi-3-Mini-4k-Instruct", "Phi-3-Mini-4K-Instruct-June-24"],
+      "aliases": [
+        "Phi-3-Mini-4k-Instruct",
+        "Phi-3-Mini-4K-Instruct-June-24"
+      ],
       "snapshot": "",
       "note": "4k 上下文档位"
     },
@@ -528,7 +723,9 @@
       "id": "microsoft-phi-3-mini-128k",
       "name": "Phi-3-mini (128k)",
       "provider": "Microsoft",
-      "aliases": ["Phi-3-Mini-128k-Instruct"],
+      "aliases": [
+        "Phi-3-Mini-128k-Instruct"
+      ],
       "snapshot": "",
       "note": "128k 上下文档位，与 4k 版为不同条目"
     },
@@ -536,7 +733,9 @@
       "id": "microsoft-phi-3-small-8k",
       "name": "Phi-3-small (8k)",
       "provider": "Microsoft",
-      "aliases": ["Phi-3-Small-8k-Instruct"],
+      "aliases": [
+        "Phi-3-Small-8k-Instruct"
+      ],
       "snapshot": "",
       "note": "small 档位，与 mini 系列为不同条目"
     },
@@ -544,7 +743,9 @@
       "id": "microsoft-phi-3-medium-4k",
       "name": "Phi-3-medium (4k)",
       "provider": "Microsoft",
-      "aliases": ["Phi-3-Medium-4k-Instruct"],
+      "aliases": [
+        "Phi-3-Medium-4k-Instruct"
+      ],
       "snapshot": "",
       "note": "medium 档位，与 mini 系列为不同条目"
     },
@@ -552,7 +753,10 @@
       "id": "google-gemma-2-9b",
       "name": "Gemma 2 9B",
       "provider": "Google",
-      "aliases": ["Gemma-2-9b", "gemma-2-9b-it"],
+      "aliases": [
+        "Gemma-2-9b",
+        "gemma-2-9b-it"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -560,7 +764,11 @@
       "id": "google-gemma-3-27b",
       "name": "Gemma 3 27B",
       "provider": "Google",
-      "aliases": ["Gemma-3-27b", "gemma-3-27b-it", "Gemma-3-27B"],
+      "aliases": [
+        "Gemma-3-27b",
+        "gemma-3-27b-it",
+        "Gemma-3-27B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -568,7 +776,9 @@
       "id": "alibaba-qwq-32b",
       "name": "QwQ-32B",
       "provider": "阿里巴巴",
-      "aliases": ["QwQ-32B"],
+      "aliases": [
+        "QwQ-32B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -576,7 +786,9 @@
       "id": "bytedance-doubao-seed-code",
       "name": "Doubao-Seed-Code",
       "provider": "字节跳动",
-      "aliases": ["Doubao-Seed-Code"],
+      "aliases": [
+        "Doubao-Seed-Code"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -584,7 +796,9 @@
       "id": "amazon-nova-premier",
       "name": "Amazon Nova Premier",
       "provider": "Amazon",
-      "aliases": ["Amazon.nova Premier v1:0"],
+      "aliases": [
+        "Amazon.nova Premier v1:0"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -592,7 +806,9 @@
       "id": "openai-gpt-5.3-instant",
       "name": "GPT-5.3 Instant",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.3 Instant"],
+      "aliases": [
+        "GPT-5.3 Instant"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -600,7 +816,9 @@
       "id": "openai-gpt-5.4-pro",
       "name": "GPT-5.4 Pro",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.4 Pro"],
+      "aliases": [
+        "GPT-5.4 Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -608,7 +826,9 @@
       "id": "openai-gpt-5.4-mini",
       "name": "GPT-5.4 mini",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.4 mini"],
+      "aliases": [
+        "GPT-5.4 mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -616,7 +836,9 @@
       "id": "openai-gpt-5.4-nano",
       "name": "GPT-5.4 nano",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.4 nano"],
+      "aliases": [
+        "GPT-5.4 nano"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -624,7 +846,11 @@
       "id": "openai-gpt-5.5",
       "name": "GPT-5.5",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.5", "GPT-5.5 Pro", "GPT-5.5 Instant"],
+      "aliases": [
+        "GPT-5.5",
+        "GPT-5.5 Pro",
+        "GPT-5.5 Instant"
+      ],
       "snapshot": "",
       "note": "官方以家族形式发布，Pro / Instant 为档位"
     },
@@ -632,7 +858,9 @@
       "id": "openai-gpt-6-astra",
       "name": "GPT-6 Astra",
       "provider": "OpenAI",
-      "aliases": ["GPT-6 Astra"],
+      "aliases": [
+        "GPT-6 Astra"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -640,7 +868,12 @@
       "id": "openai-gpt-6-sol",
       "name": "GPT-6 Sol",
       "provider": "OpenAI",
-      "aliases": ["GPT-6 Sol", "GPT-6.1 Sol", "gpt-6-sol", "gpt-6.1-sol"],
+      "aliases": [
+        "GPT-6 Sol",
+        "GPT-6.1 Sol",
+        "gpt-6-sol",
+        "gpt-6.1-sol"
+      ],
       "snapshot": "",
       "note": "6.1 为迭代版本，榜单未收录"
     },
@@ -648,7 +881,12 @@
       "id": "openai-gpt-6-terra",
       "name": "GPT-6 Terra",
       "provider": "OpenAI",
-      "aliases": ["GPT-6 Terra", "GPT-6.1 Terra", "gpt-6-terra", "gpt-6.1-terra"],
+      "aliases": [
+        "GPT-6 Terra",
+        "GPT-6.1 Terra",
+        "gpt-6-terra",
+        "gpt-6.1-terra"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -656,7 +894,12 @@
       "id": "openai-gpt-6-luna",
       "name": "GPT-6 Luna",
       "provider": "OpenAI",
-      "aliases": ["GPT-6 Luna", "GPT-6.1 Luna", "gpt-6-luna", "gpt-6.1-luna"],
+      "aliases": [
+        "GPT-6 Luna",
+        "GPT-6.1 Luna",
+        "gpt-6-luna",
+        "gpt-6.1-luna"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -664,7 +907,10 @@
       "id": "openai-gpt-5.6-sol",
       "name": "GPT-5.6 Sol",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.6 Sol", "gpt-5.6-sol"],
+      "aliases": [
+        "GPT-5.6 Sol",
+        "gpt-5.6-sol"
+      ],
       "snapshot": "",
       "note": "o1 官方推荐替代型号"
     },
@@ -672,7 +918,11 @@
       "id": "anthropic-claude-opus-4.6",
       "name": "Claude Opus 4.6",
       "provider": "Anthropic",
-      "aliases": ["Claude Opus 4.6", "Claude 4.6 Opus", "claude-opus-4.6"],
+      "aliases": [
+        "Claude Opus 4.6",
+        "Claude 4.6 Opus",
+        "claude-opus-4.6"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -680,7 +930,10 @@
       "id": "anthropic-claude-opus-4.7",
       "name": "Claude Opus 4.7",
       "provider": "Anthropic",
-      "aliases": ["Claude Opus 4.7", "Claude 4.7 Opus"],
+      "aliases": [
+        "Claude Opus 4.7",
+        "Claude 4.7 Opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -688,7 +941,10 @@
       "id": "anthropic-claude-opus-5",
       "name": "Claude Opus 5",
       "provider": "Anthropic",
-      "aliases": ["Claude Opus 5", "Claude 5 Opus"],
+      "aliases": [
+        "Claude Opus 5",
+        "Claude 5 Opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -696,7 +952,10 @@
       "id": "anthropic-claude-opus-5.5",
       "name": "Claude Opus 5.5",
       "provider": "Anthropic",
-      "aliases": ["Claude Opus 5.5", "Claude 5.5 Opus"],
+      "aliases": [
+        "Claude Opus 5.5",
+        "Claude 5.5 Opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -704,7 +963,10 @@
       "id": "anthropic-claude-sonnet-5",
       "name": "Claude Sonnet 5",
       "provider": "Anthropic",
-      "aliases": ["Claude Sonnet 5", "Claude 5 Sonnet"],
+      "aliases": [
+        "Claude Sonnet 5",
+        "Claude 5 Sonnet"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -712,7 +974,10 @@
       "id": "anthropic-claude-sonnet-5.5",
       "name": "Claude Sonnet 5.5",
       "provider": "Anthropic",
-      "aliases": ["Claude Sonnet 5.5", "Claude 5.5 Sonnet"],
+      "aliases": [
+        "Claude Sonnet 5.5",
+        "Claude 5.5 Sonnet"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -720,7 +985,10 @@
       "id": "anthropic-claude-haiku-5.5",
       "name": "Claude Haiku 5.5",
       "provider": "Anthropic",
-      "aliases": ["Claude Haiku 5.5", "Claude 5.5 Haiku"],
+      "aliases": [
+        "Claude Haiku 5.5",
+        "Claude 5.5 Haiku"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -728,7 +996,10 @@
       "id": "anthropic-claude-4.5-haiku",
       "name": "Claude Haiku 4.5",
       "provider": "Anthropic",
-      "aliases": ["Claude 4.5 Haiku", "Claude Haiku 4.5"],
+      "aliases": [
+        "Claude 4.5 Haiku",
+        "Claude Haiku 4.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -736,7 +1007,10 @@
       "id": "google-gemini-3.5-flash",
       "name": "Gemini 3.5 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 3.5 Flash", "Gemini 3.5 Flash-Lite"],
+      "aliases": [
+        "Gemini 3.5 Flash",
+        "Gemini 3.5 Flash-Lite"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -744,7 +1018,11 @@
       "id": "google-gemini-3.8-flash",
       "name": "Gemini 3.8 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 3.8 Flash", "Gemini 3.8 Flash-Lite", "Gemini 3.8 Live"],
+      "aliases": [
+        "Gemini 3.8 Flash",
+        "Gemini 3.8 Flash-Lite",
+        "Gemini 3.8 Live"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -752,7 +1030,9 @@
       "id": "google-gemini-4-argon",
       "name": "Gemini 4 Argon",
       "provider": "Google",
-      "aliases": ["Gemini 4 Argon"],
+      "aliases": [
+        "Gemini 4 Argon"
+      ],
       "snapshot": "",
       "note": "2026-10-13 官方发布；AA Index v5.0 榜单未收录"
     },
@@ -760,7 +1040,9 @@
       "id": "google-gemini-4-carbon",
       "name": "Gemini 4 Carbon",
       "provider": "Google",
-      "aliases": ["Gemini 4 Carbon"],
+      "aliases": [
+        "Gemini 4 Carbon"
+      ],
       "snapshot": "",
       "note": "2026-10-28 官方发布，受限开放"
     },
@@ -768,7 +1050,10 @@
       "id": "google-gemma-4",
       "name": "Gemma 4",
       "provider": "Google",
-      "aliases": ["Gemma 4", "Gemma 4 系列"],
+      "aliases": [
+        "Gemma 4",
+        "Gemma 4 系列"
+      ],
       "snapshot": "",
       "note": "2026-04-02 发布，含 E2B / E4B / 26B-MoE / 31B-Dense 四款"
     },
@@ -776,7 +1061,11 @@
       "id": "meta-muse-spark",
       "name": "Muse Spark",
       "provider": "Meta",
-      "aliases": ["Muse Spark", "Muse Spark 1.2", "Muse Code"],
+      "aliases": [
+        "Muse Spark",
+        "Muse Spark 1.2",
+        "Muse Code"
+      ],
       "snapshot": "",
       "note": "2026-04-08 发布"
     },
@@ -784,7 +1073,10 @@
       "id": "xai-grok-4.20-beta",
       "name": "Grok 4.20 Beta",
       "provider": "xAI",
-      "aliases": ["Grok 4.20 Beta", "grok-4.20-beta"],
+      "aliases": [
+        "Grok 4.20 Beta",
+        "grok-4.20-beta"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -792,7 +1084,10 @@
       "id": "alibaba-qwen3.7-max",
       "name": "Qwen3.7-Max",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.7-Max", "Qwen3.7-Plus"],
+      "aliases": [
+        "Qwen3.7-Max",
+        "Qwen3.7-Plus"
+      ],
       "snapshot": "",
       "note": "官方以 Max / Plus 两档发布"
     },
@@ -800,7 +1095,9 @@
       "id": "alibaba-qwen3.8-max",
       "name": "Qwen3.8-Max",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.8-Max"],
+      "aliases": [
+        "Qwen3.8-Max"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -808,7 +1105,12 @@
       "id": "alibaba-qwen3.6",
       "name": "Qwen3.6",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.6", "Qwen3.6-Plus", "Qwen3.6-35B-A3B", "Qwen3.6-27B"],
+      "aliases": [
+        "Qwen3.6",
+        "Qwen3.6-Plus",
+        "Qwen3.6-35B-A3B",
+        "Qwen3.6-27B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -816,7 +1118,11 @@
       "id": "moonshot-kimi-k3",
       "name": "Kimi K3",
       "provider": "月之暗面",
-      "aliases": ["Kimi K3", "Kimi K3.1 Pro", "Kimi K3.1 Highspeed"],
+      "aliases": [
+        "Kimi K3",
+        "Kimi K3.1 Pro",
+        "Kimi K3.1 Highspeed"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -824,7 +1130,12 @@
       "id": "minimax-m3",
       "name": "MiniMax-M3",
       "provider": "MiniMax",
-      "aliases": ["MiniMax-M3", "MiniMax-M3.1-Flash", "MiniMax M3", "MiniMax M3.1"],
+      "aliases": [
+        "MiniMax-M3",
+        "MiniMax-M3.1-Flash",
+        "MiniMax M3",
+        "MiniMax M3.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -832,15 +1143,21 @@
       "id": "zhipu-glm-5",
       "name": "GLM-5",
       "provider": "智谱 AI",
-      "aliases": ["GLM-5", "GLM 5", "GLM-5.1", "GLM-5.3"],
+      "aliases": [
+        "GLM-5",
+        "GLM 5"
+      ],
       "snapshot": "",
-      "note": "官方以家族形式迭代"
+      "note": "GLM-5 与 GLM-5.1 / 5.2 / 5.3 是不同版本，已分列为独立条目"
     },
     {
       "id": "baichuan-m4",
       "name": "Baichuan-M4",
       "provider": "百川智能",
-      "aliases": ["Baichuan-M4", "Baichuan-M3-235B"],
+      "aliases": [
+        "Baichuan-M4",
+        "Baichuan-M3-235B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -848,7 +1165,11 @@
       "id": "qwen3-embedding",
       "name": "Qwen3-Embedding",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3-Embedding-8B", "Qwen3-Embedding-0.6B", "Qwen3-Embedding-4B"],
+      "aliases": [
+        "Qwen3-Embedding-8B",
+        "Qwen3-Embedding-0.6B",
+        "Qwen3-Embedding-4B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -856,7 +1177,10 @@
       "id": "google-embeddinggemma-2",
       "name": "EmbeddingGemma 2",
       "provider": "Google",
-      "aliases": ["embeddinggemma-2", "google/embeddinggemma-2"],
+      "aliases": [
+        "embeddinggemma-2",
+        "google/embeddinggemma-2"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -864,7 +1188,9 @@
       "id": "anthropic-claude-mythos-preview",
       "name": "Claude Mythos Preview",
       "provider": "Anthropic",
-      "aliases": ["Claude Mythos Preview"],
+      "aliases": [
+        "Claude Mythos Preview"
+      ],
       "snapshot": "",
       "note": "2026-04-07 邀请制研究预览"
     },
@@ -872,7 +1198,9 @@
       "id": "anthropic-claude-fable-5",
       "name": "Claude Fable 5",
       "provider": "Anthropic",
-      "aliases": ["Claude Fable 5"],
+      "aliases": [
+        "Claude Fable 5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -880,7 +1208,9 @@
       "id": "anthropic-claude-fable-5.1",
       "name": "Claude Fable 5.1",
       "provider": "Anthropic",
-      "aliases": ["Claude Fable 5.1"],
+      "aliases": [
+        "Claude Fable 5.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -888,7 +1218,9 @@
       "id": "anthropic-claude-mythos-5",
       "name": "Claude Mythos 5",
       "provider": "Anthropic",
-      "aliases": ["Claude Mythos 5"],
+      "aliases": [
+        "Claude Mythos 5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -896,7 +1228,9 @@
       "id": "anthropic-claude-mythos-5.1",
       "name": "Claude Mythos 5.1",
       "provider": "Anthropic",
-      "aliases": ["Claude Mythos 5.1"],
+      "aliases": [
+        "Claude Mythos 5.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -904,7 +1238,10 @@
       "id": "anthropic-claude-opus-4.8",
       "name": "Claude Opus 4.8",
       "provider": "Anthropic",
-      "aliases": ["Claude Opus 4.8", "Claude 4.8 Opus"],
+      "aliases": [
+        "Claude Opus 4.8",
+        "Claude 4.8 Opus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -912,7 +1249,9 @@
       "id": "openai-gpt-5.6-terra",
       "name": "GPT-5.6 Terra",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.6 Terra"],
+      "aliases": [
+        "GPT-5.6 Terra"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -920,7 +1259,9 @@
       "id": "openai-gpt-5.6-luna",
       "name": "GPT-5.6 Luna",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.6 Luna"],
+      "aliases": [
+        "GPT-5.6 Luna"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -928,7 +1269,9 @@
       "id": "openai-gpt-5.5-pro",
       "name": "GPT-5.5 Pro",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.5 Pro"],
+      "aliases": [
+        "GPT-5.5 Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -936,7 +1279,9 @@
       "id": "openai-gpt-5.5-instant",
       "name": "GPT-5.5 Instant",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.5 Instant"],
+      "aliases": [
+        "GPT-5.5 Instant"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -944,7 +1289,9 @@
       "id": "openai-gpt-live-1",
       "name": "GPT-Live-1",
       "provider": "OpenAI",
-      "aliases": ["GPT-Live-1"],
+      "aliases": [
+        "GPT-Live-1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -952,7 +1299,9 @@
       "id": "openai-gpt-live-1-mini",
       "name": "GPT-Live-1 mini",
       "provider": "OpenAI",
-      "aliases": ["GPT-Live-1 mini"],
+      "aliases": [
+        "GPT-Live-1 mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -960,7 +1309,10 @@
       "id": "openai-gpt-5-codex",
       "name": "GPT-5-codex",
       "provider": "OpenAI",
-      "aliases": ["GPT-5-codex", "gpt-5-codex"],
+      "aliases": [
+        "GPT-5-codex",
+        "gpt-5-codex"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -968,7 +1320,9 @@
       "id": "openai-gpt-5-codex-mini",
       "name": "GPT-5-Codex-Mini",
       "provider": "OpenAI",
-      "aliases": ["GPT-5-Codex-Mini"],
+      "aliases": [
+        "GPT-5-Codex-Mini"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -976,7 +1330,9 @@
       "id": "openai-gpt-5.1-codex",
       "name": "GPT-5.1-Codex",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.1-Codex"],
+      "aliases": [
+        "GPT-5.1-Codex"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -984,7 +1340,9 @@
       "id": "openai-gpt-5.1-codex-max",
       "name": "GPT-5.1-Codex-Max",
       "provider": "OpenAI",
-      "aliases": ["GPT-5.1-Codex-Max"],
+      "aliases": [
+        "GPT-5.1-Codex-Max"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -992,7 +1350,9 @@
       "id": "openai-o1",
       "name": "o1",
       "provider": "OpenAI",
-      "aliases": ["o1"],
+      "aliases": [
+        "o1"
+      ],
       "snapshot": "",
       "note": "2026-10-23 API 关停"
     },
@@ -1000,7 +1360,9 @@
       "id": "openai-o1-pro",
       "name": "o1-pro",
       "provider": "OpenAI",
-      "aliases": ["o1-pro"],
+      "aliases": [
+        "o1-pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1008,7 +1370,9 @@
       "id": "openai-gpt-oss-120b",
       "name": "gpt-oss-120b",
       "provider": "OpenAI",
-      "aliases": ["gpt-oss-120b"],
+      "aliases": [
+        "gpt-oss-120b"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1016,7 +1380,9 @@
       "id": "openai-gpt-oss-20b",
       "name": "gpt-oss-20b",
       "provider": "OpenAI",
-      "aliases": ["gpt-oss-20b"],
+      "aliases": [
+        "gpt-oss-20b"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1024,7 +1390,9 @@
       "id": "google-gemini-3.1-flash-lite",
       "name": "Gemini 3.1 Flash-Lite",
       "provider": "Google",
-      "aliases": ["Gemini 3.1 Flash-Lite"],
+      "aliases": [
+        "Gemini 3.1 Flash-Lite"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1032,7 +1400,9 @@
       "id": "google-gemini-3.6-flash",
       "name": "Gemini 3.6 Flash",
       "provider": "Google",
-      "aliases": ["Gemini 3.6 Flash"],
+      "aliases": [
+        "Gemini 3.6 Flash"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1040,7 +1410,9 @@
       "id": "google-gemini-3-pro-image",
       "name": "Gemini 3 Pro Image",
       "provider": "Google",
-      "aliases": ["Gemini 3 Pro Image"],
+      "aliases": [
+        "Gemini 3 Pro Image"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1048,7 +1420,9 @@
       "id": "google-nano-banana-pro",
       "name": "Nano Banana Pro",
       "provider": "Google",
-      "aliases": ["Nano Banana Pro"],
+      "aliases": [
+        "Nano Banana Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1056,7 +1430,9 @@
       "id": "google-nano-banana-2.1",
       "name": "Nano Banana 2.1",
       "provider": "Google",
-      "aliases": ["Gemini Nano Banana 2.1"],
+      "aliases": [
+        "Gemini Nano Banana 2.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1064,7 +1440,9 @@
       "id": "google-gemini-3.8-flash-tts",
       "name": "Gemini 3.8 Flash TTS",
       "provider": "Google",
-      "aliases": ["Gemini 3.8 Flash TTS"],
+      "aliases": [
+        "Gemini 3.8 Flash TTS"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1072,7 +1450,9 @@
       "id": "google-gemini-3.8-flash-lite-tts",
       "name": "Gemini 3.8 Flash-Lite TTS",
       "provider": "Google",
-      "aliases": ["Gemini 3.8 Flash-Lite TTS"],
+      "aliases": [
+        "Gemini 3.8 Flash-Lite TTS"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1080,7 +1460,9 @@
       "id": "google-veo-3.1",
       "name": "Veo 3.1",
       "provider": "Google",
-      "aliases": ["Veo 3.1"],
+      "aliases": [
+        "Veo 3.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1088,7 +1470,9 @@
       "id": "google-veo-3.1-fast",
       "name": "Veo 3.1 Fast",
       "provider": "Google",
-      "aliases": ["Veo 3.1 Fast"],
+      "aliases": [
+        "Veo 3.1 Fast"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1096,7 +1480,10 @@
       "id": "xai-grok-4.3",
       "name": "Grok 4.3",
       "provider": "xAI",
-      "aliases": ["grok-4.3", "Grok 4.3"],
+      "aliases": [
+        "grok-4.3",
+        "Grok 4.3"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1104,7 +1491,10 @@
       "id": "xai-grok-4.5",
       "name": "Grok 4.5",
       "provider": "xAI",
-      "aliases": ["grok-4.5", "Grok 4.5"],
+      "aliases": [
+        "grok-4.5",
+        "Grok 4.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1112,7 +1502,10 @@
       "id": "xai-grok-4.6",
       "name": "Grok 4.6",
       "provider": "xAI",
-      "aliases": ["grok-4.6", "Grok 4.6"],
+      "aliases": [
+        "grok-4.6",
+        "Grok 4.6"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1120,7 +1513,9 @@
       "id": "mistral-small-4",
       "name": "Mistral Small 4",
       "provider": "Mistral AI",
-      "aliases": ["Mistral Small 4"],
+      "aliases": [
+        "Mistral Small 4"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1128,7 +1523,10 @@
       "id": "mistral-large-4",
       "name": "Mistral Large 4",
       "provider": "Mistral AI",
-      "aliases": ["Mistral Large 4", "Mistral Large 4「Le Chonk」"],
+      "aliases": [
+        "Mistral Large 4",
+        "Mistral Large 4「Le Chonk」"
+      ],
       "snapshot": "",
       "note": "2026-10-06 发布，权重 10-29 交付"
     },
@@ -1136,7 +1534,9 @@
       "id": "mistral-ministral-3-14b",
       "name": "Ministral 3 14B",
       "provider": "Mistral AI",
-      "aliases": ["Ministral 3 14B"],
+      "aliases": [
+        "Ministral 3 14B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1144,7 +1544,9 @@
       "id": "mistral-ministral-3-8b",
       "name": "Ministral 3 8B",
       "provider": "Mistral AI",
-      "aliases": ["Ministral 3 8B"],
+      "aliases": [
+        "Ministral 3 8B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1152,7 +1554,9 @@
       "id": "mistral-ministral-3-3b",
       "name": "Ministral 3 3B",
       "provider": "Mistral AI",
-      "aliases": ["Ministral 3 3B"],
+      "aliases": [
+        "Ministral 3 3B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1160,7 +1564,9 @@
       "id": "mistral-vocal-tts",
       "name": "Voxtral TTS",
       "provider": "Mistral AI",
-      "aliases": ["Voxtral TTS"],
+      "aliases": [
+        "Voxtral TTS"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1168,7 +1574,9 @@
       "id": "cohere-embed-5-pro",
       "name": "Embed 5 Pro",
       "provider": "Cohere",
-      "aliases": ["Embed 5 Pro"],
+      "aliases": [
+        "Embed 5 Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1176,7 +1584,9 @@
       "id": "cohere-embed-5-fast",
       "name": "Embed 5 Fast",
       "provider": "Cohere",
-      "aliases": ["Embed 5 Fast"],
+      "aliases": [
+        "Embed 5 Fast"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1184,7 +1594,9 @@
       "id": "cohere-command-a-embed",
       "name": "Command A Embed",
       "provider": "Cohere",
-      "aliases": ["command-a-embed"],
+      "aliases": [
+        "command-a-embed"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1192,7 +1604,9 @@
       "id": "cohere-parse",
       "name": "Cohere Parse",
       "provider": "Cohere",
-      "aliases": ["Cohere Parse"],
+      "aliases": [
+        "Cohere Parse"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1200,7 +1614,10 @@
       "id": "ai2-olmo-core-3",
       "name": "Olmo-core 3",
       "provider": "AI2",
-      "aliases": ["Olmo-core 3", "olmo-core-3"],
+      "aliases": [
+        "Olmo-core 3",
+        "olmo-core-3"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1208,7 +1625,9 @@
       "id": "ai2-olmo-3-7b",
       "name": "OLMo 3 7B",
       "provider": "AI2",
-      "aliases": ["OLMo 3 7B"],
+      "aliases": [
+        "OLMo 3 7B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1216,7 +1635,9 @@
       "id": "ai2-olmo-3-32b",
       "name": "OLMo 3 32B",
       "provider": "AI2",
-      "aliases": ["OLMo 3 32B"],
+      "aliases": [
+        "OLMo 3 32B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1224,7 +1645,9 @@
       "id": "nvidia-nemotron-3-super",
       "name": "Nemotron 3 Super",
       "provider": "NVIDIA",
-      "aliases": ["Nemotron 3 Super"],
+      "aliases": [
+        "Nemotron 3 Super"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1232,7 +1655,9 @@
       "id": "nvidia-nemotron-3-nano-omni",
       "name": "Nemotron 3 Nano Omni",
       "provider": "NVIDIA",
-      "aliases": ["Nemotron 3 Nano Omni"],
+      "aliases": [
+        "Nemotron 3 Nano Omni"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1240,7 +1665,9 @@
       "id": "nvidia-nemotron-3-ultra",
       "name": "Nemotron 3 Ultra",
       "provider": "NVIDIA",
-      "aliases": ["Nemotron 3 Ultra"],
+      "aliases": [
+        "Nemotron 3 Ultra"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1248,7 +1675,9 @@
       "id": "nvidia-nemotron-3.5-super-vl",
       "name": "Nemotron 3.5 Super VL",
       "provider": "NVIDIA",
-      "aliases": ["Nemotron 3.5 Super VL"],
+      "aliases": [
+        "Nemotron 3.5 Super VL"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1256,7 +1685,10 @@
       "id": "nvidia-nemotron-3.5-bolt",
       "name": "Nemotron 3.5 Bolt",
       "provider": "NVIDIA",
-      "aliases": ["Nemotron 3.5 Bolt", "Nemotron-3.5-Bolt-E4B"],
+      "aliases": [
+        "Nemotron 3.5 Bolt",
+        "Nemotron-3.5-Bolt-E4B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1264,7 +1696,9 @@
       "id": "north-mini-code",
       "name": "North Mini Code",
       "provider": "Cohere",
-      "aliases": ["North Mini Code"],
+      "aliases": [
+        "North Mini Code"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1272,7 +1706,9 @@
       "id": "north-small-translate",
       "name": "North Small Translate",
       "provider": "Cohere",
-      "aliases": ["North Small Translate"],
+      "aliases": [
+        "North Small Translate"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1280,23 +1716,29 @@
       "id": "zhipu-glm-5.3-flash",
       "name": "GLM-5.3-Flash",
       "provider": "智谱 AI",
-      "aliases": ["GLM-5.3-Flash"],
+      "aliases": [
+        "GLM-5.3-Flash"
+      ],
       "snapshot": "",
-      "note": ""
+      "note": "GLM-5.3-Flash 档位"
     },
     {
       "id": "zhipu-glm-5.3-flashx",
       "name": "GLM-5.3-FlashX",
       "provider": "智谱 AI",
-      "aliases": ["GLM-5.3-FlashX", "FlashX"],
+      "aliases": [
+        "GLM-5.3-FlashX"
+      ],
       "snapshot": "",
-      "note": ""
+      "note": "GLM-5.3-FlashX 档位"
     },
     {
       "id": "zhipu-glm-image",
       "name": "GLM-Image",
       "provider": "智谱 AI",
-      "aliases": ["GLM-Image"],
+      "aliases": [
+        "GLM-Image"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1304,7 +1746,9 @@
       "id": "zhipu-glm-ocr",
       "name": "GLM-OCR",
       "provider": "智谱 AI",
-      "aliases": ["GLM-OCR"],
+      "aliases": [
+        "GLM-OCR"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1312,7 +1756,9 @@
       "id": "zhipu-glm-asr",
       "name": "GLM-ASR",
       "provider": "智谱 AI",
-      "aliases": ["GLM-ASR"],
+      "aliases": [
+        "GLM-ASR"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1320,7 +1766,9 @@
       "id": "zhipu-glm-tts",
       "name": "GLM-TTS",
       "provider": "智谱 AI",
-      "aliases": ["GLM-TTS"],
+      "aliases": [
+        "GLM-TTS"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1328,7 +1776,9 @@
       "id": "moonshot-kimi-k3.1-pro",
       "name": "Kimi K3.1 Pro",
       "provider": "月之暗面",
-      "aliases": ["Kimi K3.1 Pro"],
+      "aliases": [
+        "Kimi K3.1 Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1336,7 +1786,9 @@
       "id": "moonshot-kimi-k3.1-highspeed",
       "name": "Kimi K3.1 Highspeed",
       "provider": "月之暗面",
-      "aliases": ["Kimi K3.1 Highspeed"],
+      "aliases": [
+        "Kimi K3.1 Highspeed"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1344,7 +1796,9 @@
       "id": "minimax-m2",
       "name": "MiniMax M2",
       "provider": "MiniMax",
-      "aliases": ["MiniMax M2"],
+      "aliases": [
+        "MiniMax M2"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1352,7 +1806,9 @@
       "id": "minimax-m2.1",
       "name": "MiniMax M2.1",
       "provider": "MiniMax",
-      "aliases": ["MiniMax M2.1"],
+      "aliases": [
+        "MiniMax M2.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1360,7 +1816,9 @@
       "id": "minimax-hailuo-2.3",
       "name": "Hailuo 2.3",
       "provider": "MiniMax",
-      "aliases": ["Hailuo 2.3"],
+      "aliases": [
+        "Hailuo 2.3"
+      ],
       "snapshot": "2025-10-28",
       "note": "官方 API 发布说明确认 2025-10-28"
     },
@@ -1368,7 +1826,9 @@
       "id": "minimax-hailuo-2.3-fast",
       "name": "Hailuo 2.3 Fast",
       "provider": "MiniMax",
-      "aliases": ["Hailuo 2.3 Fast"],
+      "aliases": [
+        "Hailuo 2.3 Fast"
+      ],
       "snapshot": "2025-10-28",
       "note": ""
     },
@@ -1376,7 +1836,10 @@
       "id": "bytedance-seed-2.1-pro",
       "name": "Doubao Seed 2.1 Pro",
       "provider": "字节跳动",
-      "aliases": ["豆包 Seed 2.1 Pro", "Doubao-Seed-2.1-Pro"],
+      "aliases": [
+        "豆包 Seed 2.1 Pro",
+        "Doubao-Seed-2.1-Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1384,7 +1847,10 @@
       "id": "bytedance-seed-2.1-turbo",
       "name": "Doubao Seed 2.1 Turbo",
       "provider": "字节跳动",
-      "aliases": ["豆包 Seed 2.1 Turbo", "Doubao-Seed-2.1-Turbo"],
+      "aliases": [
+        "豆包 Seed 2.1 Turbo",
+        "Doubao-Seed-2.1-Turbo"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1392,7 +1858,10 @@
       "id": "xiaomi-mimo-v2-pro",
       "name": "MiMo-V2-Pro",
       "provider": "小米",
-      "aliases": ["小米 MiMo-V2-Pro", "MiMo-V2-Pro"],
+      "aliases": [
+        "小米 MiMo-V2-Pro",
+        "MiMo-V2-Pro"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1400,7 +1869,10 @@
       "id": "xiaomi-mimo-v2-omni",
       "name": "MiMo-V2-Omni",
       "provider": "小米",
-      "aliases": ["小米 MiMo-V2-Omni", "MiMo-V2-Omni"],
+      "aliases": [
+        "小米 MiMo-V2-Omni",
+        "MiMo-V2-Omni"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1408,7 +1880,10 @@
       "id": "xiaomi-mimo-v2-tts",
       "name": "MiMo-V2-TTS",
       "provider": "小米",
-      "aliases": ["小米 MiMo-V2-TTS", "MiMo-V2-TTS"],
+      "aliases": [
+        "小米 MiMo-V2-TTS",
+        "MiMo-V2-TTS"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1416,7 +1891,10 @@
       "id": "xiaomi-mimo-v2-flash",
       "name": "MiMo-V2-Flash",
       "provider": "小米",
-      "aliases": ["小米 MiMo-V2-Flash", "MiMo-V2-Flash"],
+      "aliases": [
+        "小米 MiMo-V2-Flash",
+        "MiMo-V2-Flash"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1424,7 +1902,10 @@
       "id": "jina-embeddings-v4",
       "name": "Jina Embeddings v4",
       "provider": "Jina AI",
-      "aliases": ["Jina Embeddings v4", "jina-embeddings-v4"],
+      "aliases": [
+        "Jina Embeddings v4",
+        "jina-embeddings-v4"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1432,7 +1913,10 @@
       "id": "jina-embeddings-v5",
       "name": "Jina Embeddings v5",
       "provider": "Jina AI",
-      "aliases": ["Jina Embeddings v5", "jina-embeddings-v5"],
+      "aliases": [
+        "Jina Embeddings v5",
+        "jina-embeddings-v5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1440,7 +1924,10 @@
       "id": "qwen3.6-35b-a3b",
       "name": "Qwen3.6-35B-A3B",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.6-35B-A3B", "Qwen3.6 开源系列"],
+      "aliases": [
+        "Qwen3.6-35B-A3B",
+        "Qwen3.6 开源系列"
+      ],
       "snapshot": "",
       "note": "2026-04-15 开源，Apache 2.0"
     },
@@ -1448,7 +1935,9 @@
       "id": "qwen3.6-27b",
       "name": "Qwen3.6-27B",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.6-27B"],
+      "aliases": [
+        "Qwen3.6-27B"
+      ],
       "snapshot": "",
       "note": "2026-04-21 开源，Apache 2.0"
     },
@@ -1456,7 +1945,9 @@
       "id": "qwen3.7-plus",
       "name": "Qwen3.7-Plus",
       "provider": "阿里巴巴",
-      "aliases": ["Qwen3.7-Plus"],
+      "aliases": [
+        "Qwen3.7-Plus"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1464,7 +1955,10 @@
       "id": "nx-ai-tirex-2",
       "name": "TiRex-2",
       "provider": "NX-AI",
-      "aliases": ["NX-AI/TiRex-2", "TiRex-2"],
+      "aliases": [
+        "NX-AI/TiRex-2",
+        "TiRex-2"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1472,7 +1966,10 @@
       "id": "nx-ai-kronlstm",
       "name": "KronLSTM",
       "provider": "NX-AI",
-      "aliases": ["NX-AI/KronLSTM 系列", "KronLSTM"],
+      "aliases": [
+        "NX-AI/KronLSTM 系列",
+        "KronLSTM"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1480,7 +1977,11 @@
       "id": "nx-ai-xlstm-7b",
       "name": "xLSTM-7b",
       "provider": "NX-AI",
-      "aliases": ["NX-AI/xLSTM-7b", "xLSTM-7b", "xLSTM 7B"],
+      "aliases": [
+        "NX-AI/xLSTM-7b",
+        "xLSTM-7b",
+        "xLSTM 7B"
+      ],
       "snapshot": "",
       "note": "2024-12-11 建仓；arXiv:2510.02228 是 scaling law 论文而非其模型报告"
     },
@@ -1488,7 +1989,10 @@
       "id": "microsoft-mage-vl-cowork",
       "name": "Mage-VL-Cowork",
       "provider": "Microsoft",
-      "aliases": ["microsoft/Mage-VL-Cowork", "Mage-VL-Cowork"],
+      "aliases": [
+        "microsoft/Mage-VL-Cowork",
+        "Mage-VL-Cowork"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1496,7 +2000,10 @@
       "id": "apple-lensvlm-9b",
       "name": "LensVLM-9B",
       "provider": "Apple",
-      "aliases": ["apple/LensVLM-9B", "LensVLM-9B"],
+      "aliases": [
+        "apple/LensVLM-9B",
+        "LensVLM-9B"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1504,7 +2011,9 @@
       "id": "meta-muse-spark-1.2",
       "name": "Muse Spark 1.2",
       "provider": "Meta",
-      "aliases": ["Muse Spark 1.2"],
+      "aliases": [
+        "Muse Spark 1.2"
+      ],
       "snapshot": "2026-08-05",
       "note": ""
     },
@@ -1512,7 +2021,9 @@
       "id": "meta-muse-code",
       "name": "Muse Code",
       "provider": "Meta",
-      "aliases": ["Muse Code"],
+      "aliases": [
+        "Muse Code"
+      ],
       "snapshot": "2026-08-05",
       "note": ""
     },
@@ -1520,7 +2031,9 @@
       "id": "luma-uni-1",
       "name": "Luma UNI-1",
       "provider": "Luma AI",
-      "aliases": ["Luma UNI-1"],
+      "aliases": [
+        "Luma UNI-1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1528,7 +2041,9 @@
       "id": "luma-uni-1.1",
       "name": "Luma UNI-1.1",
       "provider": "Luma AI",
-      "aliases": ["Luma UNI-1.1"],
+      "aliases": [
+        "Luma UNI-1.1"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1536,7 +2051,10 @@
       "id": "tencent-hunyuan",
       "name": "混元",
       "provider": "腾讯",
-      "aliases": ["混元", "Hunyuan"],
+      "aliases": [
+        "混元",
+        "Hunyuan"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1544,7 +2062,10 @@
       "id": "tencent-hunyuan-large",
       "name": "混元-Large",
       "provider": "腾讯",
-      "aliases": ["混元-Large", "Hunyuan-Large"],
+      "aliases": [
+        "混元-Large",
+        "Hunyuan-Large"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1552,7 +2073,9 @@
       "id": "tencent-hunyuanvideo",
       "name": "HunyuanVideo",
       "provider": "腾讯",
-      "aliases": ["HunyuanVideo"],
+      "aliases": [
+        "HunyuanVideo"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1560,7 +2083,9 @@
       "id": "tencent-hunyuanvideo-1.5",
       "name": "HunyuanVideo 1.5",
       "provider": "腾讯",
-      "aliases": ["HunyuanVideo 1.5"],
+      "aliases": [
+        "HunyuanVideo 1.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1568,7 +2093,9 @@
       "id": "openai-chatgpt-images-2.0",
       "name": "ChatGPT Images 2.0",
       "provider": "OpenAI",
-      "aliases": ["ChatGPT Images 2.0"],
+      "aliases": [
+        "ChatGPT Images 2.0"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1576,7 +2103,9 @@
       "id": "openai-chatgpt-images-2.5",
       "name": "ChatGPT Images 2.5",
       "provider": "OpenAI",
-      "aliases": ["ChatGPT Images 2.5"],
+      "aliases": [
+        "ChatGPT Images 2.5"
+      ],
       "snapshot": "",
       "note": ""
     },
@@ -1584,9 +2113,3114 @@
       "id": "openai-chatgpt-images-2.6",
       "name": "ChatGPT Images 2.6",
       "provider": "OpenAI",
-      "aliases": ["ChatGPT Images 2.6"],
+      "aliases": [
+        "ChatGPT Images 2.6"
+      ],
       "snapshot": "",
       "note": ""
+    },
+    {
+      "id": "gpt41",
+      "name": "GPT 4.1",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt41"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen332b",
+      "name": "Qwen3 32B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen332b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt41mini",
+      "name": "GPT 4.1 mini",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt41mini"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt35turbo",
+      "name": "GPT-3.5-Turbo-0613",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt35turbo"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder32binstruct",
+      "name": "Qwen2.5 Coder 32B Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder32binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3coder480ba35binstruct",
+      "name": "Qwen3-Coder-480B-A35B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3coder480ba35binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama3370binstruct",
+      "name": "Llama-3.3-70B-Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama3370binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt41nano",
+      "name": "gpt-4.1-nano",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt41nano"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama4maverick17b128einstruct",
+      "name": "Llama-4-Maverick-17B-128E-Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama4maverick17b128einstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudecode",
+      "name": "Claude Code",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudecode"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt41106",
+      "name": "GPT-4 (1106)",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt41106"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama4scout17b16einstruct",
+      "name": "Llama-4-Scout-17B-16E-Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama4scout17b16einstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "devstralsmall",
+      "name": "Devstral-Small-2505",
+      "provider": "Mistral AI",
+      "aliases": [
+        "devstralsmall"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3235ba22binstruct",
+      "name": "Qwen3-235B-A22B-Instruct-2507",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3235ba22binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudesonnet35",
+      "name": "Claude Sonnet 3.5",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudesonnet35"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4preview",
+      "name": "GPT-4-1106-preview",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4preview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25flashpreview0520",
+      "name": "gemini-2.5-flash-preview-05-20",
+      "provider": "Google",
+      "aliases": [
+        "gemini25flashpreview0520"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5minimedium",
+      "name": "gpt-5-mini-2025-08-07-medium",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5minimedium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "kimik2instruct0905",
+      "name": "Kimi K2 Instruct 0905",
+      "provider": "月之暗面",
+      "aliases": [
+        "kimik2instruct0905"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3next80ba3binstruct",
+      "name": "Qwen3-Next-80B-A3B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3next80ba3binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "provider": "OpenAI",
+      "aliases": [
+        "codex"
+      ],
+      "snapshot": "",
+      "note": "工具型 agent，非基础模型"
+    },
+    {
+      "id": "junie",
+      "name": "Junie",
+      "provider": "JetBrains",
+      "aliases": [
+        "junie"
+      ],
+      "snapshot": "",
+      "note": "工具型 agent，非基础模型"
+    },
+    {
+      "id": "qwen37plus",
+      "name": "Qwen3.7-Plus",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen37plus"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25flash",
+      "name": "Gemini 2.5 Flash",
+      "provider": "Google",
+      "aliases": [
+        "gemini25flash"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3235ba22bthinking",
+      "name": "Qwen3-235B-A22B-Thinking-2507",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3235ba22bthinking"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5medium",
+      "name": "gpt-5-2025-08-07-medium",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5medium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5high",
+      "name": "gpt-5-2025-08-07-high",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5high"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5minimal",
+      "name": "gpt-5-2025-08-07-minimal",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5minimal"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "grokcodefast1",
+      "name": "Grok Code Fast 1",
+      "provider": "xAI",
+      "aliases": [
+        "grokcodefast1"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen330ba3binstruct",
+      "name": "Qwen3-30B-A3B-Instruct-2507",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen330ba3binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "glm47",
+      "name": "GLM-4.7",
+      "provider": "智谱 AI",
+      "aliases": [
+        "glm47"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "provider": "Cursor",
+      "aliases": [
+        "cursor"
+      ],
+      "snapshot": "",
+      "note": "工具型 agent，非基础模型"
+    },
+    {
+      "id": "o3mini",
+      "name": "O3 Mini",
+      "provider": "OpenAI",
+      "aliases": [
+        "o3mini"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "o1mini",
+      "name": "o1-mini-2024-09-12",
+      "provider": "未标注",
+      "aliases": [
+        "o1mini"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4omini",
+      "name": "gpt-4o-mini-2024-07-18",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4omini"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "openchat35",
+      "name": "OpenChat-3.5",
+      "provider": "OpenChat",
+      "aliases": [
+        "openchat35"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen272binstruct",
+      "name": "Qwen2-72B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen272binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt52medium",
+      "name": "gpt-5.2-2025-12-11-medium",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt52medium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "devstral2123binstruct",
+      "name": "Devstral-2-123B-Instruct-2512",
+      "provider": "Mistral AI",
+      "aliases": [
+        "devstral2123binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "devstralsmall224binstruct",
+      "name": "Devstral-Small-2-24B-Instruct-2512",
+      "provider": "Mistral AI",
+      "aliases": [
+        "devstralsmall224binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudeopus46high",
+      "name": "Claude Opus 4.6-high",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudeopus46high"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "glm52",
+      "name": "GLM-5.2",
+      "provider": "智谱 AI",
+      "aliases": [
+        "glm52"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv4pro",
+      "name": "DeepSeek-V4 Pro",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv4pro"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mimov25pro",
+      "name": "MiMo V2.5 Pro",
+      "provider": "小米",
+      "aliases": [
+        "mimov25pro"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3627b",
+      "name": "Qwen3.6-27B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3627b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3635ba3b",
+      "name": "Qwen3.6-35B-A3B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3635ba3b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "o1preview",
+      "name": "o1-preview",
+      "provider": "未标注",
+      "aliases": [
+        "o1preview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codeactv21claude35sonnet1022",
+      "name": "CodeAct v2.1 (claude-3-5-sonnet-20241022)",
+      "provider": "THUDM",
+      "aliases": [
+        "codeactv21claude35sonnet1022"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude2",
+      "name": "Claude 2",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude2"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "swellama7b",
+      "name": "SWE-Llama 7B",
+      "provider": "未标注",
+      "aliases": [
+        "swellama7b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "swellama13b",
+      "name": "SWE-Llama 13B",
+      "provider": "未标注",
+      "aliases": [
+        "swellama13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt35",
+      "name": "GPT-3.5",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt35"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "geminiexp",
+      "name": "gemini-exp-1206",
+      "provider": "Google",
+      "aliases": [
+        "geminiexp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude20",
+      "name": "Claude-2.0",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude20"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mixtral8x7binstructv01",
+      "name": "Mixtral-8x7B-Instruct-v0.1",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mixtral8x7binstructv01"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "vicuna33b",
+      "name": "Vicuna-33B",
+      "provider": "LMSYS",
+      "aliases": [
+        "vicuna33b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "starlinglm7balpha",
+      "name": "Starling-LM-7B-alpha",
+      "provider": "Nvidia",
+      "aliases": [
+        "starlinglm7balpha"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama270bchat",
+      "name": "Llama-2-70B-chat",
+      "provider": "Meta",
+      "aliases": [
+        "llama270bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistralmedium",
+      "name": "Mistral Medium",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistralmedium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen1572bchat",
+      "name": "Qwen1.5-72B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen1572bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistrallarge",
+      "name": "Mistral-Large-2402",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistrallarge"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen15110bchat",
+      "name": "Qwen1.5-110B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen15110bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv31",
+      "name": "DeepSeek-V3.1",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv31"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudeopus41",
+      "name": "Claude Opus 4.1",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudeopus41"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen330ba3bthinking",
+      "name": "Qwen3-30B-A3B-Thinking-2507",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen330ba3bthinking"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini3flashpreview",
+      "name": "Gemini 3 Flash Preview",
+      "provider": "Google",
+      "aliases": [
+        "gemini3flashpreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini31propreview",
+      "name": "Gemini 3.1 Pro Preview",
+      "provider": "Google",
+      "aliases": [
+        "gemini31propreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudesonnet46",
+      "name": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudesonnet46"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt54medium",
+      "name": "gpt-5.4-2026-03-05-medium",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt54medium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3535ba3b",
+      "name": "Qwen3.5-35B-A3B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3535ba3b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma431b",
+      "name": "Gemma 4 31B",
+      "provider": "Google",
+      "aliases": [
+        "gemma431b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv30324",
+      "name": "DeepSeek V3 0324",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv30324"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen257b72b",
+      "name": "Qwen2.5 (7B + 72B)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen257b72b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mctsrefine7b",
+      "name": "MCTS Refine 7B",
+      "provider": "华为",
+      "aliases": [
+        "mctsrefine7b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv32exp",
+      "name": "DeepSeek-V3.2-Exp",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv32exp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "grok3minibeta",
+      "name": "Grok 3 Mini Beta (high)",
+      "provider": "xAI",
+      "aliases": [
+        "grok3minibeta"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude35haiku1022",
+      "name": "claude-3-5-haiku-20241022",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude35haiku1022"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini20flashexp",
+      "name": "gemini-2.0-flash-exp",
+      "provider": "Google",
+      "aliases": [
+        "gemini20flashexp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekchatv25",
+      "name": "DeepSeek Chat V2.5",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekchatv25"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yilightning",
+      "name": "yi-lightning",
+      "provider": "零一万物",
+      "aliases": [
+        "yilightning"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm30b",
+      "name": "WizardLM-30B",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm30b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "vicuna13b16k",
+      "name": "Vicuna-13B-16k",
+      "provider": "LMSYS",
+      "aliases": [
+        "vicuna13b16k"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm13bv11",
+      "name": "WizardLM-13B-v1.1",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm13bv11"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "tulu30b",
+      "name": "Tulu-30B",
+      "provider": "AI2",
+      "aliases": [
+        "tulu30b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "guanaco65b",
+      "name": "Guanaco-65B",
+      "provider": "Meta",
+      "aliases": [
+        "guanaco65b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "openassistantllama30b",
+      "name": "OpenAssistant-LLaMA-30B",
+      "provider": "OpenAssistant",
+      "aliases": [
+        "openassistantllama30b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm13bv10",
+      "name": "WizardLM-13B-v1.0",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm13bv10"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "vicuna7b16k",
+      "name": "Vicuna-7B-16k",
+      "provider": "LMSYS",
+      "aliases": [
+        "vicuna7b16k"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "baizev213b",
+      "name": "Baize-v2-13B",
+      "provider": "Baize",
+      "aliases": [
+        "baizev213b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "xgen7b8kinst",
+      "name": "XGen-7B-8K-Inst",
+      "provider": "Salesforce",
+      "aliases": [
+        "xgen7b8kinst"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "noushermes13b",
+      "name": "Nous-Hermes-13B",
+      "provider": "Nous Research",
+      "aliases": [
+        "noushermes13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mpt30binstruct",
+      "name": "MPT-30B-Instruct",
+      "provider": "MosAIC AI",
+      "aliases": [
+        "mpt30binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "falcon40binstruct",
+      "name": "Falcon-40B-Instruct",
+      "provider": "TII",
+      "aliases": [
+        "falcon40binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "h2ooasstopenllama13b",
+      "name": "H2O-Oasst-OpenLLaMA-13B",
+      "provider": "H2O.ai",
+      "aliases": [
+        "h2ooasstopenllama13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude1",
+      "name": "Claude-1",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude1"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude21",
+      "name": "Claude-2.1",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude21"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudeinstant1",
+      "name": "Claude-Instant-1",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudeinstant1"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "tulu2dpo70b",
+      "name": "Tulu-2-DPO-70B",
+      "provider": "AI2",
+      "aliases": [
+        "tulu2dpo70b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "geminipro",
+      "name": "Gemini Pro",
+      "provider": "Google",
+      "aliases": [
+        "geminipro"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm70bv10",
+      "name": "WizardLM-70B-v1.0",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm70bv10"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "solar107binstructv10",
+      "name": "SOLAR-10.7B-Instruct-v1.0",
+      "provider": "Upstage",
+      "aliases": [
+        "solar107binstructv10"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm13bv12",
+      "name": "WizardLM-13b-v1.2",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm13bv12"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "zephyr7bbeta",
+      "name": "Zephyr-7B-beta",
+      "provider": "HuggingFace",
+      "aliases": [
+        "zephyr7bbeta"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mpt30bchat",
+      "name": "MPT-30B-chat",
+      "provider": "MosAIC AI",
+      "aliases": [
+        "mpt30bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "vicuna13b",
+      "name": "Vicuna-13B",
+      "provider": "LMSYS",
+      "aliases": [
+        "vicuna13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen14bchat",
+      "name": "Qwen-14B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen14bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "guanaco33b",
+      "name": "Guanaco-33B",
+      "provider": "Meta",
+      "aliases": [
+        "guanaco33b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama213bchat",
+      "name": "Llama-2-13b-chat",
+      "provider": "Meta",
+      "aliases": [
+        "llama213bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistral7binstructv01",
+      "name": "Mistral-7B-Instruct-v0.1",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistral7binstructv01"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama27bchat",
+      "name": "Llama-2-7B-chat",
+      "provider": "Meta",
+      "aliases": [
+        "llama27bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "vicuna7b",
+      "name": "Vicuna-7B",
+      "provider": "LMSYS",
+      "aliases": [
+        "vicuna7b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "koala13b",
+      "name": "Koala-13B",
+      "provider": "HuggingFace",
+      "aliases": [
+        "koala13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4all13bsnoozy",
+      "name": "GPT4All-13B-Snoozy",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4all13bsnoozy"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mpt7bchat",
+      "name": "MPT-7B-Chat",
+      "provider": "MosAIC AI",
+      "aliases": [
+        "mpt7bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "chatglm26b",
+      "name": "ChatGLM2-6B",
+      "provider": "智谱 AI",
+      "aliases": [
+        "chatglm26b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "rwkv4raven14b",
+      "name": "RWKV-4-Raven-14B",
+      "provider": "RWKV",
+      "aliases": [
+        "rwkv4raven14b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "alpaca13b",
+      "name": "Alpaca-13B",
+      "provider": "Stanford",
+      "aliases": [
+        "alpaca13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "openassistantpythia12b",
+      "name": "OpenAssistant-Pythia-12B",
+      "provider": "OpenAssistant",
+      "aliases": [
+        "openassistantpythia12b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "chatglm6b",
+      "name": "ChatGLM-6B",
+      "provider": "智谱 AI",
+      "aliases": [
+        "chatglm6b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "fastchatt53b",
+      "name": "FastChat-T5-3B",
+      "provider": "FastChat",
+      "aliases": [
+        "fastchatt53b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "stablelmtunedalpha7b",
+      "name": "StableLM-Tuned-Alpha-7B",
+      "provider": "未标注",
+      "aliases": [
+        "stablelmtunedalpha7b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "dollyv212b",
+      "name": "Dolly-V2-12B",
+      "provider": "Databricks",
+      "aliases": [
+        "dollyv212b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama13b",
+      "name": "LLaMA-13B",
+      "provider": "Meta",
+      "aliases": [
+        "llama13b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "nvllama270bsteerlmchat",
+      "name": "NV-Llama2-70B-SteerLM-Chat",
+      "provider": "未标注",
+      "aliases": [
+        "nvllama270bsteerlmchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen157bchat",
+      "name": "Qwen1.5-7B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen157bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma7bit",
+      "name": "Gemma-7B-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma7bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma2bit",
+      "name": "Gemma-2B-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma2bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "starlinglm7bbeta",
+      "name": "Starling-LM-7B-beta",
+      "provider": "Nvidia",
+      "aliases": [
+        "starlinglm7bbeta"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen1514bchat",
+      "name": "Qwen1.5-14B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen1514bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen1532bchat",
+      "name": "Qwen1.5-32B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen1532bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma117bit",
+      "name": "Gemma-1.1-7B-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma117bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "dbrxinstructpreview",
+      "name": "DBRX-Instruct-Preview",
+      "provider": "Databricks",
+      "aliases": [
+        "dbrxinstructpreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma112bit",
+      "name": "Gemma-1.1-2b-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma112bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mixtral8x22binstructv01",
+      "name": "Mixtral-8x22b-Instruct-v0.1",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mixtral8x22binstructv01"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama370binstruct",
+      "name": "Llama-3-70B-Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama370binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama38binstruct",
+      "name": "Llama-3-8B-Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama38binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "snowflakearcticinstruct",
+      "name": "Snowflake Arctic Instruct",
+      "provider": "Snowflake",
+      "aliases": [
+        "snowflakearcticinstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt52xhigh",
+      "name": "gpt-5.2-2025-12-11-xhigh",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt52xhigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5minihigh",
+      "name": "gpt-5-mini-2025-08-07-high",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5minihigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "glm47flash",
+      "name": "GLM-4.7 Flash",
+      "provider": "智谱 AI",
+      "aliases": [
+        "glm47flash"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3codernext",
+      "name": "Qwen3-Coder-Next",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3codernext"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudeopus47high",
+      "name": "Claude Opus 4.7-high",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudeopus47high"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt55medium",
+      "name": "gpt-5.5-2026-04-23-medium",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt55medium"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt55xhigh",
+      "name": "gpt-5.5-2026-04-23-xhigh",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt55xhigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "kimik26",
+      "name": "Kimi K2.6",
+      "provider": "月之暗面",
+      "aliases": [
+        "kimik26"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claudeopus48xhigh",
+      "name": "Claude Opus 4.8-xhigh",
+      "provider": "Anthropic",
+      "aliases": [
+        "claudeopus48xhigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv4flash",
+      "name": "DeepSeek-V4 Flash",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv4flash"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekv25",
+      "name": "DeepSeek-V2.5-1210",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekv25"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4turboudiff",
+      "name": "gpt-4-turbo-2024-04-09",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4turboudiff"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama3170binstruct",
+      "name": "llama-3.1-70b-instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama3170binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4turbodiff",
+      "name": "gpt-4-turbo-2024-04-09",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4turbodiff"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude3sonnet0229",
+      "name": "claude-3-sonnet-20240229",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude3sonnet0229"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude3haiku0307",
+      "name": "claude-3-haiku-20240307",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude3haiku0307"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15flash8bexp",
+      "name": "gemini-1.5-flash-8b-exp-0924",
+      "provider": "Google",
+      "aliases": [
+        "gemini15flash8bexp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "commandr0824",
+      "name": "Command R (08-24)",
+      "provider": "Cohere",
+      "aliases": [
+        "commandr0824"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama318binstruct",
+      "name": "llama-3.1-8b-instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama318binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "commandrplus",
+      "name": "command-r-plus",
+      "provider": "Cohere",
+      "aliases": [
+        "commandrplus"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "glm4",
+      "name": "glm-4-0520",
+      "provider": "智谱 AI",
+      "aliases": [
+        "glm4"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude37sonnetwreviewheavy",
+      "name": "Claude 3.7 Sonnet w/ Review Heavy",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude37sonnetwreviewheavy"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "swesearch",
+      "name": "swe-search",
+      "provider": "未标注",
+      "aliases": [
+        "swesearch"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "4xscaled",
+      "name": "4x Scaled",
+      "provider": "未标注",
+      "aliases": [
+        "4xscaled"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ttsbo16",
+      "name": "TTS(Bo16)",
+      "provider": "未标注",
+      "aliases": [
+        "ttsbo16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "frogboss32b2510",
+      "name": "Frogboss 32B 2510",
+      "provider": "Frog",
+      "aliases": [
+        "frogboss32b2510"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini20flashv20241212experimental",
+      "name": "Gemini 2.0 Flash (v20241212-experimental)",
+      "provider": "Google",
+      "aliases": [
+        "gemini20flashv20241212experimental"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ttsbo8",
+      "name": "TTS(Bo8)",
+      "provider": "未标注",
+      "aliases": [
+        "ttsbo8"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "copatcher",
+      "name": "Co-PatcheR",
+      "provider": "Cohere",
+      "aliases": [
+        "copatcher"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "frogmini14b2510",
+      "name": "Frogmini 14B 2510",
+      "provider": "Frog",
+      "aliases": [
+        "frogmini14b2510"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini20flashexperimental",
+      "name": "Gemini 2.0 Flash (Experimental)",
+      "provider": "Google",
+      "aliases": [
+        "gemini20flashexperimental"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepswepreview",
+      "name": "DeepSWE-Preview",
+      "provider": "未标注",
+      "aliases": [
+        "deepswepreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama3swerl70b",
+      "name": "Llama3-SWE-RL-70B",
+      "provider": "Meta",
+      "aliases": [
+        "llama3swerl70b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude35haiku",
+      "name": "Claude 3.5 Haiku",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude35haiku"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "sweagentlm32b",
+      "name": "SWE-agent-LM-32B",
+      "provider": "Princeton",
+      "aliases": [
+        "sweagentlm32b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt5nano",
+      "name": "GPT 5 nano",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt5nano"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "lingmaswegpt72bv0925",
+      "name": "Lingma SWE-GPT 72b (v0925)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "lingmaswegpt72bv0925"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "lingmaswegpt72bv0918",
+      "name": "Lingma SWE-GPT 72b (v0918)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "lingmaswegpt72bv0918"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama4maverickinstruct",
+      "name": "Llama 4 Maverick Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama4maverickinstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "lingmaswegpt7bv0925",
+      "name": "Lingma SWE-GPT 7b (v0925)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "lingmaswegpt7bv0925"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "lingmaswegpt7bv0918",
+      "name": "Lingma SWE-GPT 7b (v0918)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "lingmaswegpt7bv0918"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama4scoutinstruct",
+      "name": "Llama 4 Scout Instruct",
+      "provider": "Meta",
+      "aliases": [
+        "llama4scoutinstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mixedmodels",
+      "name": "Mixed Models",
+      "provider": "未标注",
+      "aliases": [
+        "mixedmodels"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt40806",
+      "name": "GPT-4 (0806)",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt40806"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "o3mini10",
+      "name": "o3-mini_1.0",
+      "provider": "OpenAI",
+      "aliases": [
+        "o3mini10"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codeactv18",
+      "name": "CodeAct v1.8",
+      "provider": "THUDM",
+      "aliases": [
+        "codeactv18"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4oclaude3opus",
+      "name": "GPT-4o & Claude 3 Opus",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4oclaude3opus"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt40613",
+      "name": "GPT-4 (0613)",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt40613"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt40125",
+      "name": "GPT-4 (0125)",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt40125"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "o3gpt41",
+      "name": "o3 (high) + gpt-4.1",
+      "provider": "OpenAI",
+      "aliases": [
+        "o3gpt41"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25propreview0325",
+      "name": "Gemini 2.5 Pro Preview 03-25",
+      "provider": "Google",
+      "aliases": [
+        "gemini25propreview0325"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekr10528",
+      "name": "DeepSeek R1 (0528)",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekr10528"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekr1claude35sonnet1022",
+      "name": "DeepSeek R1 + claude-3-5-sonnet-20241022",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekr1claude35sonnet1022"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3235ba22bdiffnothinkalibabaapi",
+      "name": "Qwen3 235B A22B diff, no think, Alibaba API",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3235ba22bdiffnothinkalibabaapi"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25flashpreview052024kthink",
+      "name": "gemini-2.5-flash-preview-05-20",
+      "provider": "Google",
+      "aliases": [
+        "gemini25flashpreview052024kthink"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "quasaralpha",
+      "name": "Quasar Alpha",
+      "provider": "未标注",
+      "aliases": [
+        "quasaralpha"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "grok3beta",
+      "name": "Grok 3 Beta",
+      "provider": "xAI",
+      "aliases": [
+        "grok3beta"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "optimusalpha",
+      "name": "Optimus Alpha",
+      "provider": "未标注",
+      "aliases": [
+        "optimusalpha"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekchatv3prev",
+      "name": "DeepSeek Chat V3 (prev)",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekchatv3prev"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25flashpreview0417default",
+      "name": "gemini-2.5-flash-preview-04-17 (default)",
+      "provider": "Google",
+      "aliases": [
+        "gemini25flashpreview0417default"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "chatgpt4olatest20250329",
+      "name": "chatgpt-4o-latest (2025-03-29)",
+      "provider": "OpenAI",
+      "aliases": [
+        "chatgpt4olatest20250329"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt45preview",
+      "name": "gpt-4.5-preview",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt45preview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini25flashpreview0520nothink",
+      "name": "gemini-2.5-flash-preview-05-20",
+      "provider": "Google",
+      "aliases": [
+        "gemini25flashpreview0520nothink"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini20proexp0205",
+      "name": "Gemini 2.0 Pro exp-02-05",
+      "provider": "Google",
+      "aliases": [
+        "gemini20proexp0205"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "chatgpt4olatest20250215",
+      "name": "chatgpt-4o-latest (2025-02-15)",
+      "provider": "OpenAI",
+      "aliases": [
+        "chatgpt4olatest20250215"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwq32bqwen25coderinstruct",
+      "name": "QwQ-32B + Qwen 2.5 Coder Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwq32bqwen25coderinstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwenmax",
+      "name": "qwen-max-2025-01-25",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwenmax"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini20flashthinkingexp0121",
+      "name": "gemini-2.0-flash-thinking-exp-01-21",
+      "provider": "Google",
+      "aliases": [
+        "gemini20flashthinkingexp0121"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codestral2501",
+      "name": "Codestral 25.01",
+      "provider": "Mistral AI",
+      "aliases": [
+        "codestral2501"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "openhandslm32bv01",
+      "name": "openhands-lm-32b-v0.1",
+      "provider": "All Hands AI",
+      "aliases": [
+        "openhandslm32bv01"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini10pro001",
+      "name": "Gemini-1.0-Pro-001",
+      "provider": "Google",
+      "aliases": [
+        "gemini10pro001"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "zephyr7balpha",
+      "name": "Zephyr-7B-alpha",
+      "provider": "HuggingFace",
+      "aliases": [
+        "zephyr7balpha"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codellama34binstruct",
+      "name": "CodeLlama-34B-instruct",
+      "provider": "Meta",
+      "aliases": [
+        "codellama34binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "falcon180bchat",
+      "name": "falcon-180b-chat",
+      "provider": "TII",
+      "aliases": [
+        "falcon180bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "palmchatbison001",
+      "name": "PaLM-Chat-Bison-001",
+      "provider": "未标注",
+      "aliases": [
+        "palmchatbison001"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekllm67bchat",
+      "name": "DeepSeek-LLM-67B-Chat",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekllm67bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen154bchat",
+      "name": "Qwen1.5-4B-Chat",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen154bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistral7binstructv02",
+      "name": "Mistral-7B-Instruct-v0.2",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistral7binstructv02"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude3sonnet",
+      "name": "Claude 3 Sonnet",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude3sonnet"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude3haiku",
+      "name": "Claude 3 Haiku",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude3haiku"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "rekaflash21b",
+      "name": "Reka-Flash-21B",
+      "provider": "Reka",
+      "aliases": [
+        "rekaflash21b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15propreview",
+      "name": "Gemini-1.5-Pro-Preview-0409",
+      "provider": "Google",
+      "aliases": [
+        "gemini15propreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "rekacore0501",
+      "name": "Reka-Core-20240501",
+      "provider": "Reka",
+      "aliases": [
+        "rekacore0501"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yi1534bchat",
+      "name": "Yi-1.5-34B-Chat",
+      "provider": "零一万物",
+      "aliases": [
+        "yi1534bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "claude35sonnet20240620",
+      "name": "Claude 3.5 Sonnet (20240620)",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude35sonnet20240620"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "metallama31405binstructbf16",
+      "name": "Meta-Llama-3.1-405B-Instruct-bf16",
+      "provider": "未标注",
+      "aliases": [
+        "metallama31405binstructbf16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "metallama318binstruct",
+      "name": "Meta-Llama-3.1-8B-Instruct",
+      "provider": "未标注",
+      "aliases": [
+        "metallama318binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma22bit",
+      "name": "Gemma-2-2b-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma22bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "horizonalpha",
+      "name": "horizon-alpha",
+      "provider": "Horizon Robotics",
+      "aliases": [
+        "horizonalpha"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "horizonbeta",
+      "name": "horizon-beta",
+      "provider": "Horizon Robotics",
+      "aliases": [
+        "horizonbeta"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gptoss120bhigh",
+      "name": "gpt-oss-120b-high",
+      "provider": "OpenAI",
+      "aliases": [
+        "gptoss120bhigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt53codex",
+      "name": "gpt-5.3-codex",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt53codex"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt53codexxhigh",
+      "name": "gpt-5.3-codex-xhigh",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt53codexxhigh"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen35397ba17b",
+      "name": "Qwen3.5-397B-A17B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen35397ba17b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "step35flash",
+      "name": "Step-3.5-Flash",
+      "provider": "未标注",
+      "aliases": [
+        "step35flash"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "minimaxm27",
+      "name": "MiniMax M2.7",
+      "provider": "MiniMax",
+      "aliases": [
+        "minimaxm27"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen3527b",
+      "name": "Qwen3.5-27B",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen3527b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "fable5",
+      "name": "Fable 5",
+      "provider": "Anthropic",
+      "aliases": [
+        "fable5"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "opus5",
+      "name": "Opus 5",
+      "provider": "Anthropic",
+      "aliases": [
+        "opus5"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "sonnet5",
+      "name": "Sonnet 5",
+      "provider": "Anthropic",
+      "aliases": [
+        "sonnet5"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "geminiexpwhole",
+      "name": "gemini-exp-1206",
+      "provider": "Google",
+      "aliases": [
+        "geminiexpwhole"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamaqwen25coder32b",
+      "name": "ollama/qwen2.5-coder:32b",
+      "provider": "未标注",
+      "aliases": [
+        "ollamaqwen25coder32b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekcoderv20724",
+      "name": "DeepSeek Coder V2 0724",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekcoderv20724"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "o1miniwhole",
+      "name": "o1-mini",
+      "provider": "未标注",
+      "aliases": [
+        "o1miniwhole"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekchatv20628",
+      "name": "DeepSeek Chat V2 0628",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekchatv20628"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "geminiexpdiff",
+      "name": "gemini-exp-1206",
+      "provider": "Google",
+      "aliases": [
+        "geminiexpdiff"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder14binstruct",
+      "name": "Qwen2.5-Coder-14B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder14binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "dracarys272binstruct",
+      "name": "Dracarys2-72B-Instruct",
+      "provider": "Nous Research",
+      "aliases": [
+        "dracarys272binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15proexp",
+      "name": "gemini-1.5-pro-exp-0827",
+      "provider": "Google",
+      "aliases": [
+        "gemini15proexp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "openrouterqwenqwen25coder32binstruct",
+      "name": "openrouter/qwen/qwen-2.5-coder-32b-instruct",
+      "provider": "未标注",
+      "aliases": [
+        "openrouterqwenqwen25coder32binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistrallarge2411",
+      "name": "Mistral Large (2411)",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistrallarge2411"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15pro002",
+      "name": "gemini-1.5-pro-002",
+      "provider": "Google",
+      "aliases": [
+        "gemini15pro002"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen2572binstructbf16",
+      "name": "qwen-2.5-72b-instruct (bf16)",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen2572binstructbf16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamaqwen251coder7binstructggufq8032k",
+      "name": "ollama/Qwen2.5.1-Coder-7B-Instruct-GGUF:Q8_0-32k",
+      "provider": "未标注",
+      "aliases": [
+        "ollamaqwen251coder7binstructggufq8032k"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "nousresearchhermes3llama31405b",
+      "name": "nousresearch/hermes-3-llama-3.1-405b",
+      "provider": "Nous Research",
+      "aliases": [
+        "nousresearchhermes3llama31405b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamaqwen25coder14b",
+      "name": "ollama/qwen2.5-coder:14b",
+      "provider": "未标注",
+      "aliases": [
+        "ollamaqwen25coder14b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistrallarge22407",
+      "name": "Mistral Large 2 (2407)",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistrallarge22407"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamaqwen2532binstructq80",
+      "name": "ollama/qwen2.5:32b-instruct-q8_0",
+      "provider": "未标注",
+      "aliases": [
+        "ollamaqwen2532binstructq80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "grok2",
+      "name": "Grok-2",
+      "provider": "xAI",
+      "aliases": [
+        "grok2"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder7binstruct",
+      "name": "Qwen2.5-Coder-7B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder7binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama31nemotron70binstructhf",
+      "name": "Llama-3.1-Nemotron-70B-Instruct-HF",
+      "provider": "Meta",
+      "aliases": [
+        "llama31nemotron70binstructhf"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "grok2mini",
+      "name": "Grok-2-mini",
+      "provider": "xAI",
+      "aliases": [
+        "grok2mini"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "novapro",
+      "name": "Nova Pro",
+      "provider": "Amazon",
+      "aliases": [
+        "novapro"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamaqwen2532b",
+      "name": "ollama/qwen2.5:32b",
+      "provider": "未标注",
+      "aliases": [
+        "ollamaqwen2532b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yicoder9bchat",
+      "name": "Yi Coder 9B Chat",
+      "provider": "零一万物",
+      "aliases": [
+        "yicoder9bchat"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15flashexp",
+      "name": "gemini-1.5-flash-exp-0827",
+      "provider": "Google",
+      "aliases": [
+        "gemini15flashexp"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder7binstructq80",
+      "name": "qwen2.5-coder:7b-instruct-q8_0",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder7binstructq80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15flash0020924",
+      "name": "gemini-1.5-flash-002 (0924)",
+      "provider": "Google",
+      "aliases": [
+        "gemini15flash0020924"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codestral",
+      "name": "codestral-2405",
+      "provider": "Mistral AI",
+      "aliases": [
+        "codestral"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen272binstructq80",
+      "name": "qwen2:72b-instruct-q8_0",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen272binstructq80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "llama370b",
+      "name": "llama3-70b-8192",
+      "provider": "Meta",
+      "aliases": [
+        "llama370b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codestral22bv01q4km",
+      "name": "Codestral-22B-v0.1-Q4_K_M",
+      "provider": "Mistral AI",
+      "aliases": [
+        "codestral22bv01q4km"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codestral22bv01q80",
+      "name": "codestral:22b-v0.1-q8_0",
+      "provider": "Mistral AI",
+      "aliases": [
+        "codestral22bv01q80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamacodestral",
+      "name": "ollama/codestral",
+      "provider": "未标注",
+      "aliases": [
+        "ollamacodestral"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yicoder9bchatq40",
+      "name": "yi-coder:9b-chat-q4_0",
+      "provider": "零一万物",
+      "aliases": [
+        "yicoder9bchatq40"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15flashlatest",
+      "name": "gemini-1.5-flash-latest",
+      "provider": "Google",
+      "aliases": [
+        "gemini15flashlatest"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "wizardlm28x22b",
+      "name": "WizardLM-2 8x22B",
+      "provider": "Microsoft",
+      "aliases": [
+        "wizardlm28x22b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamayicoder9bchatfp16",
+      "name": "ollama/yi-coder:9b-chat-fp16",
+      "provider": "未标注",
+      "aliases": [
+        "ollamayicoder9bchatfp16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "reflection70b",
+      "name": "Reflection-70B",
+      "provider": "未标注",
+      "aliases": [
+        "reflection70b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder3binstruct",
+      "name": "Qwen2.5-Coder-3B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder3binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamamistralsmall",
+      "name": "ollama/mistral-small",
+      "provider": "未标注",
+      "aliases": [
+        "ollamamistralsmall"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma227binstructq80",
+      "name": "gemma2:27b-instruct-q8_0",
+      "provider": "Google",
+      "aliases": [
+        "gemma227binstructq80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "codeqwen7bchatv15q80",
+      "name": "codeqwen:7b-chat-v1.5-q8_0",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "codeqwen7bchatv15q80"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamamistralnemo12binstructq4km",
+      "name": "ollama/mistral-nemo:12b-instruct-2407-q4_K_M",
+      "provider": "未标注",
+      "aliases": [
+        "ollamamistralnemo12binstructq4km"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamacodegeex4",
+      "name": "ollama/codegeex4",
+      "provider": "未标注",
+      "aliases": [
+        "ollamacodegeex4"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder15binstruct",
+      "name": "Qwen2.5-Coder-1.5B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder15binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamahermes38bllama31fp16",
+      "name": "ollama/hermes3:8b-llama3.1-fp16",
+      "provider": "未标注",
+      "aliases": [
+        "ollamahermes38bllama31fp16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamawojtekopencodeinterpreter67b",
+      "name": "ollama/wojtek/opencodeinterpreter:6.7b",
+      "provider": "未标注",
+      "aliases": [
+        "ollamawojtekopencodeinterpreter67b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamatulu3",
+      "name": "ollama/tulu3",
+      "provider": "未标注",
+      "aliases": [
+        "ollamatulu3"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamallama323binstructfp16",
+      "name": "ollama/llama3.2:3b-instruct-fp16",
+      "provider": "未标注",
+      "aliases": [
+        "ollamallama323binstructfp16"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamahermes3",
+      "name": "ollama/hermes3",
+      "provider": "未标注",
+      "aliases": [
+        "ollamahermes3"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "ollamagranite3dense8b",
+      "name": "ollama/granite3-dense:8b",
+      "provider": "未标注",
+      "aliases": [
+        "ollamagranite3dense8b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "qwen25coder05binstruct",
+      "name": "Qwen2.5-Coder-0.5B-Instruct",
+      "provider": "阿里巴巴",
+      "aliases": [
+        "qwen25coder05binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "geminigemini15prolatest",
+      "name": "gemini/gemini-1.5-pro-latest",
+      "provider": "Google",
+      "aliases": [
+        "geminigemini15prolatest"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekcoderv20724deprecated",
+      "name": "DeepSeek Coder V2 0724 (deprecated)",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekcoderv20724deprecated"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gpt4turbo",
+      "name": "gpt-4-turbo-2024-04-09",
+      "provider": "OpenAI",
+      "aliases": [
+        "gpt4turbo"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "athene70b",
+      "name": "athene-70b-0725",
+      "provider": "无问芯穹",
+      "aliases": [
+        "athene70b"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yilargepreview",
+      "name": "yi-large-preview",
+      "provider": "零一万物",
+      "aliases": [
+        "yilargepreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "yilarge",
+      "name": "yi-large",
+      "provider": "零一万物",
+      "aliases": [
+        "yilarge"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "deepseekcoderv2",
+      "name": "deepseek-coder-v2",
+      "provider": "DeepSeek",
+      "aliases": [
+        "deepseekcoderv2"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemma227bit",
+      "name": "gemma-2-27b-it",
+      "provider": "Google",
+      "aliases": [
+        "gemma227bit"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "gemini15proapipreview",
+      "name": "gemini-1.5-pro-api-0409-preview",
+      "provider": "Google",
+      "aliases": [
+        "gemini15proapipreview"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "glm4air",
+      "name": "glm-4-air",
+      "provider": "智谱 AI",
+      "aliases": [
+        "glm4air"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistralnext",
+      "name": "mistral-next",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistralnext"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "snorkelmistralpairrmdpo",
+      "name": "snorkel-mistral-pairrm-dpo",
+      "provider": "未标注",
+      "aliases": [
+        "snorkelmistralpairrmdpo"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "commandr",
+      "name": "command-r",
+      "provider": "Cohere",
+      "aliases": [
+        "commandr"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "mistral7binstruct",
+      "name": "mistral-7b-instruct",
+      "provider": "Mistral AI",
+      "aliases": [
+        "mistral7binstruct"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "musespark12",
+      "name": "Muse Spark 1.2",
+      "provider": "Meta",
+      "aliases": [
+        "musespark12"
+      ],
+      "snapshot": "",
+      "note": "；由榜单抓取自动登记"
+    },
+    {
+      "id": "zhipu-glm-5.1",
+      "name": "GLM-5.1",
+      "provider": "智谱 AI",
+      "aliases": [
+        "GLM-5.1",
+        "GLM 5.1"
+      ],
+      "snapshot": "",
+      "note": "与 GLM-5 是不同版本"
+    },
+    {
+      "id": "zhipu-glm-5.2",
+      "name": "GLM-5.2",
+      "provider": "智谱 AI",
+      "aliases": [
+        "GLM-5.2",
+        "GLM 5.2"
+      ],
+      "snapshot": "",
+      "note": "与 GLM-5 / 5.1 是不同版本"
+    },
+    {
+      "id": "anthropic-claude-3.5-sonnet-20240620",
+      "name": "Claude 3.5 Sonnet (20240620)",
+      "provider": "Anthropic",
+      "aliases": [
+        "claude-3-5-sonnet-20240620"
+      ],
+      "snapshot": "20240620",
+      "note": "日期快照版本，与基础版为不同条目"
+    },
+    {
+      "id": "google-gemini-1.5-pro-api-0514",
+      "name": "Gemini 1.5 Pro (API 0514)",
+      "provider": "Google",
+      "aliases": [
+        "gemini-1.5-pro-api-0514",
+        "gemini-1.5-pro-api-0409-preview"
+      ],
+      "snapshot": "0514",
+      "note": "API 快照版本，与 -001/-002 为不同条目"
+    },
+    {
+      "id": "google-gemini-1.5-flash-api-0514",
+      "name": "Gemini 1.5 Flash (API 0514)",
+      "provider": "Google",
+      "aliases": [
+        "gemini-1.5-flash-api-0514"
+      ],
+      "snapshot": "0514",
+      "note": "API 快照版本，与 -001/-002 为不同条目"
     }
   ]
 }
