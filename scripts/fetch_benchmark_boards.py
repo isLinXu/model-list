@@ -55,10 +55,20 @@ SWE_BENCH_URL = (
     "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json"
 )
 AIDER_URL = "https://aider.chat/docs/leaderboards/"
+AIDER_EDIT_URL = "https://aider.chat/docs/leaderboards/edit.html"
+AIDER_REFACTOR_URL = "https://aider.chat/docs/leaderboards/refactor.html"
 LMARENA_URL = (
     "https://huggingface.co/spaces/lmarena-ai/chatbot-arena-leaderboard/resolve/main/"
     "leaderboard_table_20250804.csv"
 )
+ARENA_HARD_URL = (
+    "https://huggingface.co/spaces/lmarena-ai/arena-leaderboard/resolve/main/"
+    "arena_hard_auto_leaderboard_v0.1.csv"
+)
+# SWE-rebench 排行榜是 Next.js 应用，数据以 flight 流形式内联在 HTML 中。
+# 它的结构是「一榜多期」：同一批模型在连续多个月份的评测切片上的分数，
+# 因此需要同时保留模型维度与时间维度。
+SWE_REBENCH_URL = "https://swe-rebench.com/leaderboard"
 
 # 占位符：SWE-bench 用 "Undisclosed" / "Multiple" 表示模型未公开或多模型组合，
 # 它们不是具体模型版本，不能当作一个模型收录。
@@ -461,6 +471,325 @@ def parse_lmarena(raw: bytes) -> tuple[list[dict], list[dict]]:
 
 
 # ---------------------------------------------------------------------------
+# 解析：SWE-rebench 官方排行榜（一榜多期）
+# ---------------------------------------------------------------------------
+
+def parse_swe_rebench(raw: bytes) -> tuple[list[dict], list[dict]]:
+    """SWE-rebench 排行榜。
+
+    与其他榜不同，它不是「一个榜一个分数」，而是**同一批模型在连续多个月份的
+    评测切片上的分数**（如 2025-01 ~ 2026-06 共 18 期）。页面是 Next.js 应用，
+    数据以 flight 流形式内联在 HTML 中，需要先把流拼回完整字符串再抽 JSON。
+
+    模型名带两种配置标注，必须保留：
+      * ``[high]`` / ``[medium]`` —— 推理档位
+      * ``(text)`` / ``(tools)``  —— 调用模式
+    """
+    text = raw.decode("utf-8", "replace")
+    chunks: list[str] = []
+    for m in re.finditer(r'self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)', text):
+        try:
+            chunks.append(json.loads('"' + m.group(1) + '"'))
+        except ValueError:
+            continue
+    if not chunks:
+        return [], []
+    blob = "".join(chunks)
+
+    # 逐个定位 {"data":[{"type":"line","name":... 的图表数组并括号配平。
+    # 真实页面里 JSON 无空格，但测试样例经 json.dumps 后可能带空格，故允许空白。
+    arrays: list[tuple[list[str], list[dict]]] = []
+    for m in re.finditer(r'\{"data":\s*\[\s*\{"type":\s*"line"', blob):
+        start = m.start()
+        depth = 0
+        i = start
+        while i < len(blob):
+            c = blob[i]
+            if c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            i += 1
+        raw_arr = blob[start : i + 1]
+        try:
+            arr = json.loads(raw_arr)
+        except ValueError:
+            continue
+        pre = blob[max(0, start - 800) : start]
+        cats_raw = re.findall(r'"categories":\[([^\]]*)\]', pre)
+        cats: list[str] = []
+        if cats_raw:
+            try:
+                cats = json.loads("[" + cats_raw[-1] + "]")
+            except ValueError:
+                cats = []
+        arrays.append((cats, arr.get("data", [])))
+
+    if not arrays:
+        return [], []
+
+    sources = [{
+        "id": "swe_rebench",
+        "level": "A",
+        "url": "https://swe-rebench.com/leaderboard",
+        "data_url": SWE_REBENCH_URL,
+        "ref": "SWE-rebench 官方排行榜页面内嵌数据（Next.js flight 流）",
+        "note": "由 Nebius 维护的 SWE-rebench 排行榜，模型在连续多个月的评测切片上的分数",
+        "captured": "",
+    }]
+
+    observations: list[dict] = []
+    # 同一个模型可能在多个图表数组里出现（页面按不同视图重复渲染），
+    # 这里以 (条目, 期间, 指标) 去重。
+    seen: set[tuple[str, str, str]] = set()
+
+    for cats, series in arrays:
+        # 该数组覆盖的月份：优先用 categories 与实际数据点的交集
+        points: set[str] = set()
+        for s in series:
+            for p in s.get("data", []):
+                points.add(p["x"])
+        periods = sorted(points, key=lambda x: (len(x), x))
+        if not periods:
+            continue
+
+        for s in series:
+            name = str(s.get("name") or "").strip()
+            if not name:
+                continue
+            # 拆出配置：模型本体 / 推理档位 / 调用模式
+            base = name
+            effort = ""
+            mode = ""
+            m_eff = re.search(r"\[([^\]]+)\]", base)
+            if m_eff:
+                effort = m_eff.group(1)
+                base = base.replace(m_eff.group(0), "").strip()
+            m_mode = re.search(r"\(([^)]+)\)\s*$", base)
+            if m_mode:
+                mode = m_mode.group(1)
+                base = base[: m_mode.start()].strip()
+
+            for p in s.get("data", []):
+                period = str(p.get("x") or "")
+                val = p.get("y")
+                if not period or not isinstance(val, (int, float)):
+                    continue
+                # 同一模型在不同评测期的分数是不同数据点，
+                # 条目身份必须含评测期，否则会被去重逻辑吃掉。
+                entry_id = f"{name}@{period}"
+                pk = (entry_id, "resolved_rate")
+                if pk in seen:
+                    continue
+                seen.add(pk)
+                observations.append({
+                    "board": "swe_rebench",
+                    "board_label": "SWE-rebench",
+                    "model_raw": name,
+                    "provider_raw": "",
+                    "metric_key": "resolved_rate",
+                    "metric_label": "已解决问题比例",
+                    "metric_unit": "percent",
+                    "metric_max": 100,
+                    "value": round(float(val), 2),
+                    "rank": None,
+                    "date": _period_to_date(period),
+                    "entry_id": entry_id,
+                    "agent": mode,
+                    "reasoning_effort": effort,
+                    "model_release_date": "",
+                    "note": (f"评测期 {period}" +
+                            (f" · 推理档位 {effort}" if effort else "") +
+                            (f" · 调用模式 {mode}" if mode else "")),
+                    "src": "swe_rebench",
+                    # 该源特有字段：期间
+                    "period": period,
+                })
+
+    return observations, sources
+
+
+_MONTHS = {
+    "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04", "May": "05", "Jun": "06",
+    "Jul": "07", "Aug": "08", "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12",
+}
+
+
+def _period_to_date(period: str) -> str:
+    """把 "Mar 2026" 这样的期间标签转成 "2026-03"（仅到月，无日）。"""
+    m = re.match(r"([A-Z][a-z]{2})\s+(\d{4})", period.strip())
+    if not m:
+        return ""
+    mon = _MONTHS.get(m.group(1))
+    return f"{m.group(2)}-{mon}" if mon else ""
+
+
+# ---------------------------------------------------------------------------
+# 解析：Aider edit / refactor 榜
+# ---------------------------------------------------------------------------
+
+AIDER_TABLES = {
+    "aider_edit": {
+        "url": AIDER_EDIT_URL,
+        "label": "Aider edit（代码编辑）",
+        "scope": "Aider 官方 edit 榜；测的是把代码编辑成目标形态的成功率，"
+                 "与 polyglot 榜（多语言编程题）任务不同，分数不可互相比较",
+        "metric_label": "正确完成率",
+    },
+    "aider_refactor": {
+        "url": AIDER_REFACTOR_URL,
+        "label": "Aider refactor（代码重构）",
+        "scope": "Aider 官方 refactor 榜；测的是重构既有代码的正确率，"
+                 "与 polyglot / edit 榜任务不同，分数不可互相比较",
+        "metric_label": "正确完成率",
+    },
+}
+
+
+def parse_aider_tables(raw: bytes, board_id: str) -> tuple[list[dict], list[dict]]:
+    """解析 Aider 的 edit / refactor 榜单页。
+
+    两页的表结构与 polyglot **不同**：
+      * polyglot 7 列：标记列 / Model / Percent / Cost / Command / Edit rate / Edit format
+      * edit 与 refactor 5 列：Model / Percent / Command / Edit format（无标记列与成本列）
+    """
+    meta = AIDER_TABLES[board_id]
+    text = raw.decode("utf-8", "replace")
+    tables = re.findall(r"<table.*?</table>", text, re.S)
+    if not tables:
+        return [], []
+    rows = re.findall(r"<tr.*?</tr>", tables[0], re.S)
+
+    parsed: list[dict] = []
+    for row in rows[1:]:
+        cells = [
+            H.unescape(re.sub("<[^>]+>", "", c)).strip()
+            for c in re.findall(r"<t[dh].*?</t[dh]>", row, re.S)
+        ]
+        if len(cells) >= 7:
+            model_raw = cells[1]
+            pct = re.match(r"([\d.]+)%", cells[2])
+            cost, command, edit_rate, edit_format = cells[3], cells[4], cells[5], cells[6]
+        elif len(cells) >= 5:
+            model_raw = cells[0]
+            pct = re.match(r"([\d.]+)%", cells[1])
+            cost, command, edit_rate, edit_format = "", cells[2], "", cells[4]
+        else:
+            continue
+        if not model_raw or not pct:
+            continue
+        parsed.append({
+            "model_raw": model_raw,
+            "pct": float(pct.group(1)),
+            "cost": cost,
+            "command": command,
+            "edit_rate": edit_rate,
+            "edit_format": edit_format,
+        })
+
+    sources = [{
+        "id": board_id,
+        "level": "A",
+        "url": meta["url"],
+        "data_url": meta["url"],
+        "ref": f"Aider 官方 {board_id.split('_')[1]} 榜单页",
+        "note": "Aider 官方文档站榜单表格，含全部参评模型条目",
+        "captured": "",
+    }]
+
+    observations = []
+    for p in parsed:
+        observations.append({
+            "board": board_id,
+            "board_label": meta["label"],
+            "model_raw": p["model_raw"],
+            "provider_raw": "",
+            "metric_key": "pass_rate",
+            "metric_label": meta["metric_label"],
+            "metric_unit": "percent",
+            "metric_max": 100,
+            "value": p["pct"],
+            "rank": None,
+            "date": "",
+            "entry_id": p["model_raw"],
+            "agent": "aider " + (p["edit_format"] or ""),
+            "reasoning_effort": "",
+            "model_release_date": "",
+            "note": (f"成本 {p['cost']}" if p["cost"] else "") +
+                    (f" · 编辑格式 {p['edit_format']}" if p["edit_format"] else ""),
+            "src": board_id,
+        })
+    return observations, sources
+
+
+# ---------------------------------------------------------------------------
+# 解析：Arena-Hard-Auto 榜
+# ---------------------------------------------------------------------------
+
+def parse_arena_hard(raw: bytes) -> tuple[list[dict], list[dict]]:
+    """LMArena 官方 Space 导出的 Arena-Hard-Auto 榜。
+
+    该表带 Bradley-Terry 评分的置信区间与平均 token 消耗；
+    置信区间说明**分数本身有统计误差**，不能按点估计精确排序。
+    """
+    text = raw.decode("utf-8", "replace")
+    rows = list(csv.DictReader(io.StringIO(text)))
+    if not rows or "model" not in (rows[0].keys() if rows else {}):
+        return [], []
+
+    sources = [{
+        "id": "arena_hard_auto",
+        "level": "A",
+        "url": "https://lmarena.ai/leaderboard",
+        "data_url": ARENA_HARD_URL,
+        "ref": "LMArena 官方 Space · arena_hard_auto_leaderboard_v0.1.csv",
+        "note": "Arena-Hard-Auto 自动评测榜，含置信区间与平均 token 消耗",
+        "captured": "",
+    }]
+
+    observations = []
+    for row in rows:
+        model_raw = (row.get("model") or "").strip()
+        if not model_raw:
+            continue
+        try:
+            score = float(row.get("score") or "")
+        except ValueError:
+            continue
+        lo = (row.get("rating_q025") or "").strip()
+        hi = (row.get("rating_q975") or "").strip()
+        ci = (row.get("CI") or "").strip()
+        tok = (row.get("avg_tokens") or "").strip()
+        date = (row.get("date") or "").strip()
+
+        observations.append({
+            "board": "arena_hard_auto",
+            "board_label": "Arena-Hard-Auto",
+            "model_raw": model_raw,
+            "provider_raw": "",
+            "metric_key": "arena_hard_score",
+            "metric_label": "Arena-Hard-Auto 分数",
+            "metric_unit": "score",
+            "metric_max": 100,
+            "value": score,
+            "rank": None,
+            "date": date,
+            "entry_id": model_raw,
+            "agent": "",
+            "reasoning_effort": "",
+            "model_release_date": "",
+            "note": (f"95% 置信区间 {lo}–{hi}" if lo and hi else "") +
+                    (f" · CI {ci}" if ci else "") +
+                    (f" · 平均 {tok} tokens" if tok else ""),
+            "src": "arena_hard_auto",
+        })
+
+    return observations, sources
+
+
+# ---------------------------------------------------------------------------
 # 模型归一化
 # ---------------------------------------------------------------------------
 
@@ -549,6 +878,12 @@ def build_boards(cfg: Config) -> dict:
         ("swebench", SWE_BENCH_URL, "swebench_leaderboards.json", parse_swebench),
         ("aider", AIDER_URL, "aider_polyglot.html", parse_aider),
         ("lmarena", LMARENA_URL, "lmarena_leaderboard.csv", parse_lmarena),
+        ("swerebench", SWE_REBENCH_URL, "swe_rebench_leaderboard.html", parse_swe_rebench),
+        ("aideredit", AIDER_EDIT_URL, "aider_edit.html",
+         lambda raw: parse_aider_tables(raw, "aider_edit")),
+        ("aiderrefactor", AIDER_REFACTOR_URL, "aider_refactor.html",
+         lambda raw: parse_aider_tables(raw, "aider_refactor")),
+        ("arenahard", ARENA_HARD_URL, "arena_hard_auto.csv", parse_arena_hard),
     ]
 
     for key, url, cache_name, parser in plan:
@@ -606,10 +941,13 @@ def build_boards(cfg: Config) -> dict:
                 raise ValueError(f"指标 {mk} 单位冲突: {m['unit']} vs {unit}")
             m["boards"] = sorted(set(m["boards"]) | {o["board"]})
 
-    # 每个 board 内按 metric 计算排名（同 metric、同 board 内排名才有效）
-    by_board_metric: dict[tuple[str, str], list[dict]] = {}
+    # 每个 board 内按 metric 计算排名（同 metric、同 board 内排名才有效）。
+    # 一榜多期的源（如 SWE-rebench 逐月榜单）必须**按评测期分组**后再排名，
+    # 否则跨期混排得到的名次没有任何意义。
+    by_board_metric: dict[tuple[str, str, str], list[dict]] = {}
     for o in deduped:
-        by_board_metric.setdefault((o["board"], o["metric_key"]), []).append(o)
+        period = str(o.get("period") or "")
+        by_board_metric.setdefault((o["board"], o["metric_key"], period), []).append(o)
     for group in by_board_metric.values():
         group.sort(key=lambda x: -x["value"])
         for i, o in enumerate(group, 1):
@@ -629,6 +967,21 @@ def build_boards(cfg: Config) -> dict:
         elif bid == "lmarena_mmlu":
             scope = ("LMArena 官方榜单 MMLU 列（原表 0–1 比例，此处换算为百分比）；"
                      "与 MT-bench 列单位不同，已单独成榜")
+        elif bid == "swe_rebench":
+            scope = ("SWE-rebench 官方排行榜（Nebius 维护）：模型在**连续多个月的评测切片**上的"
+                     "已解决比例。同一条目对应多个评测期（2025-01 ~ 2026-06），"
+                     "不同期的任务集不同，**分数不可跨期直接比较**；"
+                     "模型名带推理档位 [high/medium] 与调用模式 (text/tools) 标注")
+        elif bid == "aider_edit":
+            scope = ("Aider 官方 edit 榜：把代码编辑成目标形态的成功率；"
+                     "与 polyglot 榜（多语言编程题）、refactor 榜任务不同，分数不可互相比较")
+        elif bid == "aider_refactor":
+            scope = ("Aider 官方 refactor 榜：重构既有代码的正确率；"
+                     "与 polyglot 榜（多语言编程题）、edit 榜任务不同，分数不可互相比较")
+        elif bid == "arena_hard_auto":
+            scope = ("LMArena 官方 Arena-Hard-Auto 榜：自动评测的困难提示词集，"
+                     "分数为 Bradley-Terry 评分，**带 95% 置信区间**，"
+                     "点估计相近时不应据此强行排序")
         else:
             scope = ""
         boards[bid] = {
@@ -759,6 +1112,22 @@ def validate(data: dict) -> tuple[list[str], list[str]]:
             )
         if len({o["model"] for o in bobs}) != b.get("models"):
             errors.append(f"榜单 {bid}: 声明 models 数与实际不符")
+
+    # 一榜多期的源：名次必须严格按评测期分组，
+    # 否则会出现「某期只有 19 条却给出 rank=239」这类无意义名次。
+    for bid, b in boards.items():
+        bobs = [o for o in obs if o["board"] == bid]
+        if not any(o.get("period") for o in bobs):
+            continue
+        by_period: dict[str, list[dict]] = {}
+        for o in bobs:
+            by_period.setdefault(str(o.get("period") or ""), []).append(o)
+        for period, group in by_period.items():
+            ranks = sorted(o["rank"] for o in group if o.get("rank") is not None)
+            if ranks != list(range(1, len(group) + 1)):
+                errors.append(
+                    f"榜单 {bid} 评测期 {period}: 名次非该期内连续 1..{len(group)}"
+                )
 
     # 同一 entry 在同一榜内只能有一个指标值（不同指标除外）
     entry_metrics: dict[tuple[str, str], set[str]] = {}

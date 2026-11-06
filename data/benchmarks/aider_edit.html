@@ -1,0 +1,2316 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="/assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="/assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+.site-nav > ul.nav-list:first-child > li > a,
+.site-nav > ul.nav-list:first-child > li > ul > li:not(:nth-child(1)) > a,
+.site-nav > ul.nav-list:first-child > li > ul > li > ul > li > a {
+  background-image: none;
+}
+
+.site-nav > ul.nav-list:not(:first-child) a,
+.site-nav li.external a {
+  background-image: none;
+}
+
+.site-nav > ul.nav-list:first-child > li:nth-child(11) > ul > li:nth-child(1) > a {
+  font-weight: 600;
+  text-decoration: none;
+}.site-nav > ul.nav-list:first-child > li:nth-child(11) > button svg,
+.site-nav > ul.nav-list:first-child > li:nth-child(11) > ul > li:nth-child(1) > button svg {
+  transform: rotate(-90deg);
+}.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(11) > ul.nav-list,
+.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(11) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list {
+  display: block;
+}
+  </style>
+
+  
+
+  
+    <script src="/assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Code editing leaderboard | aider</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Code editing leaderboard" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Quantitative benchmark of basic LLM code editing skill." />
+<meta property="og:description" content="Quantitative benchmark of basic LLM code editing skill." />
+<link rel="canonical" href="https://aider.chat/docs/leaderboards/edit.html" />
+<meta property="og:url" content="https://aider.chat/docs/leaderboards/edit.html" />
+<meta property="og:site_name" content="aider" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Code editing leaderboard" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Quantitative benchmark of basic LLM code editing skill.","headline":"Code editing leaderboard","url":"https://aider.chat/docs/leaderboards/edit.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+<meta property="og:image" content="https://aider.chat/assets/leaderboard.jpg">
+<meta property="twitter:image" content="https://aider.chat/assets/leaderboard.jpg">
+
+
+<!-- Custom site title styling -->
+<style>
+  @font-face {
+    font-family: GlassTTYVT220;
+    src: local("Glass TTY VT220"), local("Glass TTY VT220 Medium"), url(/assets/Glass_TTY_VT220.ttf) format("truetype");
+  }
+  
+  .site-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'GlassTTYVT220', monospace;
+    color: #14b014; /* terminal green color */
+    text-decoration: none;
+    letter-spacing: 0.5px;
+  }
+  
+  /* For SVG logo inside site-title */
+  .site-title img {
+    height: 1.8rem;
+    vertical-align: middle;
+  }
+ 
+  /* Sidebar gradient styling to match hero section */
+  .side-bar { 
+    background: linear-gradient(135deg, #ffffff 0%, rgba(20, 176, 20, 0.01) 25%, rgba(20, 176, 20, 0.04) 40%, rgba(220, 230, 255, 0.4) 60%, rgba(205, 218, 255, 0.4) 80%, #F5F6FA 100%);
+  }
+
+  @media (max-width: 50em) {
+    .ea-ad--sidebar { display: none; }
+    .ea-ad--mobile { display: block; }
+  }
+</style>
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://aider.chat/feed.xml">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Logo Progressive Enhancement for Jekyll pages -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const siteTitle = document.querySelector('.site-title');
+    if (siteTitle) {
+      const textContent = siteTitle.textContent; // Save the text for fallback
+      
+      // Create new image element
+      const logoImg = new Image();
+      logoImg.src = '/assets/logo.svg';
+      logoImg.alt = 'Aider Logo';
+      logoImg.style.height = '1.8rem';
+      logoImg.style.verticalAlign = 'middle';
+      
+      // Only replace if image loads successfully
+      logoImg.onload = function() {
+        siteTitle.textContent = ''; // Clear text
+        siteTitle.appendChild(logoImg);
+      };
+      
+      // If image fails to load, do nothing (keep the text)
+      logoImg.onerror = function() {
+        console.log('SVG logo failed to load, keeping text fallback');
+      };
+    }
+  });
+</script>
+<meta name="theme-color" content="#157878">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/icons/site.webmanifest">
+<link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="/" class="site-title lh-tight">
+  aider
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Installation category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/install.html" class="nav-list-link">Installation</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/install/optional.html" class="nav-list-link">Optional steps</a></li><li class="nav-list-item"><a href="/docs/install/docker.html" class="nav-list-link">Aider with docker</a></li><li class="nav-list-item"><a href="/docs/install/codespaces.html" class="nav-list-link">GitHub Codespaces</a></li><li class="nav-list-item"><a href="/docs/install/replit.html" class="nav-list-link">Replit</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Usage category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/usage.html" class="nav-list-link">Usage</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/usage/tips.html" class="nav-list-link">Tips</a></li><li class="nav-list-item"><a href="/docs/usage/commands.html" class="nav-list-link">In-chat commands</a></li><li class="nav-list-item"><a href="/docs/usage/modes.html" class="nav-list-link">Chat modes</a></li><li class="nav-list-item"><a href="/docs/usage/tutorials.html" class="nav-list-link">Tutorial videos</a></li><li class="nav-list-item"><a href="/docs/usage/voice.html" class="nav-list-link">Voice-to-code with aider</a></li><li class="nav-list-item"><a href="/docs/usage/images-urls.html" class="nav-list-link">Images &amp; web pages</a></li><li class="nav-list-item"><a href="/docs/usage/caching.html" class="nav-list-link">Prompt caching</a></li><li class="nav-list-item"><a href="/docs/usage/watch.html" class="nav-list-link">Aider in your IDE</a></li><li class="nav-list-item"><a href="/docs/usage/notifications.html" class="nav-list-link">Notifications</a></li><li class="nav-list-item"><a href="/docs/usage/browser.html" class="nav-list-link">Aider in your browser</a></li><li class="nav-list-item"><a href="/docs/usage/conventions.html" class="nav-list-link">Specifying coding conventions</a></li><li class="nav-list-item"><a href="/docs/usage/copypaste.html" class="nav-list-link">Copy/paste with web chat</a></li><li class="nav-list-item"><a href="/docs/usage/lint-test.html" class="nav-list-link">Linting and testing</a></li><li class="nav-list-item"><a href="/docs/usage/not-code.html" class="nav-list-link">Editing config &amp; text files</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Connecting to LLMs category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/llms.html" class="nav-list-link">Connecting to LLMs</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/llms/openai.html" class="nav-list-link">OpenAI</a></li><li class="nav-list-item"><a href="/docs/llms/anthropic.html" class="nav-list-link">Anthropic</a></li><li class="nav-list-item"><a href="/docs/llms/gemini.html" class="nav-list-link">Gemini</a></li><li class="nav-list-item"><a href="/docs/llms/groq.html" class="nav-list-link">GROQ</a></li><li class="nav-list-item"><a href="/docs/llms/lm-studio.html" class="nav-list-link">LM Studio</a></li><li class="nav-list-item"><a href="/docs/llms/xai.html" class="nav-list-link">xAI</a></li><li class="nav-list-item"><a href="/docs/llms/azure.html" class="nav-list-link">Azure</a></li><li class="nav-list-item"><a href="/docs/llms/cohere.html" class="nav-list-link">Cohere</a></li><li class="nav-list-item"><a href="/docs/llms/deepseek.html" class="nav-list-link">DeepSeek</a></li><li class="nav-list-item"><a href="/docs/llms/ollama.html" class="nav-list-link">Ollama</a></li><li class="nav-list-item"><a href="/docs/llms/openai-compat.html" class="nav-list-link">OpenAI compatible APIs</a></li><li class="nav-list-item"><a href="/docs/llms/openrouter.html" class="nav-list-link">OpenRouter</a></li><li class="nav-list-item"><a href="/docs/llms/github.html" class="nav-list-link">GitHub Copilot</a></li><li class="nav-list-item"><a href="/docs/llms/vertex.html" class="nav-list-link">Vertex AI</a></li><li class="nav-list-item"><a href="/docs/llms/bedrock.html" class="nav-list-link">Amazon Bedrock</a></li><li class="nav-list-item"><a href="/docs/llms/other.html" class="nav-list-link">Other LLMs</a></li><li class="nav-list-item"><a href="/docs/llms/warnings.html" class="nav-list-link">Model warnings</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Configuration category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/config.html" class="nav-list-link">Configuration</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/config/api-keys.html" class="nav-list-link">API Keys</a></li><li class="nav-list-item"><a href="/docs/config/options.html" class="nav-list-link">Options reference</a></li><li class="nav-list-item"><a href="/docs/config/aider_conf.html" class="nav-list-link">YAML config file</a></li><li class="nav-list-item"><a href="/docs/config/dotenv.html" class="nav-list-link">Config with .env</a></li><li class="nav-list-item"><a href="/docs/config/editor.html" class="nav-list-link">Editor configuration</a></li><li class="nav-list-item"><a href="/docs/config/reasoning.html" class="nav-list-link">Reasoning models</a></li><li class="nav-list-item"><a href="/docs/config/adv-model-settings.html" class="nav-list-link">Advanced model settings</a></li><li class="nav-list-item"><a href="/docs/config/model-aliases.html" class="nav-list-link">Model Aliases</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Troubleshooting category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/troubleshooting.html" class="nav-list-link">Troubleshooting</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/troubleshooting/edit-errors.html" class="nav-list-link">File editing problems</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/warnings.html" class="nav-list-link">Model warnings</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/token-limits.html" class="nav-list-link">Token limits</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/aider-not-found.html" class="nav-list-link">Aider not found</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/imports.html" class="nav-list-link">Dependency versions</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/models-and-keys.html" class="nav-list-link">Models and API keys</a></li><li class="nav-list-item"><a href="/docs/troubleshooting/support.html" class="nav-list-link">Using /help</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Screen recordings category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/recordings/" class="nav-list-link">Screen recordings</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/recordings/tree-sitter-language-pack.html" class="nav-list-link">Add language support via tree-sitter-language-pack</a></li><li class="nav-list-item"><a href="/docs/recordings/auto-accept-architect.html" class="nav-list-link">Add –auto-accept-architect feature</a></li><li class="nav-list-item"><a href="/docs/recordings/dont-drop-original-read-files.html" class="nav-list-link">Don’t /drop read-only files added at launch</a></li><li class="nav-list-item"><a href="/docs/recordings/model-accepts-settings.html" class="nav-list-link">Warn when users apply unsupported reasoning settings</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Example chat transcripts category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/examples/README.html" class="nav-list-link">Example chat transcripts</a><ul class="nav-list"><li class="nav-list-item"><a href="/examples/hello-world-flask.html" class="nav-list-link">Create a simple flask app with aider</a></li><li class="nav-list-item"><a href="/examples/2048-game.html" class="nav-list-link">Modify an open source 2048 game with aider</a></li><li class="nav-list-item"><a href="/examples/complex-change.html" class="nav-list-link">A complex multi-file change, with debugging</a></li><li class="nav-list-item"><a href="/examples/add-test.html" class="nav-list-link">Create a “black box” test case</a></li><li class="nav-list-item"><a href="/examples/update-docs.html" class="nav-list-link">Automatically update docs with aider</a></li><li class="nav-list-item"><a href="/examples/pong.html" class="nav-list-link">Build pong with aider and pygame.</a></li><li class="nav-list-item"><a href="/examples/css-exercises.html" class="nav-list-link">Complete a css exercise with aider</a></li><li class="nav-list-item"><a href="/examples/census.html" class="nav-list-link">Download, analyze and plot US Census data</a></li><li class="nav-list-item"><a href="/examples/asciinema.html" class="nav-list-link">Editing an asciinema cast file with aider</a></li><li class="nav-list-item"><a href="/examples/hello.html" class="nav-list-link">Hello aider!</a></li><li class="nav-list-item"><a href="/examples/no-color.html" class="nav-list-link">Honor the NO_COLOR environment variable</a></li><li class="nav-list-item"><a href="/examples/chat-transcript-css.html" class="nav-list-link">Improve css styling of chat transcripts</a></li><li class="nav-list-item"><a href="/examples/semantic-search-replace.html" class="nav-list-link">Semantic search &amp; replace code with aider</a></li></ul></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in More info category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/more-info.html" class="nav-list-link">More info</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/git.html" class="nav-list-link">Git integration</a></li><li class="nav-list-item"><a href="/docs/languages.html" class="nav-list-link">Supported languages</a></li><li class="nav-list-item"><a href="/docs/repomap.html" class="nav-list-link">Repository map</a></li><li class="nav-list-item"><a href="/docs/scripting.html" class="nav-list-link">Scripting aider</a></li><li class="nav-list-item"><a href="/docs/more/infinite-output.html" class="nav-list-link">Infinite output</a></li><li class="nav-list-item"><a href="/docs/more/edit-formats.html" class="nav-list-link">Edit formats</a></li><li class="nav-list-item"><a href="/docs/more/analytics.html" class="nav-list-link">Analytics</a></li><li class="nav-list-item"><a href="/docs/legal/privacy.html" class="nav-list-link">Privacy policy</a></li></ul></li><li class="nav-list-item"><a href="/docs/faq.html" class="nav-list-link">FAQ</a></li><li class="nav-list-item"><a href="/HISTORY.html" class="nav-list-link">Release history</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="toggle items in Aider LLM Leaderboards category" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+    </button><a href="/docs/leaderboards/" class="nav-list-link">Aider LLM Leaderboards</a><ul class="nav-list"><li class="nav-list-item"><a href="/docs/leaderboards/edit.html" class="nav-list-link">Code editing leaderboard</a></li><li class="nav-list-item"><a href="/docs/leaderboards/refactor.html" class="nav-list-link">Refactoring leaderboard</a></li><li class="nav-list-item"><a href="/docs/leaderboards/by-release-date.html" class="nav-list-link">Scores by release date</a></li><li class="nav-list-item"><a href="/docs/leaderboards/notes.html" class="nav-list-link">Benchmark notes</a></li><li class="nav-list-item"><a href="/docs/leaderboards/contrib.html" class="nav-list-link">Contributing results</a></li></ul></li><li class="nav-list-item"><a href="/blog/" class="nav-list-link">Aider blog</a></li></ul>
+
+  <ul class="nav-list"><li class="nav-list-item external">
+          <a href="https://github.com/Aider-AI/aider" class="nav-list-link external"
+            
+          >
+            GitHub
+            <svg viewBox="0 0 24 24" aria-labelledby="svg-external-link-title"><use xlink:href="#svg-external-link"></use></svg>
+          </a>
+        </li><li class="nav-list-item external">
+          <a href="https://discord.gg/Y7X7bhMQFV" class="nav-list-link external"
+            
+          >
+            Discord
+            <svg viewBox="0 0 24 24" aria-labelledby="svg-external-link-title"><use xlink:href="#svg-external-link"></use></svg>
+          </a>
+        </li></ul>
+</nav>
+
+
+  
+  
+    <footer class="site-footer">
+    Aider is AI pair programming in your terminal.
+    Aider is on
+    <a href="https://github.com/Aider-AI/aider">GitHub</a>
+    and
+    <a href="https://discord.gg/Y7X7bhMQFV">Discord</a>.
+</footer>
+
+  
+</div>
+
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search aider" aria-label="Search aider" autocomplete="off">
+    <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="https://github.com/Aider-AI/aider" class="site-button"
+          
+        >
+          GitHub
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://discord.gg/Y7X7bhMQFV" class="site-button"
+          
+        >
+          Discord
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="/blog/" class="site-button"
+          
+        >
+          Blog
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="/docs/leaderboards/">Aider LLM Leaderboards</a></li>
+    <li class="breadcrumb-nav-list-item"><span>Code editing leaderboard</span></li>
+  </ol>
+</nav>
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <h1 id="code-editing-leaderboard">
+  
+  
+    <a href="#code-editing-leaderboard" class="anchor-heading" aria-labelledby="code-editing-leaderboard"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Code editing leaderboard
+  
+  
+</h1>
+    
+
+<p class="note">This old
+<a href="edit.html">aider code editing leaderboard</a>
+has been replaced by the
+new, much more challenging
+<a href="/docs/leaderboards/">polyglot leaderboard</a>.</p>
+
+<p><a href="/docs/benchmarks.html#the-benchmark">Aider’s code editing benchmark</a> asks the LLM to edit python source files to complete 133 small coding exercises
+from Exercism. 
+This measures the LLM’s coding ability, and whether it can
+write new code that integrates into existing code.
+The model also has to successfully apply all its changes to the source file without human intervention.</p>
+
+<p><input type="text" id="editSearchInput" placeholder="Search..." style="width: 100%; max-width: 800px; margin: 10px auto; padding: 8px; display: block; border: 1px solid #ddd; border-radius: 4px;" /></p>
+
+<div class="table-wrapper"><table style="width: 100%; max-width: 800px; margin: auto; border-collapse: collapse; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 14px;">
+  <thead style="background-color: #f2f2f2;">
+    <tr>
+      <th style="padding: 8px; text-align: left;">Model</th>
+      <th style="padding: 8px; text-align: center;">Percent completed correctly</th>
+      <th style="padding: 8px; text-align: center;">Percent using correct edit format</th>
+      <th style="padding: 8px; text-align: left;">Command</th>
+      <th style="padding: 8px; text-align: center;">Edit format</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">o1</td>
+        <td style="padding: 8px; text-align: center;">84.2%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/openai/o1</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3-5-sonnet-20241022</td>
+        <td style="padding: 8px; text-align: center;">84.2%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model anthropic/claude-3-5-sonnet-20241022</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-exp-1206 (whole)</td>
+        <td style="padding: 8px; text-align: center;">80.5%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-exp-1206</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">o1-preview</td>
+        <td style="padding: 8px; text-align: center;">79.7%</td>
+        <td style="padding: 8px; text-align: center;">93.2%</td>
+        <td style="padding: 8px;"><code>aider --model o1-preview</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3.5-sonnet-20240620</td>
+        <td style="padding: 8px; text-align: center;">77.4%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model claude-3.5-sonnet-20240620</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3-5-haiku-20241022</td>
+        <td style="padding: 8px; text-align: center;">75.2%</td>
+        <td style="padding: 8px; text-align: center;">95.5%</td>
+        <td style="padding: 8px;"><code>aider --model anthropic/claude-3-5-haiku-20241022</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/qwen2.5-coder:32b</td>
+        <td style="padding: 8px; text-align: center;">72.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2.5-coder:32b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">DeepSeek Coder V2 0724</td>
+        <td style="padding: 8px; text-align: center;">72.9%</td>
+        <td style="padding: 8px; text-align: center;">97.7%</td>
+        <td style="padding: 8px;"><code>aider --model deepseek/deepseek-coder</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4o-2024-05-13</td>
+        <td style="padding: 8px; text-align: center;">72.9%</td>
+        <td style="padding: 8px; text-align: center;">96.2%</td>
+        <td style="padding: 8px;"><code>aider</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">DeepSeek-V2.5-1210</td>
+        <td style="padding: 8px; text-align: center;">72.2%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model deepseek/deepseek-chat</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">openai/chatgpt-4o-latest</td>
+        <td style="padding: 8px; text-align: center;">72.2%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/chatgpt-4o-latest</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">DeepSeek V2.5</td>
+        <td style="padding: 8px; text-align: center;">72.2%</td>
+        <td style="padding: 8px; text-align: center;">96.2%</td>
+        <td style="padding: 8px;"><code>aider --deepseek</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4o-2024-11-20</td>
+        <td style="padding: 8px; text-align: center;">71.4%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model openai/gpt-4o-2024-11-20</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-32B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">71.4%</td>
+        <td style="padding: 8px; text-align: center;">94.7%</td>
+        <td style="padding: 8px;"><code>aider --model openai/hf:Qwen/Qwen2.5-Coder-32B-Instruct --openai-api-base https://glhf.chat/api/openai/v1</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4o-2024-08-06</td>
+        <td style="padding: 8px; text-align: center;">71.4%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model openai/gpt-4o-2024-08-06</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">o1-mini (whole)</td>
+        <td style="padding: 8px; text-align: center;">70.7%</td>
+        <td style="padding: 8px; text-align: center;">90.0%</td>
+        <td style="padding: 8px;"><code>aider --model o1-mini</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-2.0-flash-exp</td>
+        <td style="padding: 8px; text-align: center;">69.9%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-2.0-flash-exp</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">DeepSeek Chat V2 0628</td>
+        <td style="padding: 8px; text-align: center;">69.9%</td>
+        <td style="padding: 8px; text-align: center;">97.7%</td>
+        <td style="padding: 8px;"><code>aider --model deepseek/deepseek-chat</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-exp-1206 (diff)</td>
+        <td style="padding: 8px; text-align: center;">69.2%</td>
+        <td style="padding: 8px; text-align: center;">84.2%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-exp-1206</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-14B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">69.2%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/Qwen2.5-Coder-14B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3-opus-20240229</td>
+        <td style="padding: 8px; text-align: center;">68.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --opus</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-0613</td>
+        <td style="padding: 8px; text-align: center;">67.7%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider -4</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Dracarys2-72B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">66.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>(via glhf.chat)</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-pro-exp-0827</td>
+        <td style="padding: 8px; text-align: center;">66.9%</td>
+        <td style="padding: 8px; text-align: center;">94.7%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-pro-exp-0827</code></td>
+        <td style="padding: 8px; text-align: center;">diff-fenced</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama-3.1-405b-instruct (whole)</td>
+        <td style="padding: 8px; text-align: center;">66.2%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/meta-llama/llama-3.1-405b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-0314</td>
+        <td style="padding: 8px; text-align: center;">66.2%</td>
+        <td style="padding: 8px; text-align: center;">93.2%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-4-0314</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-0125-preview</td>
+        <td style="padding: 8px; text-align: center;">66.2%</td>
+        <td style="padding: 8px; text-align: center;">97.7%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-4-0125-preview</code></td>
+        <td style="padding: 8px; text-align: center;">udiff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">yi-lightning</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/yi-lightning</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">openrouter/qwen/qwen-2.5-coder-32b-instruct</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">84.2%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/qwen/qwen-2.5-coder-32b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Mistral Large (2411)</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">96.2%</td>
+        <td style="padding: 8px;"><code>aider --model mistral/mistral-large-latest</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-pro-002</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">96.2%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-pro-002</code></td>
+        <td style="padding: 8px; text-align: center;">diff-fenced</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">qwen-2.5-72b-instruct (bf16)</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">96.2%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/qwen/qwen-2.5-72b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-1106-preview</td>
+        <td style="padding: 8px; text-align: center;">65.4%</td>
+        <td style="padding: 8px; text-align: center;">92.5%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-4-1106-preview</code></td>
+        <td style="padding: 8px; text-align: center;">udiff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/Qwen2.5.1-Coder-7B-Instruct-GGUF:Q8_0-32k</td>
+        <td style="padding: 8px; text-align: center;">63.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/Qwen2.5.1-Coder-7B-Instruct-GGUF:Q8_0-32k</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">nousresearch/hermes-3-llama-3.1-405b</td>
+        <td style="padding: 8px; text-align: center;">63.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/nousresearch/hermes-3-llama-3.1-405b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama-3.1-405b-instruct (diff)</td>
+        <td style="padding: 8px; text-align: center;">63.9%</td>
+        <td style="padding: 8px; text-align: center;">92.5%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/meta-llama/llama-3.1-405b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-turbo-2024-04-09 (udiff)</td>
+        <td style="padding: 8px; text-align: center;">63.9%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --gpt-4-turbo</code></td>
+        <td style="padding: 8px; text-align: center;">udiff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/qwen2.5-coder:14b</td>
+        <td style="padding: 8px; text-align: center;">61.7%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2.5-coder:14b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">o1-mini</td>
+        <td style="padding: 8px; text-align: center;">61.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model o1-mini</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-exp-1114</td>
+        <td style="padding: 8px; text-align: center;">60.9%</td>
+        <td style="padding: 8px; text-align: center;">85.7%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-exp-1114</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Mistral Large 2 (2407)</td>
+        <td style="padding: 8px; text-align: center;">60.2%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model mistral/mistral-large-2407</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama-3.3-70b-instruct</td>
+        <td style="padding: 8px; text-align: center;">59.4%</td>
+        <td style="padding: 8px; text-align: center;">88.7%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/meta-llama/llama-3.3-70b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/qwen2.5:32b-instruct-q8_0</td>
+        <td style="padding: 8px; text-align: center;">58.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2.5:32b-instruct-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Grok-2</td>
+        <td style="padding: 8px; text-align: center;">58.6%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/x-ai/grok-2</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama-3.1-70b-instruct</td>
+        <td style="padding: 8px; text-align: center;">58.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-exp-1121</td>
+        <td style="padding: 8px; text-align: center;">57.9%</td>
+        <td style="padding: 8px; text-align: center;">83.5%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-exp-1121</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-7B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">57.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/Qwen2.5-Coder-7B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-3.5-turbo-0301</td>
+        <td style="padding: 8px; text-align: center;">57.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-3.5-turbo-0301</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4-turbo-2024-04-09 (diff)</td>
+        <td style="padding: 8px; text-align: center;">57.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-4-turbo-2024-04-09</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-pro-001</td>
+        <td style="padding: 8px; text-align: center;">57.1%</td>
+        <td style="padding: 8px; text-align: center;">87.2%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-pro-latest</code></td>
+        <td style="padding: 8px; text-align: center;">diff-fenced</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-3.5-turbo-1106</td>
+        <td style="padding: 8px; text-align: center;">56.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-3.5-turbo-1106</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-4o-mini</td>
+        <td style="padding: 8px; text-align: center;">55.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-4o-mini</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2 72B Instruct</td>
+        <td style="padding: 8px; text-align: center;">55.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model together_ai/qwen/Qwen2-72B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Llama-3.1-Nemotron-70B-Instruct-HF</td>
+        <td style="padding: 8px; text-align: center;">54.9%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>(via glhf.chat)</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Grok-2-mini</td>
+        <td style="padding: 8px; text-align: center;">54.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/x-ai/grok-2-mini</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3-sonnet-20240229</td>
+        <td style="padding: 8px; text-align: center;">54.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --sonnet</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Nova Pro</td>
+        <td style="padding: 8px; text-align: center;">54.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model bedrock/us.amazon.nova-pro-v1:0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/qwen2.5:32b</td>
+        <td style="padding: 8px; text-align: center;">54.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2.5:32b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Yi Coder 9B Chat</td>
+        <td style="padding: 8px; text-align: center;">54.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/hf:01-ai/Yi-Coder-9B-Chat --openai-api-base https://glhf.chat/api/openai/v1</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-flash-exp-0827</td>
+        <td style="padding: 8px; text-align: center;">52.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-flash-exp-0827</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">qwen2.5-coder:7b-instruct-q8_0</td>
+        <td style="padding: 8px; text-align: center;">51.9%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2.5-coder:7b-instruct-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-flash-002 (0924)</td>
+        <td style="padding: 8px; text-align: center;">51.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-flash-002</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">codestral-2405</td>
+        <td style="padding: 8px; text-align: center;">51.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model mistral/codestral-2405</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-3.5-turbo-0613</td>
+        <td style="padding: 8px; text-align: center;">50.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gpt-3.5-turbo-0613</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gpt-3.5-turbo-0125</td>
+        <td style="padding: 8px; text-align: center;">50.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider -3</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">qwen2:72b-instruct-q8_0</td>
+        <td style="padding: 8px; text-align: center;">49.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/qwen2:72b-instruct-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama3-70b-8192</td>
+        <td style="padding: 8px; text-align: center;">49.2%</td>
+        <td style="padding: 8px; text-align: center;">73.5%</td>
+        <td style="padding: 8px;"><code>aider --model groq/llama3-70b-8192</code></td>
+        <td style="padding: 8px; text-align: center;">diff</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Codestral-22B-v0.1-Q4_K_M</td>
+        <td style="padding: 8px; text-align: center;">48.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model Codestral-22B-v0.1-Q4_K_M</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">codestral:22b-v0.1-q8_0</td>
+        <td style="padding: 8px; text-align: center;">48.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/codestral:22b-v0.1-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">claude-3-haiku-20240307</td>
+        <td style="padding: 8px; text-align: center;">47.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model claude-3-haiku-20240307</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/codestral</td>
+        <td style="padding: 8px; text-align: center;">45.9%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/codestral</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">yi-coder:9b-chat-q4_0</td>
+        <td style="padding: 8px; text-align: center;">45.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/yi-coder:9b-chat-q4_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-flash-latest</td>
+        <td style="padding: 8px; text-align: center;">44.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-flash-latest</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">WizardLM-2 8x22B</td>
+        <td style="padding: 8px; text-align: center;">44.4%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openrouter/microsoft/wizardlm-2-8x22b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/yi-coder:9b-chat-fp16</td>
+        <td style="padding: 8px; text-align: center;">43.6%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/yi-coder:9b-chat-fp16</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Reflection-70B</td>
+        <td style="padding: 8px; text-align: center;">42.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>(not currently supported)</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-3B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">39.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/Qwen2.5-Coder-3B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/mistral-small</td>
+        <td style="padding: 8px; text-align: center;">38.3%</td>
+        <td style="padding: 8px; text-align: center;">99.2%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/mistral-small</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-flash-8b-exp-0924</td>
+        <td style="padding: 8px; text-align: center;">38.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-flash-8b-exp-0924</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Command R (08-24)</td>
+        <td style="padding: 8px; text-align: center;">38.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model command-r-08-2024</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Command R+ (08-24)</td>
+        <td style="padding: 8px; text-align: center;">38.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model command-r-plus-08-2024</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemini-1.5-flash-8b-exp-0827</td>
+        <td style="padding: 8px; text-align: center;">38.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model gemini/gemini-1.5-flash-8b-exp-0827</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">llama-3.1-8b-instruct</td>
+        <td style="padding: 8px; text-align: center;">37.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">qwen1.5-110b-chat</td>
+        <td style="padding: 8px; text-align: center;">37.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model together_ai/qwen/qwen1.5-110b-chat</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">gemma2:27b-instruct-q8_0</td>
+        <td style="padding: 8px; text-align: center;">36.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/gemma2:27b-instruct-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">codeqwen:7b-chat-v1.5-q8_0</td>
+        <td style="padding: 8px; text-align: center;">34.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/codeqwen:7b-chat-v1.5-q8_0</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/mistral-nemo:12b-instruct-2407-q4_K_M</td>
+        <td style="padding: 8px; text-align: center;">33.1%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/mistral-nemo:12b-instruct-2407-q4_K_M</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/codegeex4</td>
+        <td style="padding: 8px; text-align: center;">32.3%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/codegeex4</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-1.5B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">31.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/Qwen2.5-Coder-1.5B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">command-r-plus</td>
+        <td style="padding: 8px; text-align: center;">31.6%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model command-r-plus</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/hermes3:8b-llama3.1-fp16</td>
+        <td style="padding: 8px; text-align: center;">30.1%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/hermes3:8b-llama3.1-fp16</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/wojtek/opencodeinterpreter:6.7b</td>
+        <td style="padding: 8px; text-align: center;">30.1%</td>
+        <td style="padding: 8px; text-align: center;">91.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/wojtek/opencodeinterpreter:6.7b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">o1-mini-2024-09-12</td>
+        <td style="padding: 8px; text-align: center;">27.1%</td>
+        <td style="padding: 8px; text-align: center;">95.6%</td>
+        <td style="padding: 8px;"><code>aider --model o1-mini</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/tulu3</td>
+        <td style="padding: 8px; text-align: center;">26.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/tulu3</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/llama3.2:3b-instruct-fp16</td>
+        <td style="padding: 8px; text-align: center;">26.3%</td>
+        <td style="padding: 8px; text-align: center;">97.0%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/llama3.2:3b-instruct-fp16</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/hermes3</td>
+        <td style="padding: 8px; text-align: center;">22.6%</td>
+        <td style="padding: 8px; text-align: center;">98.5%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/hermes3</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">ollama/granite3-dense:8b</td>
+        <td style="padding: 8px; text-align: center;">20.3%</td>
+        <td style="padding: 8px; text-align: center;">78.9%</td>
+        <td style="padding: 8px;"><code>aider --model ollama/granite3-dense:8b</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+      <tr style="border-bottom: 1px solid #ddd;">
+        <td style="padding: 8px;">Qwen2.5-Coder-0.5B-Instruct</td>
+        <td style="padding: 8px; text-align: center;">14.3%</td>
+        <td style="padding: 8px; text-align: center;">100.0%</td>
+        <td style="padding: 8px;"><code>aider --model openai/Qwen2.5-Coder-0.5B-Instruct</code></td>
+        <td style="padding: 8px; text-align: center;">whole</td>
+      </tr>
+    
+  </tbody>
+</table></div>
+
+<canvas id="editChart" width="800" height="450" style="margin-top: 20px"></canvas>
+<script src="https://unpkg.com/patternomaly/dist/patternomaly.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var ctx = document.getElementById('editChart').getContext('2d');
+  const blueDiagonalPattern = pattern.draw('diagonal', 'rgba(54, 162, 235, 0.2)');
+  const redDiagonalPattern = pattern.draw('diagonal', 'rgba(255, 99, 132, 0.2)');
+  let displayedData = [];
+
+  // Get highlight model from query string or Jekyll variable
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryHighlight = urlParams.get('highlight');
+  const HIGHLIGHT_MODEL = queryHighlight || 'no no no';
+
+  var leaderboardData = {
+    labels: [],
+    datasets: [{
+      label: 'Percent completed correctly',
+      data: [],
+      backgroundColor: function(context) {
+        const row = allData[context.dataIndex];
+        if (row && row.edit_format === 'whole') {
+          return redDiagonalPattern; // Use red pattern for highlighted whole format
+        }
+        const label = leaderboardData.labels[context.dataIndex] || '';
+        return (label && HIGHLIGHT_MODEL && label.toLowerCase().includes(HIGHLIGHT_MODEL.toLowerCase())) ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)';
+      },
+      borderColor: function(context) {
+        const label = context.chart.data.labels[context.dataIndex] || '';
+        return (label && HIGHLIGHT_MODEL && label.toLowerCase().includes(HIGHLIGHT_MODEL.toLowerCase())) ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)';
+      },
+      borderWidth: 1
+    }, {
+      label: 'Total Cost ($)',
+      data: [],
+      type: 'scatter',
+      yAxisID: 'y1',
+      backgroundColor: 'rgba(153, 102, 255, 1)',
+      borderColor: '#fff',
+      borderWidth: 1,
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  };
+
+  var allData = [];
+  
+    allData.push({
+      model: 'o1',
+      pass_rate: 84.2,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'claude-3-5-sonnet-20241022',
+      pass_rate: 84.2,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-exp-1206 (whole)',
+      pass_rate: 80.5,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'o1-preview',
+      pass_rate: 79.7,
+      percent_cases_well_formed: 93.2,
+      edit_format: 'diff',
+      total_cost: 63.919
+    });
+  
+    allData.push({
+      model: 'claude-3.5-sonnet-20240620',
+      pass_rate: 77.4,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'diff',
+      total_cost: 3.6346
+    });
+  
+    allData.push({
+      model: 'claude-3-5-haiku-20241022',
+      pass_rate: 75.2,
+      percent_cases_well_formed: 95.5,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/qwen2.5-coder:32b',
+      pass_rate: 72.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'DeepSeek Coder V2 0724',
+      pass_rate: 72.9,
+      percent_cases_well_formed: 97.7,
+      edit_format: 'diff',
+      total_cost: 0.0981
+    });
+  
+    allData.push({
+      model: 'gpt-4o-2024-05-13',
+      pass_rate: 72.9,
+      percent_cases_well_formed: 96.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'DeepSeek-V2.5-1210',
+      pass_rate: 72.2,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'diff',
+      total_cost: 0.1106
+    });
+  
+    allData.push({
+      model: 'openai/chatgpt-4o-latest',
+      pass_rate: 72.2,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'diff',
+      total_cost: 4.0641
+    });
+  
+    allData.push({
+      model: 'DeepSeek V2.5',
+      pass_rate: 72.2,
+      percent_cases_well_formed: 96.2,
+      edit_format: 'diff',
+      total_cost: 0.0998
+    });
+  
+    allData.push({
+      model: 'gpt-4o-2024-11-20',
+      pass_rate: 71.4,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-32B-Instruct',
+      pass_rate: 71.4,
+      percent_cases_well_formed: 94.7,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-4o-2024-08-06',
+      pass_rate: 71.4,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'o1-mini (whole)',
+      pass_rate: 70.7,
+      percent_cases_well_formed: 90.0,
+      edit_format: 'whole',
+      total_cost: 5.3725
+    });
+  
+    allData.push({
+      model: 'gemini-2.0-flash-exp',
+      pass_rate: 69.9,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'DeepSeek Chat V2 0628',
+      pass_rate: 69.9,
+      percent_cases_well_formed: 97.7,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-exp-1206 (diff)',
+      pass_rate: 69.2,
+      percent_cases_well_formed: 84.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-14B-Instruct',
+      pass_rate: 69.2,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'claude-3-opus-20240229',
+      pass_rate: 68.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'diff',
+      total_cost: 13.8395
+    });
+  
+    allData.push({
+      model: 'gpt-4-0613',
+      pass_rate: 67.7,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'diff',
+      total_cost: 17.4657
+    });
+  
+    allData.push({
+      model: 'Dracarys2-72B-Instruct',
+      pass_rate: 66.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-pro-exp-0827',
+      pass_rate: 66.9,
+      percent_cases_well_formed: 94.7,
+      edit_format: 'diff-fenced',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama-3.1-405b-instruct (whole)',
+      pass_rate: 66.2,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-4-0314',
+      pass_rate: 66.2,
+      percent_cases_well_formed: 93.2,
+      edit_format: 'diff',
+      total_cost: 16.2689
+    });
+  
+    allData.push({
+      model: 'gpt-4-0125-preview',
+      pass_rate: 66.2,
+      percent_cases_well_formed: 97.7,
+      edit_format: 'udiff',
+      total_cost: 14.6428
+    });
+  
+    allData.push({
+      model: 'yi-lightning',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'openrouter/qwen/qwen-2.5-coder-32b-instruct',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 84.2,
+      edit_format: 'diff',
+      total_cost: 0.1497
+    });
+  
+    allData.push({
+      model: 'Mistral Large (2411)',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 96.2,
+      edit_format: 'diff',
+      total_cost: 3.2334
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-pro-002',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 96.2,
+      edit_format: 'diff-fenced',
+      total_cost: 2.8166
+    });
+  
+    allData.push({
+      model: 'qwen-2.5-72b-instruct (bf16)',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 96.2,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-4-1106-preview',
+      pass_rate: 65.4,
+      percent_cases_well_formed: 92.5,
+      edit_format: 'udiff',
+      total_cost: 6.6061
+    });
+  
+    allData.push({
+      model: 'ollama/Qwen2.5.1-Coder-7B-Instruct-GGUF:Q8_0-32k',
+      pass_rate: 63.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'nousresearch/hermes-3-llama-3.1-405b',
+      pass_rate: 63.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama-3.1-405b-instruct (diff)',
+      pass_rate: 63.9,
+      percent_cases_well_formed: 92.5,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-4-turbo-2024-04-09 (udiff)',
+      pass_rate: 63.9,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'udiff',
+      total_cost: 6.3337
+    });
+  
+    allData.push({
+      model: 'ollama/qwen2.5-coder:14b',
+      pass_rate: 61.7,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'o1-mini',
+      pass_rate: 61.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'diff',
+      total_cost: 2.4226
+    });
+  
+    allData.push({
+      model: 'gemini-exp-1114',
+      pass_rate: 60.9,
+      percent_cases_well_formed: 85.7,
+      edit_format: 'diff',
+      total_cost: 0
+    });
+  
+    allData.push({
+      model: 'Mistral Large 2 (2407)',
+      pass_rate: 60.2,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama-3.3-70b-instruct',
+      pass_rate: 59.4,
+      percent_cases_well_formed: 88.7,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/qwen2.5:32b-instruct-q8_0',
+      pass_rate: 58.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Grok-2',
+      pass_rate: 58.6,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama-3.1-70b-instruct',
+      pass_rate: 58.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-exp-1121',
+      pass_rate: 57.9,
+      percent_cases_well_formed: 83.5,
+      edit_format: 'diff',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-7B-Instruct',
+      pass_rate: 57.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-3.5-turbo-0301',
+      pass_rate: 57.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.4822
+    });
+  
+    allData.push({
+      model: 'gpt-4-turbo-2024-04-09 (diff)',
+      pass_rate: 57.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'diff',
+      total_cost: 1.6205
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-pro-001',
+      pass_rate: 57.1,
+      percent_cases_well_formed: 87.2,
+      edit_format: 'diff-fenced',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gpt-3.5-turbo-1106',
+      pass_rate: 56.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.3261
+    });
+  
+    allData.push({
+      model: 'gpt-4o-mini',
+      pass_rate: 55.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0916
+    });
+  
+    allData.push({
+      model: 'Qwen2 72B Instruct',
+      pass_rate: 55.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Llama-3.1-Nemotron-70B-Instruct-HF',
+      pass_rate: 54.9,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Grok-2-mini',
+      pass_rate: 54.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'claude-3-sonnet-20240229',
+      pass_rate: 54.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Nova Pro',
+      pass_rate: 54.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/qwen2.5:32b',
+      pass_rate: 54.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Yi Coder 9B Chat',
+      pass_rate: 54.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-flash-exp-0827',
+      pass_rate: 52.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'qwen2.5-coder:7b-instruct-q8_0',
+      pass_rate: 51.9,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-flash-002 (0924)',
+      pass_rate: 51.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0515
+    });
+  
+    allData.push({
+      model: 'codestral-2405',
+      pass_rate: 51.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.6805
+    });
+  
+    allData.push({
+      model: 'gpt-3.5-turbo-0613',
+      pass_rate: 50.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.5366
+    });
+  
+    allData.push({
+      model: 'gpt-3.5-turbo-0125',
+      pass_rate: 50.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.5032
+    });
+  
+    allData.push({
+      model: 'qwen2:72b-instruct-q8_0',
+      pass_rate: 49.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama3-70b-8192',
+      pass_rate: 49.2,
+      percent_cases_well_formed: 73.5,
+      edit_format: 'diff',
+      total_cost: 0.4311
+    });
+  
+    allData.push({
+      model: 'Codestral-22B-v0.1-Q4_K_M',
+      pass_rate: 48.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.9108
+    });
+  
+    allData.push({
+      model: 'codestral:22b-v0.1-q8_0',
+      pass_rate: 48.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'claude-3-haiku-20240307',
+      pass_rate: 47.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.1946
+    });
+  
+    allData.push({
+      model: 'ollama/codestral',
+      pass_rate: 45.9,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'yi-coder:9b-chat-q4_0',
+      pass_rate: 45.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-flash-latest',
+      pass_rate: 44.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'WizardLM-2 8x22B',
+      pass_rate: 44.4,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/yi-coder:9b-chat-fp16',
+      pass_rate: 43.6,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Reflection-70B',
+      pass_rate: 42.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-3B-Instruct',
+      pass_rate: 39.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/mistral-small',
+      pass_rate: 38.3,
+      percent_cases_well_formed: 99.2,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-flash-8b-exp-0924',
+      pass_rate: 38.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Command R (08-24)',
+      pass_rate: 38.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Command R+ (08-24)',
+      pass_rate: 38.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemini-1.5-flash-8b-exp-0827',
+      pass_rate: 38.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'llama-3.1-8b-instruct',
+      pass_rate: 37.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'qwen1.5-110b-chat',
+      pass_rate: 37.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'gemma2:27b-instruct-q8_0',
+      pass_rate: 36.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'codeqwen:7b-chat-v1.5-q8_0',
+      pass_rate: 34.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/mistral-nemo:12b-instruct-2407-q4_K_M',
+      pass_rate: 33.1,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/codegeex4',
+      pass_rate: 32.3,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-1.5B-Instruct',
+      pass_rate: 31.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'command-r-plus',
+      pass_rate: 31.6,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 2.7494
+    });
+  
+    allData.push({
+      model: 'ollama/hermes3:8b-llama3.1-fp16',
+      pass_rate: 30.1,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/wojtek/opencodeinterpreter:6.7b',
+      pass_rate: 30.1,
+      percent_cases_well_formed: 91.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'o1-mini-2024-09-12',
+      pass_rate: 27.1,
+      percent_cases_well_formed: 95.6,
+      edit_format: 'whole',
+      total_cost: 17.627
+    });
+  
+    allData.push({
+      model: 'ollama/tulu3',
+      pass_rate: 26.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/llama3.2:3b-instruct-fp16',
+      pass_rate: 26.3,
+      percent_cases_well_formed: 97.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/hermes3',
+      pass_rate: 22.6,
+      percent_cases_well_formed: 98.5,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'ollama/granite3-dense:8b',
+      pass_rate: 20.3,
+      percent_cases_well_formed: 78.9,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+    allData.push({
+      model: 'Qwen2.5-Coder-0.5B-Instruct',
+      pass_rate: 14.3,
+      percent_cases_well_formed: 100.0,
+      edit_format: 'whole',
+      total_cost: 0.0
+    });
+  
+
+  function updateChart() {
+    var selectedRows = document.querySelectorAll('tr.selected');
+    var showAll = selectedRows.length === 0;
+
+    displayedData = [];
+    leaderboardData.labels = [];
+    leaderboardData.datasets[0].data = [];
+    leaderboardData.datasets[1].data = [];
+
+    allData.forEach(function(row, index) {
+      var rowElement = document.getElementById('edit-row-' + index);
+      if (showAll) {
+        rowElement.classList.remove('selected');
+      }
+      if (showAll || rowElement.classList.contains('selected')) {
+        displayedData.push(row);
+        leaderboardData.labels.push(row.model);
+        leaderboardData.datasets[0].data.push(row.pass_rate);
+        // Only include cost if it's not zero (placeholder for unknown)
+        leaderboardData.datasets[1].data.push(row.total_cost > 0 ? row.total_cost : null);
+      }
+    });
+
+    leaderboardChart.update();
+    leaderboardChart.render();
+  }
+
+  // Update backgroundColor and borderColor for the main dataset based on displayedData
+  leaderboardData.datasets[0].backgroundColor = function(context) {
+    const row = displayedData[context.dataIndex];
+    const label = leaderboardData.labels[context.dataIndex] || '';
+    const isHighlighted = label && HIGHLIGHT_MODEL && label.toLowerCase().includes(HIGHLIGHT_MODEL.toLowerCase());
+
+    if (isHighlighted) {
+      if (row && row.edit_format === 'whole') return redDiagonalPattern;
+      else return 'rgba(255, 99, 132, 0.2)';
+    } else if (row && row.edit_format === 'whole') {
+      return blueDiagonalPattern;
+    } else {
+      return 'rgba(54, 162, 235, 0.2)';
+    }
+  };
+
+  var tableBody = document.querySelector('table tbody');
+  allData.forEach(function(row, index) {
+    var tr = tableBody.children[index];
+    if (!tr) {
+      // If the row doesn't exist, create it
+      tr = document.createElement('tr');
+      tableBody.appendChild(tr);
+    }
+    tr.id = 'edit-row-' + index;
+    tr.style.cursor = 'pointer';
+    tr.onclick = function() {
+      this.classList.toggle('selected');
+      updateChart();
+    };
+  });
+
+  var leaderboardChart = new Chart(ctx, {
+    type: 'bar',
+    data: leaderboardData,
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            generateLabels: function(chart) {
+              return [
+                {
+                  text: 'Diff-like format',
+                  fillStyle: 'rgba(54, 162, 235, 0.2)',
+                  strokeStyle: 'rgba(54, 162, 235, 1)',
+                  lineWidth: 1
+                },
+                {
+                  text: 'Whole format',
+                  fillStyle: blueDiagonalPattern,
+                  strokeStyle: 'rgba(54, 162, 235, 1)',
+                  lineWidth: 1
+                },
+                {
+                  text: 'Total Cost ($)',
+                  fillStyle: 'rgba(153, 102, 255, 1)',
+                  strokeStyle: '#fff',
+                  lineWidth: 1,
+                  pointStyle: 'circle'
+                }
+              ];
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const datasetLabel = context.dataset.label || '';
+              const value = context.parsed.y;
+              if (datasetLabel === 'Total Cost ($)') {
+                return datasetLabel + ': $' + value.toFixed(2);
+              }
+              return datasetLabel + ': ' + value.toFixed(1) + '%';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Percent completed correctly'
+          }
+        },
+        y1: {
+          beginAtZero: true,
+          position: 'right',
+          grid: {
+            drawOnChartArea: false
+          },
+          title: {
+            display: true,
+            text: 'Total Cost ($)'
+          }
+        },
+        x: {
+          ticks: {
+            autoSkip: false, // Prevent labels from being automatically skipped
+            maxRotation: 90, // Allow labels to rotate up to 90 degrees
+            minRotation: 0, 
+            callback: function(value, index) {
+              const label = this.getLabelForValue(value);
+              if (label.length <= "claude-3-5-sonnet".length) {
+                return label;
+              }
+              
+              // Find all possible split positions
+              const splitPositions = [];
+              for (let i = 0; i < label.length; i++) {
+                if (label[i] === '-' || label[i] === ' ') {
+                  splitPositions.push(i);
+                }
+              }
+              
+              if (splitPositions.length === 0) {
+                return label;
+              }
+              
+              // Find split position closest to middle
+              const middle = label.length / 2;
+              const splitIndex = splitPositions.reduce((closest, current) => {
+                return Math.abs(current - middle) < Math.abs(closest - middle) ? current : closest;
+              });
+              
+              return [
+                label.slice(0, splitIndex),
+                label.slice(splitIndex + 1)
+              ];
+            }
+          }
+        }
+      }
+    }
+  });
+
+  updateChart();
+  
+  // Add search functionality for edit table
+  document.getElementById('editSearchInput').addEventListener('keyup', function() {
+    var searchWords = this.value.toLowerCase().split(' ').filter(word => word.length > 0);
+    var tableBody = document.querySelector('table:first-of-type tbody');
+    var rows = tableBody.getElementsByTagName('tr');
+    
+    displayedData = [];
+    leaderboardData.labels = [];
+    leaderboardData.datasets[0].data = [];
+    leaderboardData.datasets[1].data = [];
+    
+    for (var i = 0; i < rows.length; i++) {
+      var rowText = rows[i].textContent;
+      if (searchWords.every(word => rowText.toLowerCase().includes(word))) {
+        rows[i].style.display = '';
+        displayedData.push(allData[i]);
+        leaderboardData.labels.push(allData[i].model);
+        leaderboardData.datasets[0].data.push(allData[i].pass_rate);
+        // Only include cost if it's not zero (placeholder for unknown)
+        leaderboardData.datasets[1].data.push(allData[i].total_cost > 0 ? allData[i].total_cost : null);
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+    leaderboardChart.update();
+  });
+});
+
+</script>
+
+<style>
+  tr.selected {
+    color: #0056b3;
+  }
+  table {
+    table-layout: fixed;
+  }
+  td, th {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  td:nth-child(3), td:nth-child(4) {
+    font-size: 12px;
+  }
+</style>
+<h2 id="notes-on-benchmarking-results">
+  
+  
+    <a href="#notes-on-benchmarking-results" class="anchor-heading" aria-labelledby="notes-on-benchmarking-results"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Notes on benchmarking results
+  
+  
+</h2>
+    
+
+<p>The key benchmarking results are:</p>
+
+<ul>
+  <li><strong>Percent completed correctly</strong> - Measures what percentage of the coding tasks that the LLM completed successfully. To complete a task, the LLM must solve the programming assignment <em>and</em> edit the code to implement that solution.</li>
+  <li><strong>Percent using correct edit format</strong> - Measures the percent of coding tasks where the LLM complied with the edit format specified in the system prompt. If the LLM makes edit mistakes, aider will give it feedback and ask for a fixed copy of the edit. The best models can reliably conform to the edit format, without making errors.</li>
+</ul>
+<h2 id="notes-on-the-edit-format">
+  
+  
+    <a href="#notes-on-the-edit-format" class="anchor-heading" aria-labelledby="notes-on-the-edit-format"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Notes on the edit format
+  
+  
+</h2>
+    
+
+<p>Aider uses different “edit formats” to collect code edits from different LLMs.
+The “whole” format is the easiest for an LLM to use, but it uses a lot of tokens
+and may limit how large a file can be edited.
+Models which can use one of the diff formats are much more efficient,
+using far fewer tokens.
+Models that use a diff-like format are able to 
+edit larger files with less cost and without hitting token limits.</p>
+
+<p>Aider is configured to use the best edit format for the popular OpenAI and Anthropic models
+and the <a href="/docs/llms.html">other models recommended on the LLM page</a>.
+For lesser known models aider will default to using the “whole” editing format
+since it is the easiest format for an LLM to use.</p>
+<h2 id="contributing-benchmark-results">
+  
+  
+    <a href="#contributing-benchmark-results" class="anchor-heading" aria-labelledby="contributing-benchmark-results"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Contributing benchmark results
+  
+  
+</h2>
+    
+
+<p>Contributions of benchmark results are welcome!
+See the
+<a href="https://github.com/Aider-AI/aider/blob/main/benchmark/README.md">benchmark README</a>
+for information on running aider’s code editing benchmarks.
+Submit results by opening a PR with edits to the
+<a href="https://github.com/Aider-AI/aider/blob/main/aider/website/_data/">benchmark results data files</a>.</p>
+
+<p class="post-date">
+By Paul Gauthier,
+last updated
+<!--[[[cog
+import subprocess
+import datetime
+
+files = [
+    'aider/website/docs/leaderboards/edit.md',
+    'aider/website/_data/edit_leaderboard.yml',
+]
+
+def get_last_modified_date(file):
+    result = subprocess.run(['git', 'log', '-1', '--format=%ct', file], capture_output=True, text=True)
+    if result.returncode == 0:
+        timestamp = int(result.stdout.strip())
+        return datetime.datetime.fromtimestamp(timestamp)
+    return datetime.datetime.min
+
+mod_dates = [get_last_modified_date(file) for file in files]
+latest_mod_date = max(mod_dates)
+cog.out(f"{latest_mod_date.strftime('%B %d, %Y.')}")
+]]]-->
+April 12, 2025.
+<!--[[[end]]]-->
+</p>
+
+          
+
+          
+        </main>
+        
+
+
+      </div>
+    </div>
+    
+      
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+
