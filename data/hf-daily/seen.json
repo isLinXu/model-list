@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05 08:38 UTC",
+  "updated_at": "2026-11-06 07:55 UTC",
   "models": {
     "ricursiveAI/Ripple-65B-Preview": {
       "first": "2026-11-05",
@@ -84,6 +84,62 @@
       "kind": "update",
       "sha": "cbe89eebedb3df51ce3ef6ad982c94dd7f426a8f",
       "lastModified": "2026-11-05T08:35:38.000Z"
+    },
+    "Qwen/Qwen3.8-27B": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "8c0b3d30f3ae96f5c7f774de704bf0ada83e422a",
+      "lastModified": "2026-11-05T15:15:29.000Z"
+    },
+    "Qwen/Qwen3.8-Flash-Next": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "7ecef55a2e549814c62143fcf8b5be457695e3b9",
+      "lastModified": "2026-11-05T15:13:40.000Z"
+    },
+    "baidu/ERNIE-5.5-Flash-Base-BF16": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "dfab899dadcff8f4d08af24b75a26c6d4d2e0b09",
+      "lastModified": "2026-11-05T06:37:02.000Z"
+    },
+    "hyz317/HairDeck": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "7d2e07c5b4b22fbffa2df58d20b242db035ed69c",
+      "lastModified": "2026-11-05T01:40:55.000Z"
+    },
+    "divagr1925/Qwen3.5-4B-Qwenputer": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "b14ec5650e1e5c7afe00dce895106c794f8e14d6",
+      "lastModified": "2026-11-05T17:43:39.000Z"
+    },
+    "FusionCow/Sulphur-3": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "d273a9c75693df77d66e1db8e00152ebcc3875c9",
+      "lastModified": "2026-11-05T06:02:14.000Z"
+    },
+    "openvivo/BluePixel-Turbo": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "872eb46babdfb56fd3c8380ff1ef15ddd2961979",
+      "lastModified": "2026-11-05T06:51:22.000Z"
+    },
+    "LuxiaSL/kotodama-tsumugi-1b": {
+      "first": "2026-11-06",
+      "last": "2026-11-06",
+      "kind": "update",
+      "sha": "fca00fb805a49848c5a26de926ae9366fa838eaa",
+      "lastModified": "2026-11-06T07:47:05.000Z"
     }
   }
 }
