@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Benchmark 看板 — House of Model Cards</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--bgc:#1c2333;--tx:#e6edf3;--tx2:#8b949e;--tx3:#6e7681;--bd:#30363d;
+--bl:#58a6ff;--pr:#bc8cff;--gr:#3fb950;--rd:#f85149;--or:#d29922;--cy:#39c5cf;--pk:#db61a2}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.7;font-size:15.5px}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(13,17,23,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nb a{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--tx);text-decoration:none}
+.nb a span{background:linear-gradient(135deg,var(--bl),var(--pr),var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nl{display:flex;gap:4px}.nl a{color:var(--tx2);padding:6px 14px;border-radius:6px;font-size:13.5px;text-decoration:none;transition:.25s}
+.nl a:hover{color:var(--tx);background:#252d40}
+.ly{display:flex;max-width:1440px;margin:0 auto;padding-top:64px}
+.sd{width:250px;flex-shrink:0;position:sticky;top:64px;height:calc(100vh-64px);overflow-y:auto;padding:20px 0 20px 16px;border-right:1px solid var(--bd)}
+.tot{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx3);padding:0 12px 12px;font-weight:600}
+.tol{list-style:none}.tol a{display:block;color:var(--tx2);text-decoration:none;padding:4px 12px 4px 18px;font-size:13px;border-left:2px solid transparent;transition:.25s;line-height:1.5}
+.tol a:hover,.tol a.on{color:var(--bl);border-left-color:var(--bl);font-weight:600}
+.mc{flex:1;min-width:0;padding:24px 32px 60px;max-width:1120px}
+.hero{text-align:center;padding:30px 0 22px}
+.hero h1{font-size:clamp(24px,3.6vw,34px);font-weight:800;line-height:1.25;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--bl),var(--cy),var(--pr));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:15px;color:var(--tx2);max-width:820px;margin:0 auto;line-height:1.65}
+h2{font-size:22px;font-weight:800;margin:42px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--bd);scroll-margin-top:72px;line-height:1.3}
+h3{font-size:16px;font-weight:700;margin:22px 0 10px;color:var(--cy)}
+a{color:var(--bl);text-decoration:none}a:hover{color:var(--cy);text-decoration:underline}
+code{background:var(--bg3);color:var(--cy);padding:2px 6px;border-radius:4px;font-size:88%;font-family:'SF Mono','Fira Code',Consolas,monospace;border:1px solid rgba(88,166,255,.15)}
+blockquote{border-left:4px solid var(--bl);margin:14px 0;padding:12px 16px;background:linear-gradient(90deg,rgba(88,166,255,.05),transparent);border-radius:0 6px 6px 0;color:var(--tx2);font-size:14px}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin:22px 0}
+.st{background:var(--bgc);border:1px solid var(--bd);border-radius:10px;padding:14px 10px;text-align:center;transition:.25s}
+.st:hover{border-color:var(--bl);transform:translateY(-2px)}
+.sn{font-size:23px;font-weight:800;color:var(--bl)}.sl{font-size:11.5px;color:var(--tx3)}
+.cd{background:var(--bgc);border:1px solid var(--bd);border-radius:12px;margin:16px 0;overflow:hidden}
+.ch{padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--bg3);font-weight:700;font-size:15px}
+.cb{padding:12px 16px;font-size:14px;color:var(--tx2)}
+.tw{overflow-x:auto;margin:14px 0;border-radius:10px;border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead{background:var(--bg3)}th{padding:8px 10px;text-align:left;font-weight:600;font-size:12px;color:var(--tx);border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:middle}
+tbody tr:hover{background:#252d40}
+th.s{cursor:pointer;user-select:none}th.s:hover{color:var(--bl)}th.s.act{color:var(--bl)}
+.fl{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:14px 0}
+.fl label{display:block;font-size:11.5px;color:var(--tx3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text],select{width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:6px;color:var(--tx);padding:7px 9px;font-size:13px;outline:none;font-family:inherit}
+input[type=text]:focus,select:focus{border-color:var(--bl)}
+.chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--tx2);margin-top:20px}
+.chk input{accent-color:var(--bl)}
+.tip{font-size:12.5px;color:var(--tx3);margin:8px 0}
+.warn{background:rgba(210,153,34,.1);border:1px solid rgba(210,153,34,.3);color:var(--or);border-radius:6px;padding:8px 12px;font-size:13px;margin:10px 0}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600;border:1px solid var(--bd);background:var(--bg3);color:var(--tx2);cursor:pointer;user-select:none;margin:3px 4px 3px 0}
+.chip.on{background:rgba(88,166,255,.15);border-color:var(--bl);color:var(--bl)}
+.lvA{color:var(--gr);font-weight:700}.lvB{color:var(--or);font-weight:700}
+.miss{color:var(--tx3);font-style:italic}.none{color:var(--tx3);opacity:.55}
+.low{color:var(--or);font-weight:700}.high{color:var(--gr);font-weight:700}
+.bar{height:6px;border-radius:4px;background:var(--bg3);overflow:hidden;min-width:70px;display:inline-block;vertical-align:middle}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--bl),var(--cy))}
+.mx td,.mx th{text-align:center;font-size:12px;padding:6px 7px}
+.mx td:first-child,.mx th:first-child{text-align:left;position:sticky;left:0;background:var(--bg2);z-index:1}
+.hv{background:rgba(63,185,80,.14);color:var(--cl,#7ee787);border-radius:4px;padding:2px 5px;font-weight:600}
+.hv0{background:rgba(248,81,73,.1);color:var(--rd);border-radius:4px;padding:2px 5px}
+.ft{text-align:center;padding:26px 0 20px;border-top:1px solid var(--bd);color:var(--tx3);font-size:13px;margin-top:44px}
+.btt{position:fixed;bottom:26px;right:26px;z-index:999;width:40px;height:40px;border-radius:50%;background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;opacity:0;visibility:hidden;transition:.25s}
+.btt.vis{opacity:1;visibility:visible}.btt:hover{background:var(--bl);color:#fff}
+@media(max-width:1024px){.sd{display:none}.mc{padding:18px 16px 50px;max-width:100%}}
+@media(max-width:640px){body{font-size:14px}h2{font-size:19px}.sts{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nb"><a href="index.html">🃏 <span>HOMC · Benchmark 看板</span></a></div>
+<div class="nl"><a href="index.html">← 返回主站</a><a href="#filters">筛选</a><a href="#matrix">覆盖率</a><a href="#compare">横向对比</a><a href="#caveats">口径说明</a></div></nav>
+<div class="ly">
+<aside class="sd"><div class="tot">📑 看板导航</div><ul class="tol">
+<li><a href="#overview">📊 总览</a></li><li><a href="#filters">🔍 筛选与排序</a></li>
+<li><a href="#detail">📋 观测明细</a></li><li><a href="#matrix">🧩 覆盖矩阵</a></li>
+<li><a href="#compare">⚖️ 横向对比</a></li><li><a href="#caveats">⚠️ 口径与缺失</a></li>
+<li><a href="index.html">← HOMC 主站</a></li></ul></aside>
+<main class="mc">
+<div class="hero" id="overview"><h1>📊 多榜单 Benchmark 可视化看板</h1>
+<p>统一收录项目内全部可核实的模型指标。每条观测绑定模型、榜单、指标与口径组；排名只在同组内有效，不同单位、方向或 harness 的指标不参与混算。缺失指标显式标注，不做补零或跨口径平均。</p></div>
+<div class="sts" id="stats"></div>
+<div class="cd"><div class="ch">📐 数据口径（先看这里）</div><div class="cb" id="principle"></div></div>
+
+<h2 id="filters">🔍 筛选与排序</h2>
+<div class="fl" id="filtersBox"></div>
+<label class="chk"><input type="checkbox" id="onlyValued"> 仅显示有数值的观测（隐藏「官方未披露」）</label>
+<div class="tip" id="filterTip"></div>
+<div id="sortWarn"></div>
+
+<h2 id="detail">📋 观测明细</h2>
+<div class="tip">点击表头可排序。<b>跨口径组的数值排序已禁用</b>——不同单位或方向的分数放在一起排序没有意义；请先选定单个可比组。</div>
+<div class="tw"><table id="obsTable"><thead><tr id="obsHead"></tr></thead><tbody id="obsBody"></tbody></table></div>
+
+<h2 id="matrix">🧩 模型 × 榜单 覆盖矩阵与指标覆盖率</h2>
+<div class="tip" id="covTip"></div>
+<div style="margin:10px 0"><button class="chip on" id="btnGroup" onclick="setMatrix('group')">按可比组（12）</button><button class="chip" id="btnBench" onclick="setMatrix('benchmark')">按榜单（23）</button></div>
+<div class="tw"><table class="mx" id="covTable"></table></div>
+<div class="cd"><div class="ch">📈 各模型指标覆盖率</div><div class="cb" id="covBars"></div></div>
+
+<h2 id="compare">⚖️ 模型横向对比</h2>
+<div class="tip">勾选 2–4 个模型。对比表只列出<strong>至少两个所选模型都有数值</strong>的行，缺失显示「未披露」；同名但跨口径的指标分行展示并标注不可比较。</div>
+<div id="cmpChips"></div><div id="cmpWarn"></div>
+<div class="tw"><table id="cmpTable"></table></div>
+
+<h2 id="caveats">⚠️ 口径差异与缺失清单</h2>
+<div id="caveatsBox"></div>
+
+<div class="ft">🃏 <strong>House of Model Cards (HOMC)</strong> · Benchmark 看板 |
+<a href="index.html">返回主站</a> | 数据截至 2026-11-06 · 自 <code>data/benchmark_observations.json</code> 生成</div>
+</main></div>
+<div class="btt" id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+<script>
+const DATA = {"meta":{"version":"1.0","updated":"2026-11-06","principle":"一条观测 = 一个模型 × 一个榜单/规格 × 一个指标 × 一个版本口径。长表存储，不做宽表预聚合；排名只在可比组（group）内计算，绝不跨组求总分或平均值。","missing_policy":"value=null 且 status=not_disclosed 表示官方明确未披露；看板中模型×榜单的空缺格子表示『未参与/未公布』，显示为『未披露』而非 0 分。二者都不参与任何统计与排名。","duplicate_policy":"主键 (model, benchmark, key, group) 必须唯一。official_sources.json 的 benchmarks 与 leaderboards 存在同一指标重复登记（如 AA Index 59 分、SEC-bench 三项、HealthBench 68.6），本表只保留一条。","unit_policy":"unit 与 direction 由 group 统一定义，观测不重复声明；校验器强制同组内单位一致，不同单位禁止在同一图表或排序中混用。","source_note":"数据来自 data/official_sources.json 的 22 条可核实记录，另补 3 条 README §2.0 中带 [A] 来源的对照指标（Baichuan-M3、Muse Spark），用于演示同口径与跨口径对比。"},"groups":[{"id":"aa-index-v5","label":"AA Intelligence Index v5.0","unit":"score","direction":"higher","scope":"厂商公告引述第三方指数；仅 v5.0 版本内可比，跨版本不可比","kind":"ranking"},{"id":"cyber-noguardrails","label":"网络安全三项（无护栏）","unit":"percent","direction":"higher","scope":"官方注明为『无护栏』条件下评测；覆盖漏洞发现 / 利用验证 / 根因修复","kind":"benchmark"},{"id":"qwen37-max-selfeval","label":"Qwen3.7-Max 官方自评","unit":"percent","direction":"higher","scope":"厂商自评，harness 与采样设置见官方博客脚注；非第三方独立复测","kind":"benchmark"},{"id":"qwen37-plus-selfeval","label":"Qwen3.7-Plus 官方自评","unit":"percent","direction":"higher","scope":"厂商自评；视觉与 GUI Agent 专项","kind":"benchmark"},{"id":"healthbench","label":"HealthBench（百川口径）","unit":"percent","direction":"higher","scope":"医疗专用评测，综合 / Hard / Professional 三子集；不与通用模型横比","kind":"benchmark"},{"id":"scan-bench","label":"SCAN-bench 与临床专项","unit":"percent","direction":"higher","scope":"百川自建动态问诊、长程临床记忆与循证引用评测","kind":"benchmark"},{"id":"hallucination","label":"事实性幻觉率","unit":"percent","direction":"lower","scope":"越低越好；仅百川医疗口径内可比","kind":"benchmark"},{"id":"webdev-arena","label":"WebDev Arena","unit":"elo","direction":"higher","scope":"人类偏好 Elo，榜单快照随投票变动","kind":"ranking"},{"id":"alignment-tbench4","label":"Terminal-Bench 4.0 对齐项","unit":"percent","direction":"lower","scope":"内部安全对齐测试，非能力分数；越低越好","kind":"safety"},{"id":"hle-contemplating","label":"HLE（Contemplating 模式）","unit":"percent","direction":"higher","scope":"多 Agent 并行推理模式；与标准 HLE 自评 harness 不同，同名指标不可直接比较","kind":"benchmark"},{"id":"spec-context","label":"上下文窗口（官方规格）","unit":"tokens","direction":"higher","scope":"官方公布值；beta / 理论上限不等于默认可用，不同厂商计数口径可能不同","kind":"spec"},{"id":"spec-params","label":"参数规模（官方规格）","unit":"billion","direction":"higher","scope":"总参数与激活参数含义不同，不可混排；未披露者显式标记","kind":"spec"}],"sources":[{"id":"google_carbon","level":"A","url":"https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/","ref":"official_sources.json · benchmarks[0] / leaderboards[0,1,2,4]","note":"2026-10-28 官方公告"},{"id":"qwen37_max","level":"A","url":"https://qwen.ai/blog?id=qwen3.7","ref":"official_sources.json · benchmarks[1]","note":"2026-05-20 官方博客"},{"id":"qwen37_plus","level":"A","url":"https://qwen.ai/blog?id=qwen3.7-plus","ref":"official_sources.json · benchmarks[2]","note":"2026-06-01 官方博客"},{"id":"baichuan_m4","level":"A","url":"https://www.baichuan-ai.com/","ref":"official_sources.json · benchmarks[3] / leaderboards[3]","note":"指标为官网基准表 [A]；发布日期 2026-06-22 为三家媒体 [B] 交叉"},{"id":"baichuan_m4_media","level":"B","url":"https://www.163.com/tech/article/L0210BJ700098IEO.html","ref":"README §2.0.2 补注","note":"临床记忆 86.9 / EBM 90.0 为媒体转述官方披露，等级 B，引用前须复核"},{"id":"gpt5_card","level":"A","url":"https://arxiv.org/abs/2601.03267","ref":"official_sources.json · benchmarks[4]","note":"GPT-5 System Card；不存在独立 Technical Report"},{"id":"claude46","level":"A","url":"https://www.anthropic.com/news/claude-opus-4-6","ref":"official_sources.json · benchmarks[5]","note":"1M 上下文为 beta"},{"id":"llama4","level":"A","url":"https://ai.meta.com/blog/llama-4-multimodal-intelligence/","ref":"official_sources.json · benchmarks[6]","note":"10M 为 Scout 上限，非全系列"},{"id":"xai_models","level":"A","url":"https://docs.x.ai/docs/models","ref":"official_sources.json · benchmarks[7]","note":"官方模型目录未标注日期"},{"id":"muse_code","level":"A","url":"https://developer.meta.com/ai/resources/blog/build-with-muse-code","ref":"official_sources.json · benchmarks[8]","note":"2026-08-05 开发者博客"},{"id":"muse_spark","level":"A","url":"https://ai.meta.com/blog/introducing-muse-spark-msl/","ref":"README §2.0.2","note":"2026-04-08 Meta MSL 官方博客"},{"id":"baichuan_m3","level":"A","url":"https://arxiv.org/abs/2602.06570","ref":"README §2.0.3","note":"Baichuan-M3 技术报告，2026-01-13 开源"}],"observations":[{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"Artificial Analysis Intelligence Index v5.0","metric":"综合智能指数","key":"aa_index","value":59,"group":"aa-index-v5","rank":1,"date":"2026-10-28","src":"google_carbon","note":"厂商公告引述第三方指数，第 1 名"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"SEC-bench Pro","metric":"真实漏洞发现率","key":"sec_bench_pro","value":88.2,"group":"cyber-noguardrails","date":"2026-10-28","src":"google_carbon","note":"无护栏条件下评测"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"ExploitGym","metric":"风险利用验证率","key":"exploitgym","value":54.8,"group":"cyber-noguardrails","date":"2026-10-28","src":"google_carbon","note":"无护栏条件下评测"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"CWE-bench","metric":"根因修复率","key":"cwe_bench","value":71.0,"group":"cyber-noguardrails","date":"2026-10-28","src":"google_carbon","note":"无护栏条件下评测"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"WebDev Arena","metric":"Elo 评分","key":"webdev_arena_elo","value":1768,"group":"webdev-arena","rank":4,"date":"2026-10-28","src":"google_carbon","note":"第 4 名，较上一版 +89 Elo"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"Terminal-Bench 4.0 对齐项","metric":"成功作弊率","key":"cheat_success","value":0.0,"group":"alignment-tbench4","date":"2026-10-28","src":"google_carbon","note":"内部对齐测试，非能力分数；越低越好"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"Terminal-Bench 4.0 对齐项","metric":"尝试作弊率","key":"cheat_attempt","value":0.4,"group":"alignment-tbench4","date":"2026-10-28","src":"google_carbon","note":"内部对齐测试，非能力分数；越低越好"},{"model":"Gemini 4 Carbon","provider":"Google","benchmark":"官方规格","metric":"参数规模","key":"params_total","value":null,"group":"spec-params","date":"2026-10-28","src":"google_carbon","status":"not_disclosed","note":"官方公告未披露参数规模"},{"model":"Qwen3.7-Max","provider":"阿里巴巴","benchmark":"GPQA Diamond","metric":"GPQA Diamond","key":"gpqa_diamond","value":92.4,"group":"qwen37-max-selfeval","date":"2026-05-20","src":"qwen37_max","note":"厂商自评"},{"model":"Qwen3.7-Max","provider":"阿里巴巴","benchmark":"MMLU-Pro","metric":"MMLU-Pro","key":"mmlu_pro","value":89.6,"group":"qwen37-max-selfeval","date":"2026-05-20","src":"qwen37_max","note":"厂商自评"},{"model":"Qwen3.7-Max","provider":"阿里巴巴","benchmark":"HLE","metric":"HLE（标准自评）","key":"hle","value":41.4,"group":"qwen37-max-selfeval","date":"2026-05-20","src":"qwen37_max","note":"与 Muse Spark Contemplating 模式的同名 HLE 口径不同"},{"model":"Qwen3.7-Max","provider":"阿里巴巴","benchmark":"Terminal Bench 2.0-Terminus","metric":"Terminal Bench 2.0","key":"terminal_bench2","value":69.7,"group":"qwen37-max-selfeval","date":"2026-05-20","src":"qwen37_max","note":"厂商自评"},{"model":"Qwen3.7-Max","provider":"阿里巴巴","benchmark":"官方规格","metric":"参数规模","key":"params_total","value":null,"group":"spec-params","date":"2026-05-20","src":"qwen37_max","status":"not_disclosed","note":"官方未披露参数规模与技术报告"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"MRCR-v2 128K","metric":"长文本理解","key":"mrcr_v2_128k","value":91.7,"group":"qwen37-plus-selfeval","date":"2026-06-01","src":"qwen37_plus","note":"厂商自评"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"BabyVision","metric":"纯视觉推理","key":"babyvision","value":64.7,"group":"qwen37-plus-selfeval","date":"2026-06-01","src":"qwen37_plus","note":"厂商自评"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"ScreenSpot Pro","metric":"GUI 感知","key":"screenspot_pro","value":79.0,"group":"qwen37-plus-selfeval","date":"2026-06-01","src":"qwen37_plus","note":"厂商自评"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"AndroidWorld","metric":"移动 App 操作","key":"androidworld","value":81.0,"group":"qwen37-plus-selfeval","date":"2026-06-01","src":"qwen37_plus","note":"厂商自评"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":1000000,"group":"spec-context","date":"2026-06-01","src":"qwen37_plus","note":"官方 API 配置示例 contextWindow=1000000"},{"model":"Qwen3.7-Plus","provider":"阿里巴巴","benchmark":"官方规格","metric":"参数规模","key":"params_total","value":null,"group":"spec-params","date":"2026-06-01","src":"qwen37_plus","status":"not_disclosed","note":"官方未披露参数规模"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"HealthBench","metric":"综合","key":"healthbench","value":68.6,"group":"healthbench","rank":1,"date":"2026-06-22","src":"baichuan_m4","note":"官方称三个子集均列第一；排名为 [B] 级口径"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"HealthBench Hard","metric":"Hard 子集","key":"healthbench_hard","value":49.7,"group":"healthbench","rank":1,"date":"2026-06-22","src":"baichuan_m4","note":"高难度重症与罕见病推理"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"HealthBench Professional","metric":"Professional 子集","key":"healthbench_pro","value":55.1,"group":"healthbench","rank":1,"date":"2026-06-22","src":"baichuan_m4","note":"临床专业子集"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"SCAN-bench","metric":"初诊评分","key":"scanbench_first","value":79.0,"group":"scan-bench","date":"2026-06-22","src":"baichuan_m4","note":"参照 OSCE 的动态问诊评测"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"SCAN-bench","metric":"复诊评分","key":"scanbench_followup","value":74.7,"group":"scan-bench","date":"2026-06-22","src":"baichuan_m4","note":"参照 OSCE 的动态问诊评测"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"长上下文临床记忆","metric":"全病程记忆","key":"clinical_memory","value":86.9,"group":"scan-bench","date":"2026-06-22","src":"baichuan_m4_media","note":"[B] 媒体转述官方披露，须复核"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"Baichuan-EBM","metric":"循证引用精度","key":"ebm_precision","value":90.0,"group":"scan-bench","date":"2026-06-22","src":"baichuan_m4_media","note":"[B] 媒体转述官方披露，须复核"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"事实性幻觉率","metric":"幻觉率","key":"hallucination_rate","value":3.3,"group":"hallucination","date":"2026-06-22","src":"baichuan_m4","note":"越低越好"},{"model":"Baichuan-M4","provider":"百川智能 / 清华大学","benchmark":"官方规格","metric":"参数规模","key":"params_total","value":null,"group":"spec-params","date":"2026-06-22","src":"baichuan_m4","status":"not_disclosed","note":"未见官方参数披露；HF 亦未检索到权重仓库"},{"model":"Baichuan-M3-235B","provider":"百川智能","benchmark":"HealthBench","metric":"综合","key":"healthbench","value":65.1,"group":"healthbench","rank":2,"date":"2026-01-13","src":"baichuan_m3","note":"与 M4 同口径，可横向对比"},{"model":"Baichuan-M3-235B","provider":"百川智能","benchmark":"HealthBench Hard","metric":"Hard 子集","key":"healthbench_hard","value":44.4,"group":"healthbench","rank":2,"date":"2026-01-13","src":"baichuan_m3","note":"与 M4 同口径，可横向对比"},{"model":"Baichuan-M3-235B","provider":"百川智能","benchmark":"事实性幻觉率","metric":"幻觉率","key":"hallucination_rate","value":3.5,"group":"hallucination","date":"2026-01-13","src":"baichuan_m3","note":"越低越好；与 M4 同口径"},{"model":"Baichuan-M3-235B","provider":"百川智能","benchmark":"官方规格","metric":"总参数","key":"params_total","value":235,"group":"spec-params","date":"2026-01-13","src":"baichuan_m3","note":"235B，单位 billion"},{"model":"Muse Spark","provider":"Meta","benchmark":"HLE","metric":"HLE（Contemplating 模式）","key":"hle","value":58.0,"group":"hle-contemplating","date":"2026-04-08","src":"muse_spark","note":"多 Agent 并行推理；与 Qwen3.7-Max 标准 HLE 自评 harness 不同，同名不可直接比较"},{"model":"Muse Spark","provider":"Meta","benchmark":"FrontierScience Research","metric":"FrontierScience Research","key":"frontier_science","value":38.0,"group":"hle-contemplating","date":"2026-04-08","src":"muse_spark","note":"Contemplating 模式"},{"model":"Muse Spark 1.2","provider":"Meta","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":1000000,"group":"spec-context","date":"2026-08-05","src":"muse_code","note":"编码 Agent 专用档位"},{"model":"GPT-5","provider":"OpenAI","benchmark":"官方规格","metric":"总上下文","key":"context_total","value":400000,"group":"spec-context","date":"2025-08-07","src":"gpt5_card","note":"272K 输入 + 128K 推理/输出；System Card 口径"},{"model":"GPT-5","provider":"OpenAI","benchmark":"官方规格","metric":"最大输入","key":"context_input","value":272000,"group":"spec-context","date":"2025-08-07","src":"gpt5_card","note":"System Card 口径"},{"model":"GPT-5","provider":"OpenAI","benchmark":"官方规格","metric":"推理/输出上限","key":"context_output","value":128000,"group":"spec-context","date":"2025-08-07","src":"gpt5_card","note":"System Card 口径"},{"model":"Claude Opus 4.6","provider":"Anthropic","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":1000000,"group":"spec-context","date":"2026-02-05","src":"claude46","note":"1M beta，不等于默认可用"},{"model":"Llama 4 Scout","provider":"Meta","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":10000000,"group":"spec-context","date":"2025-04-05","src":"llama4","note":"iRoPE；官方明示 Scout 上限，非全系列规格"},{"model":"Llama 4 Scout","provider":"Meta","benchmark":"官方规格","metric":"总参数","key":"params_total","value":109,"group":"spec-params","date":"2025-04-05","src":"llama4","note":"109B，单位 billion"},{"model":"Llama 4 Scout","provider":"Meta","benchmark":"官方规格","metric":"激活参数","key":"params_active","value":17,"group":"spec-params","date":"2025-04-05","src":"llama4","note":"17B 激活；与总参数含义不同，不可混排"},{"model":"Grok 4.7","provider":"xAI","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":500000,"group":"spec-context","date":"","src":"xai_models","note":"官方模型目录未标注日期"},{"model":"grok-4.3","provider":"xAI","benchmark":"官方规格","metric":"上下文窗口","key":"context_window","value":1000000,"group":"spec-context","date":"","src":"xai_models","note":"官方模型目录未标注日期"}]};
+const G = Object.fromEntries(DATA.groups.map(g=>[g.id,g]));
+const S = Object.fromEntries(DATA.sources.map(s=>[s.id,s]));
+const OBS = DATA.observations.map((o,i)=>Object.assign({},o,{_i:i,unit:G[o.group].unit,direction:G[o.group].direction,
+  group_label:G[o.group].label,group_scope:G[o.group].scope,kind:G[o.group].kind||'benchmark',
+  level:S[o.src].level,url:S[o.src].url,ref:S[o.src].ref}));
+const MODELS = [...new Set(OBS.map(o=>o.model))].sort();
+const BENCHS = [...new Set(OBS.map(o=>o.benchmark))].sort();
+const PROVIDERS = [...new Set(OBS.map(o=>o.provider))].sort();
+const GROUPS = DATA.groups;
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const st = {q:'',provider:'',benchmark:'',group:'',level:'',kind:'',onlyValued:false,
+  sort:'model',dir:1,compare:[],matrix:'group'};
+
+function fmt(o){
+  if(o.value==null) return '<span class="miss">未披露</span>';
+  const v=o.value;
+  if(o.unit==='percent') return Number(v).toFixed(1)+'%';
+  if(o.unit==='elo') return Number(v).toLocaleString();
+  if(o.unit==='tokens') return v>=1000000 ? (v/1000000)+'M' : (v>=1000 ? (v/1000)+'K' : String(v));
+  if(o.unit==='billion') return v+'B';
+  return String(v);
+}
+function unitCn(u){return {percent:'百分比',score:'指数分',elo:'Elo',tokens:'Token',billion:'十亿参数'}[u]||u;}
+function dirTag(o){return o.direction==='lower'
+  ? '<span class="low">↓ 越低越好</span>' : '<span class="high">↑ 越高越好</span>';}
+
+function filtered(){
+  let r=OBS.filter(o=>{
+    if(st.q && !(o.model+' '+o.provider+' '+o.benchmark+' '+o.metric+' '+o.key).toLowerCase().includes(st.q.toLowerCase())) return false;
+    if(st.provider && o.provider!==st.provider) return false;
+    if(st.benchmark && o.benchmark!==st.benchmark) return false;
+    if(st.group && o.group!==st.group) return false;
+    if(st.level && o.level!==st.level) return false;
+    if(st.kind && o.kind!==st.kind) return false;
+    if(st.onlyValued && o.value==null) return false;
+    return true;
+  });
+  const groupsInResult=new Set(r.map(o=>o.group));
+  const crossGroupValueSort = st.sort==='value' && groupsInResult.size>1;
+  document.getElementById('sortWarn').innerHTML = crossGroupValueSort
+    ? '<div class="warn">⚠️ 当前结果包含 '+groupsInResult.size+' 个可比组，<b>跨组按数值排序已禁用</b>（单位 / 方向 / harness 不同）。请先在「可比组」下拉中选定单个组。</div>' : '';
+  const key=st.sort;
+  r.sort((a,b)=>{
+    let x,y;
+    if(key==='value'){
+      if(crossGroupValueSort){x=a.model;y=b.model;}
+      else {x=a.value==null?Infinity:a.value;y=b.value==null?Infinity:b.value;}
+    } else if(key==='rank'){x=a.rank==null?9999:a.rank;y=b.rank==null?9999:b.rank;}
+    else {x=a[key]||'';y=b[key]||'';}
+    if(typeof x==='string') return x.localeCompare(y,'zh')*st.dir;
+    return (x-y)*st.dir;
+  });
+  // direction 只作为「表现方向」标注，不自动反转排序：升序恒为数值从小到大，
+  // 对 lower-is-better 的指标而言这恰好把最优值排在前面，行为可预期。
+  return r;
+}
+
+function renderStats(){
+  const valued=OBS.filter(o=>o.value!=null).length;
+  const cov={};
+  MODELS.forEach(m=>{cov[m]=new Set(OBS.filter(o=>o.model===m&&o.value!=null).map(o=>o.group)).size;});
+  const overall=(Object.values(cov).reduce((a,b)=>a+b,0)/(MODELS.length*GROUPS.length)*100).toFixed(1);
+  const cards=[
+    ['🤖',MODELS.length,'模型'],['🏁',BENCHS.length,'榜单 / 规格'],['🧪',new Set(OBS.map(o=>o.key)).size,'指标'],
+    ['📌',OBS.length,'观测'],['✅',valued,'有数值'],['⚠️',OBS.length-valued,'未披露'],
+    ['🔬',GROUPS.length,'可比组'],['🧩',overall+'%','整体覆盖率']
+  ];
+  document.getElementById('stats').innerHTML=cards.map(c=>
+    '<div class="st"><div class="sn">'+c[1]+'</div><div class="sl">'+c[0]+' '+c[2]+'</div></div>').join('');
+  document.getElementById('principle').innerHTML=
+    '<p>'+esc(DATA.meta.principle)+'</p><p style="margin-top:8px">'+esc(DATA.meta.missing_policy)+'</p>'+
+    '<p style="margin-top:8px">'+esc(DATA.meta.unit_policy)+'</p>'+
+    '<blockquote style="margin-top:10px">'+esc(DATA.meta.duplicate_policy)+'</blockquote>';
+}
+
+function sel(id,label,opts,val){
+  return '<div><label>'+label+'</label><select id="'+id+'"><option value="">全部</option>'+
+    opts.map(o=>'<option value="'+esc(o[0])+'"'+(o[0]===val?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select></div>';
+}
+function renderFilters(){
+  document.getElementById('filtersBox').innerHTML=
+    '<div><label>关键词（模型 / 指标）</label><input type="text" id="fq" placeholder="如 HLE、HealthBench…" value="'+esc(st.q)+'"></div>'+
+    sel('fprovider','提供方',PROVIDERS.map(x=>[x,x]),st.provider)+
+    sel('fbenchmark','榜单',BENCHS.map(x=>[x,x]),st.benchmark)+
+    sel('fgroup','可比组（决定排序口径）',GROUPS.map(g=>[g.id,g.label]),st.group)+
+    sel('flevel','来源等级',[['A','A · 一手'],['B','B · 二手交叉']],st.level)+
+    sel('fkind','类型',[['benchmark','评测'],['ranking','榜单'],['safety','安全对齐'],['spec','官方规格']],st.kind)+
+    '<div><label>排序字段</label><select id="fsort">'+
+      [['model','模型名'],['benchmark','榜单'],['value','数值（仅同组）'],['rank','组内排名'],['date','日期'],['level','来源等级']]
+      .map(o=>'<option value="'+o[0]+'"'+(o[0]===st.sort?' selected':'')+'>'+o[1]+'</option>').join('')+'</select></div>'+
+    '<div><label>排序方向</label><select id="fdir"><option value="1"'+(st.dir===1?' selected':'')+'>升序 / A→Z</option><option value="-1"'+(st.dir===-1?' selected':'')+'>降序 / Z→A</option></select></div>';
+  const bind=(id,fn)=>document.getElementById(id).addEventListener(fn[0],e=>{fn[1](e.target.value);});
+  bind('fq',['input',v=>{st.q=v;refresh();}]);
+  [['fprovider','provider'],['fbenchmark','benchmark'],['fgroup','group'],['flevel','level'],['fkind','kind'],['fsort','sort'],['fdir','dir']]
+    .forEach(([id,k])=>bind(id,['change',v=>{st[k]=(k==='dir')?Number(v):v;refresh();}]));
+  document.getElementById('onlyValued').checked=st.onlyValued;
+  document.getElementById('onlyValued').addEventListener('change',e=>{st.onlyValued=e.target.checked;refresh();});
+}
+
+const HEADS=[['model','模型'],['provider','提供方'],['benchmark','榜单 / 规格'],['metric','指标'],['value','数值'],
+  ['unit','单位'],['direction','方向'],['rank','组内排名'],['group_label','可比组'],['level','来源'],['date','日期'],['group_scope','口径说明']];
+function renderTable(){
+  document.getElementById('obsHead').innerHTML=HEADS.map((h,i)=>
+    '<th class="s'+(st.sort===h[0]?' act':'')+'" onclick="setSort(\''+h[0]+'\')">'+h[1]+(st.sort===h[0]?(st.dir===1?' ↑':' ↓'):'')+'</th>').join('');
+  const r=filtered();
+  document.getElementById('obsBody').innerHTML=r.map(o=>
+    '<tr><td><b>'+esc(o.model)+'</b></td><td>'+esc(o.provider)+'</td><td>'+esc(o.benchmark)+'</td><td>'+esc(o.metric)+
+    '</td><td><b>'+fmt(o)+'</b></td><td>'+unitCn(o.unit)+'</td><td>'+dirTag(o)+'</td><td>'+
+    (o.rank!=null?'#'+o.rank:'<span class="none">—</span>')+'</td><td>'+esc(o.group_label)+'</td>'+
+    '<td><span class="lv'+o.level+'">['+o.level+']</span> <a href="'+esc(o.url)+'" target="_blank" title="'+esc(o.ref)+'">来源 ↗</a></td>'+
+    '<td>'+esc(o.date||'未标注')+'</td><td style="font-size:12px">'+esc(o.group_scope)+'</td></tr>').join('');
+  document.getElementById('filterTip').textContent='显示 '+r.length+' / '+OBS.length+' 条观测';
+}
+function setSort(k){ if(st.sort===k) st.dir=-st.dir; else {st.sort=k;st.dir=1;} refresh(); }
+
+function setMatrix(mode){
+  st.matrix=mode;
+  document.getElementById('btnGroup').classList.toggle('on',mode==='group');
+  document.getElementById('btnBench').classList.toggle('on',mode==='benchmark');
+  renderMatrix();
+}
+function renderMatrix(){
+  const cols = st.matrix==='group' ? GROUPS.map(g=>[g.id,g.label]) : BENCHS.map(b=>[b,b]);
+  const idx = st.matrix==='group' ? (o=>o.group) : (o=>o.benchmark);
+  let h='<thead><tr><th>模型</th>'+cols.map(c=>'<th title="'+esc(c[1])+'">'+esc(c[1].length>12?c[1].slice(0,11)+'…':c[1])+'</th>').join('')+'<th>覆盖率</th></tr></thead><tbody>';
+  MODELS.forEach(m=>{
+    const mine=OBS.filter(o=>o.model===m);
+    const covered=new Set(mine.filter(o=>o.value!=null).map(idx)).size;
+    const ratio=covered/cols.length;
+    h+='<tr><td><b>'+esc(m)+'</b></td>';
+    cols.forEach(c=>{
+      const cell=mine.filter(o=>idx(o)===c[0]&&o.value!=null);
+      const nd=mine.filter(o=>idx(o)===c[0]&&o.value==null);
+      if(cell.length) h+='<td><span class="hv" title="'+esc(cell.map(o=>o.metric+': '+fmt(o).replace(/<[^>]+>/g,'')).join(' · '))+'">'+cell.length+' 项</span></td>';
+      else if(nd.length) h+='<td><span class="hv0" title="官方明确未披露">未披露</span></td>';
+      else h+='<td class="none">—</td>';
+    });
+    h+='<td><span class="bar"><i style="width:'+Math.round(ratio*100)+'%"></i></span> '+(ratio*100).toFixed(0)+'%</td></tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('covTable').innerHTML=h;
+  document.getElementById('covTip').innerHTML='列为'+(st.matrix==='group'?'<b>可比组</b>':'<b>榜单 / 规格</b>')+
+    '。绿色 = 有数值（悬停看明细），红色「未披露」= 官方明确未公布，灰色「—」= 该模型未参与该评测。'+
+    '<b>「—」不等于 0 分，也不代表能力不足</b>；覆盖率只按有数值的格子计算。';
+  const cov=MODELS.map(m=>({m,n:new Set(OBS.filter(o=>o.model===m&&o.value!=null).map(idx)).size}))
+    .sort((a,b)=>b.n-a.n);
+  document.getElementById('covBars').innerHTML=cov.map(c=>
+    '<div style="display:flex;align-items:center;gap:10px;margin:5px 0;font-size:13px">'+
+    '<span style="min-width:170px">'+esc(c.m)+'</span><span class="bar" style="flex:1"><i style="width:'+
+    Math.round(c.n/cols.length*100)+'%"></i></span><span style="min-width:74px;text-align:right">'+c.n+' / '+cols.length+'</span></div>').join('');
+}
+
+function renderCompare(){
+  document.getElementById('cmpChips').innerHTML=MODELS.map(m=>
+    '<span class="chip'+(st.compare.includes(m)?' on':'')+'" onclick="toggleCmp(\''+esc(m).replace(/'/g,"\\'")+'\')">'+
+    (st.compare.includes(m)?'✓ ':'+ ')+esc(m)+'</span>').join('');
+  const sel=st.compare;
+  document.getElementById('cmpWarn').innerHTML = sel.length<2
+    ? '<div class="warn">请至少勾选 2 个模型以生成对比。</div>'
+    : sel.length>4 ? '<div class="warn">最多对比 4 个模型，请取消部分勾选。</div>' : '';
+  if(sel.length<2||sel.length>4){document.getElementById('cmpTable').innerHTML='';return;}
+  const rows=new Map();
+  OBS.filter(o=>sel.includes(o.model)).forEach(o=>{
+    const k=o.key+'|'+o.group;
+    if(!rows.has(k)) rows.set(k,{metric:o.metric,key:o.key,group:o.group,label:o.group_label,unit:o.unit,dir:o.direction,vals:{}});
+    rows.get(k).vals[o.model]=o;
+  });
+  const list=[...rows.values()].filter(r=>Object.values(r.vals).some(o=>o.value!=null));
+  const shared=list.filter(r=>Object.values(r.vals).filter(o=>o.value!=null).length>=2);
+  const sameKeyCrossGroup=[...new Set(list.map(r=>r.key))].filter(k=>new Set(list.filter(r=>r.key===k).map(r=>r.group)).size>1);
+  let h='<thead><tr><th>指标</th><th>可比组 / 单位</th>'+sel.map(m=>'<th>'+esc(m)+'</th>').join('')+'<th>可比性</th></tr></thead><tbody>';
+  list.forEach(r=>{
+    const n=Object.values(r.vals).filter(o=>o.value!=null).length;
+    h+='<tr'+(n<2?' style="opacity:.72"':'')+'><td><b>'+esc(r.metric)+'</b></td><td style="font-size:12px">'+esc(r.label)+
+      '<br><span class="none">'+unitCn(r.unit)+' · '+(r.dir==='lower'?'越低越好':'越高越好')+'</span></td>';
+    sel.forEach(m=>{
+      const o=r.vals[m];
+      h+='<td>'+(o? (o.value==null?'<span class="miss">未披露</span>':'<b>'+fmt(o)+'</b>'+(o.rank!=null?' <span class="none">#'+o.rank+'</span>':''))
+        : '<span class="none">—</span>')+'</td>';
+    });
+    h+='<td style="font-size:12px">'+(n>=2?'<span class="high">共同可比</span>':'<span class="miss">仅 1 个有值</span>')+
+      (sameKeyCrossGroup.includes(r.key)?'<br><span class="low">同名跨口径 ⚠</span>':'')+'</td></tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('cmpTable').innerHTML=h;
+  if(sameKeyCrossGroup.length){
+    document.getElementById('cmpWarn').innerHTML+='<div class="warn">⚠️ <b>同名跨口径</b>：指标 <b>'+sameKeyCrossGroup.join('、')+
+      '</b> 出现在不同口径组，表格已分行展示；<b>请勿把这两行的数值直接相减或并列排名</b>。</div>';
+  }
+}
+function toggleCmp(m){
+  const i=st.compare.indexOf(m);
+  if(i>=0) st.compare.splice(i,1); else if(st.compare.length<4) st.compare.push(m);
+  renderCompare();
+}
+
+function renderCaveats(){
+  const byKey={};
+  OBS.forEach(o=>{(byKey[o.key]=byKey[o.key]||new Set()).add(o.group);});
+  const cross=Object.entries(byKey).filter(([k,v])=>v.size>1);
+  const lower=GROUPS.filter(g=>g.direction==='lower');
+  const nd=OBS.filter(o=>o.value==null);
+  const b=OBS.filter(o=>o.level==='B');
+  const units=[...new Set(GROUPS.map(g=>g.unit))];
+  let h='<div class="cd"><div class="ch">🔀 同名指标跨口径（禁止直接比较）</div><div class="cb">'+
+    (cross.length? cross.map(([k,v])=>'<p>• <code>'+esc(k)+'</code> → '+esc([...v].join(' / '))+
+      '：'+esc(OBS.filter(o=>o.key===k).map(o=>o.model+' '+fmt(o).replace(/<[^>]+>/g,'')).join('；'))+'</p>').join('')
+      : '<p>无。</p>')+'</div></div>';
+  h+='<div class="cd"><div class="ch">↓ 方向相反与单位隔离</div><div class="cb"><p>越低越好的组：<b>'+
+    esc(lower.map(g=>g.label).join('、')||'无')+'</b>，排序时已自动反向。</p><p>本次收录单位：<b>'+
+    esc(units.map(unitCn).join(' / '))+'</b>；不同单位不进入同一次排序、平均或求和。</p></div></div>';
+  h+='<div class="cd"><div class="ch">⚠️ 官方明确未披露（'+nd.length+' 条，不参与统计）</div><div class="cb">'+
+    nd.map(o=>'<p>• <b>'+esc(o.model)+'</b> / '+esc(o.metric)+' — <span class="miss">未披露</span> <span style="font-size:12px">'+esc(o.note||'')+'</span></p>').join('')+'</div></div>';
+  h+='<div class="cd"><div class="ch">📎 二手来源观测（'+b.length+' 条，引用前复核）</div><div class="cb">'+
+    (b.length?b.map(o=>'<p>• <b>'+esc(o.model)+'</b> / '+esc(o.metric)+' = '+fmt(o)+
+      ' <a href="'+esc(o.url)+'" target="_blank">来源 ↗</a> <span style="font-size:12px">'+esc(o.note||'')+'</span></p>').join('')
+      :'<p>无。</p>')+'</div></div>';
+  h+='<div class="cd"><div class="ch">🧮 去重与聚合规则</div><div class="cb"><p>'+esc(DATA.meta.duplicate_policy)+
+    '</p><p style="margin-top:8px">'+esc(DATA.meta.missing_policy)+'</p></div></div>';
+  document.getElementById('caveatsBox').innerHTML=h;
+}
+
+function refresh(){renderTable();renderMatrix();renderCompare();}
+renderStats();renderFilters();renderCaveats();refresh();
+window.addEventListener('scroll',()=>document.getElementById('bt').classList.toggle('vis',window.scrollY>400));
+</script>
+</body></html>
