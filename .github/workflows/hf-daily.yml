@@ -70,6 +70,9 @@ jobs:
       - name: Validate official source tables
         run: python3 scripts/render_source_tables.py --validate
 
+      - name: Validate benchmark board data
+        run: python3 scripts/render_benchmark_board.py --validate
+
       - name: Fetch models from Hugging Face Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -97,9 +100,11 @@ jobs:
         if: ${{ inputs.dry_run != true }}
         run: python3 scripts/fetch_hf_models.py --validate
 
-      - name: Regenerate index.html
+      - name: Regenerate site
         if: ${{ inputs.dry_run != true }}
-        run: python3 gen_html.py
+        run: |
+          python3 gen_html.py
+          python3 scripts/render_benchmark_board.py
 
       - name: Commit and push
         if: ${{ inputs.dry_run != true }}
@@ -107,7 +112,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- README.md HF_DAILY.md index.html data/hf-daily/
+          git add -- README.md HF_DAILY.md index.html benchmarks.html data/hf-daily/ data/official_sources.json data/benchmark_observations.json
           if git diff --cached --quiet; then
             echo "No changes since last run; skipping commit."
             exit 0

@@ -112,7 +112,7 @@ img{max-width:100%;border-radius:6px}
 
 <nav class="nav"><div class="nb"><a href="#">🃏 <span>HOMC Model List</span></a></div>
 <div class="nl">
-<a href="#快速索引">📑 索引</a><a href="#通用基础模型">🤖 模型</a><a href="#110-sota-模型排行榜2026年4月实时新增">🏆 排行</a>
+<a href="#快速索引">📑 索引</a><a href="#通用基础模型">🤖 模型</a><a href="#110-🏆-官方榜单口径">🏆 榜单</a><a href="benchmarks.html">📊 看板</a>
 <a href="#评测基准详解">📏 评测</a><a href="#微调工具链与实战">🔧 微调</a><a href="#安全与对齐">🛡️ 安全</a>
 </div></nav>
 
@@ -127,7 +127,8 @@ img{max-width:100%;border-radius:6px}
 <li><a href="#17-按推理能力等级分类新增">🧠 推理能力等级</a></li>
 <li><a href="#18-按部署场景分类新增">🖥️ 部署场景分类</a></li>
 <li><a href="#19-按训练对齐方法分类新增">🎯 训练对齐方法</a></li>
-<li><a href="#110-sota-模型排行榜2026年4月实时新增">🏆 SOTA 排行榜</a></li>
+<li><a href="#110-🏆-官方榜单口径">🏆 官方榜单口径</a></li>
+<li><a href="benchmarks.html">📊 Benchmark 看板</a></li>
 <li><a href="#通用基础模型">2️⃣ 通用基础模型</a></li>
 <li><a href="#20-模型汇总核实总表-截至-2026-11-05">📋 核实总表 2026-11-05</a></li>
 <li><a href="#208-每日-hf-自动抓取候选">🤗 每日 HF 候选</a></li>
